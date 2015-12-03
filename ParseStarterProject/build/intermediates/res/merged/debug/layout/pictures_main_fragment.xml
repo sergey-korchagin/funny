@@ -103,7 +103,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Small Text"
                 android:id="@+id/likesCounter"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp" />
@@ -111,4 +110,4 @@
 
     </RelativeLayout>
 
-</LinearLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/pictures_main_fragment.xml -->
+</LinearLayout><!-- From: file:/C:/Users/serge_000/Desktop/funny/ParseStarterProject/src/main/res/layout/pictures_main_fragment.xml -->

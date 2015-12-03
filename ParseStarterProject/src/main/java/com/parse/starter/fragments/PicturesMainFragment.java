@@ -64,6 +64,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
     List<ParseObject> updatedCategories;
+    List<ParseObject> top;
     int skip = 0;
     int querySize;
     public int mPosition;
@@ -73,7 +74,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ImageView btnLike;
     boolean mExternalStorageAvailable = false;
     boolean mExternalStorageWriteable = false;
-     int width = 0;
+    int width = 0;
     int height = 0;
     ImageView mSmallImage;
     boolean isTop = false;
@@ -82,7 +83,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
    // HashMap<String,String> likesHashMap;
     ArrayList<String> likesList;
     TinyDB tinydb;
-TextView likesCounterView;
+    TextView likesCounterView;
     String SAVED_LIST = "saved_list";
 
     @Override
@@ -183,9 +184,9 @@ TextView likesCounterView;
 
     @Override
     public void onPageSelected(int position) {
-if(!isTop) {
+        mPosition = position;
 
-    mPosition = position;
+        if(!isTop) {
 
     if (position % 5 == 1 && skip < querySize) {
         skip = skip + 5;
@@ -211,9 +212,14 @@ if(!isTop) {
         });
 
     }
-}
+    likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
+
+} else {
+            likesCounterView.setText(Integer.toString((Integer) top.get(mPosition).get("likes")));
+String tmp = Integer.toString((Integer) top.get(mPosition).get("likes"));
+    tmp.toString();
+        }
         initLikeButton();
-        likesCounterView.setText(categories.get(mPosition).get("likes").toString());
     }
 
 
@@ -239,7 +245,7 @@ if(!isTop) {
                     mAdapter = new PhotoPagerAdapter(categories, getActivity());
                     mPager.setAdapter(mAdapter);
                     initLikeButton();
-                    likesCounterView.setText(Integer.toString((Integer)categories.get(mPosition).get("likes")));
+                    likesCounterView.setText(Integer.toString((Integer)categories.get(0).get("likes")));
 
 
 
@@ -302,13 +308,14 @@ if(!isTop) {
         }else if(btnLike.getId() == v.getId()){
             if(!likesList.contains(categories.get(mPosition).getObjectId())){
                 incrementLikes();
-               // likesCounterView.setText(Utils.addLikes(categories.get(mPosition).get("likes")));
-                isLikeClicked = true;
+                int d1 = ((Integer)categories.get(mPosition).get("likes"));
+                d1=d1--;
+                likesCounterView.setText(Integer.toString(d1));
             }else{
                 decrementLikes();
-            //    likesCounterView.setText(Utils.removeLikes(categories.get(mPosition).get("likes").toString()));
-
-                isLikeClicked = false;
+                int d1 = ((Integer)categories.get(mPosition).get("likes"));
+                d1=d1--;
+                likesCounterView.setText(Integer.toString(d1));
             }
         }
     }
@@ -514,10 +521,11 @@ public void savePicture(){
             @Override
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
-                    List<ParseObject> top = (List<ParseObject>) o;
+                    top = (List<ParseObject>) o;
                     mAdapter.insertTopPictures(top);
 //                    mAdapter.notifyDataSetChanged();
                     mPager.setAdapter(mAdapter);
+                    likesCounterView.setText(Integer.toString((Integer) top.get(0).get("likes")));
 
                 }
             }
