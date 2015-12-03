@@ -32,4 +32,15 @@ public class Utils {
         AlertDialog alert = builder.create();
         alert.show();
     }
+    public static String addLikes(String string){
+        int t = Integer.valueOf(string);
+        t = t+1;
+        return String.valueOf(t);
+    }
+
+    public static String removeLikes(String string){
+        int t = Integer.valueOf(string);
+        t = t-1;
+        return String.valueOf(t);
+    }
 }

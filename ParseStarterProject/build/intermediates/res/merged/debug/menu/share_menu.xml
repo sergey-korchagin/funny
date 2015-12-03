@@ -8,4 +8,4 @@
         android:title="Share"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         />
-</menu><!-- From: file:/C:/Users/serge_000/Projects/funny-photo/ParseStarterProject/src/main/res/menu/share_menu.xml -->
+</menu><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/menu/share_menu.xml -->

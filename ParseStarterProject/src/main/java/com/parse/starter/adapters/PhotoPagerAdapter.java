@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.parse.GetDataCallback;
@@ -41,6 +42,7 @@ public class PhotoPagerAdapter extends android.support.v4.view.PagerAdapter impl
 List<ParseObject> mImages;
     Activity activity;
     List<ParseObject> mMoreImages;
+    boolean isLikeClicked = false;
 
     public PhotoPagerAdapter(List<ParseObject> images, Activity activity) {
         this.mImages = images;
@@ -63,7 +65,7 @@ List<ParseObject> mImages;
         return view == object;
     }
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         LayoutInflater inflater = (LayoutInflater) container.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View root = inflater.inflate(R.layout.photo_layout, container, false);
         final TouchImageView mImage = (TouchImageView) root.findViewById(R.id.touchImage);
@@ -84,11 +86,33 @@ List<ParseObject> mImages;
                 }
             });
         }
-        ((ViewPager) container).addView(root);
+
+//        final ImageView btnLike = (ImageView)root.findViewById(R.id.likeImageBtn);
+//        btnLike.setImageDrawable(activity.getResources().getDrawable(R.drawable.like_tmp));
+//
+//        btnLike.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!isLikeClicked) {
+//                    btnLike.setImageDrawable(activity.getResources().getDrawable(R.drawable.dislike_tmp));
+//                    mImages.get(position).increment("likes");
+//                    mImages.get(position).saveInBackground();
+//                    isLikeClicked = true;
+//                } else {
+//                    btnLike.setImageDrawable(activity.getResources().getDrawable(R.drawable.like_tmp));
+//                    mImages.get(position).increment("likes", -1);
+//                    mImages.get(position).saveInBackground();
+//                    isLikeClicked = false;
+//                }
+//            }
+//        });
+
+                ((ViewPager) container).addView(root);
 
         return root;
 
     }
+
 
     @Override
     public void destroyItem(View container, int position, Object object) {

@@ -27,6 +27,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -39,6 +40,7 @@ import com.parse.ParseUser;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.Utils;
 
@@ -47,7 +49,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,6 +70,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ImageView btnShare;
     ImageView btnSave;
     ImageView btnTop;
+    ImageView btnLike;
     boolean mExternalStorageAvailable = false;
     boolean mExternalStorageWriteable = false;
      int width = 0;
@@ -73,20 +78,39 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ImageView mSmallImage;
     boolean isTop = false;
     LinearLayout layoutHeader;
+    boolean isLikeClicked=false;
+   // HashMap<String,String> likesHashMap;
+    ArrayList<String> likesList;
+    TinyDB tinydb;
+TextView likesCounterView;
+    String SAVED_LIST = "saved_list";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
         Constants.FROM_SETTINGS = false;
+        //likesHashMap = new HashMap<>();
+        likesList = new ArrayList<>();
+        tinydb = new TinyDB(getActivity());
+        likesList = tinydb.getListString(SAVED_LIST);
+        likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
+
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
 
         btnSave = (ImageView)root.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
+
         btnTop = (ImageView)root.findViewById(R.id.btnTop);
         btnTop.setOnClickListener(this);
-         layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
 
+        btnLike = (ImageView)root.findViewById(R.id.btnLike);
+        //btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
+
+        btnLike.setOnClickListener(this);
+
+        layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
 
         initSmallImage();
 
@@ -117,6 +141,21 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 //        btnShare.setLayoutParams(parms);
         return root;
     }
+
+    public void initLikeButton() {
+     //   if (categories != null) {
+          if (likesList.contains(categories.get(mPosition).getObjectId())) {
+                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.dislike_tmp));
+            } else {
+                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
+            }
+//        }
+//        if(mPosition == 0){
+//            btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
+//        }
+
+    }
+
 
     public void getQuerySize() {
 
@@ -173,6 +212,8 @@ if(!isTop) {
 
     }
 }
+        initLikeButton();
+        likesCounterView.setText(categories.get(mPosition).get("likes").toString());
     }
 
 
@@ -196,8 +237,11 @@ if(!isTop) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
                     mAdapter = new PhotoPagerAdapter(categories, getActivity());
-
                     mPager.setAdapter(mAdapter);
+                    initLikeButton();
+                    likesCounterView.setText(Integer.toString((Integer)categories.get(mPosition).get("likes")));
+
+
 
                 }
             }
@@ -206,6 +250,8 @@ if(!isTop) {
 
     @Override
     public void onResume() {
+      likesList =  tinydb.getListString(SAVED_LIST);
+
         super.onResume();
 
     }
@@ -244,13 +290,44 @@ if(!isTop) {
                 enableTopMode();
                 isTop = true;
                 layoutHeader.setBackgroundColor(Color.parseColor("#FF00CC"));
+                btnLike.setVisibility(View.GONE);
             }else {
                 skip =0;
                 disableTopMode();
                 isTop = false;
                 layoutHeader.setBackgroundColor(Color.parseColor("#330099"));
+                btnLike.setVisibility(View.VISIBLE);
+
+            }
+        }else if(btnLike.getId() == v.getId()){
+            if(!likesList.contains(categories.get(mPosition).getObjectId())){
+                incrementLikes();
+               // likesCounterView.setText(Utils.addLikes(categories.get(mPosition).get("likes")));
+                isLikeClicked = true;
+            }else{
+                decrementLikes();
+            //    likesCounterView.setText(Utils.removeLikes(categories.get(mPosition).get("likes").toString()));
+
+                isLikeClicked = false;
             }
         }
+    }
+
+
+    public void decrementLikes() {
+        categories.get(mPosition).increment("likes", -1);
+        categories.get(mPosition).saveInBackground();
+        likesList.remove(categories.get(mPosition).getObjectId());
+        initLikeButton();
+
+    }
+
+    public void incrementLikes(){
+        categories.get(mPosition).increment("likes");
+        categories.get(mPosition).saveInBackground();
+        likesList.add(categories.get(mPosition).getObjectId());
+        initLikeButton();
+
     }
 
     public void sendShareIntentLink(final int position){
@@ -461,10 +538,37 @@ public void savePicture(){
                     if (o instanceof List) {
                         categories = (List<ParseObject>) o;
                         mAdapter.insertTopPictures(categories);
-mPager.setAdapter(mAdapter);
+                        mPager.setAdapter(mAdapter);
                     }
                 }
             });
         }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        tinydb.putListString(SAVED_LIST,likesList);
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        tinydb.putListString(SAVED_LIST,likesList);
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        tinydb.putListString(SAVED_LIST,likesList);
+
+    }
+
 
 }

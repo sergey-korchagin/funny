@@ -22,6 +22,14 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/likeImageBtn"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp" />
+
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,4 +37,4 @@
         android:layout_gravity="center" />
 
 
-</FrameLayout><!-- From: file:/C:/Users/serge_000/Projects/funny-photo/ParseStarterProject/src/main/res/layout/photo_layout.xml -->
+</FrameLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/photo_layout.xml -->
