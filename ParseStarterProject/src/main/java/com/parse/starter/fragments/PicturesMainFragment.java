@@ -8,10 +8,14 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.print.PrintAttributes;
@@ -19,12 +23,15 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,6 +52,7 @@ import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,6 +81,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ImageView btnSave;
     ImageView btnTop;
     ImageView btnLike;
+    ImageView btnMore;
     boolean mExternalStorageAvailable = false;
     boolean mExternalStorageWriteable = false;
     int width = 0;
@@ -87,6 +96,12 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     TextView likesCounterView;
     String SAVED_LIST = "saved_list";
     ProgressDialog progressDialog;
+    ImageView btnUpload;
+    private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
+    boolean videoSelected =false;
+    int orientation;
+    Bitmap photo = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
@@ -116,6 +131,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         btnLike.setOnClickListener(this);
 
+
+        btnMore = (ImageView)root.findViewById(R.id.btnMore);
+        btnMore.setOnClickListener(this);
         layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
 
 
@@ -290,19 +308,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         }else if(btnTop.getId() == v.getId()){
             TopFragment topFragment = new TopFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
-//            if(!isTop){
-//                enableTopMode();
-//                isTop = true;
-//                layoutHeader.setBackgroundColor(Color.parseColor("#FF00CC"));
-//                btnLike.setVisibility(View.GONE);
-//            }else {
-//                skip =0;
-//                disableTopMode();
-//                isTop = false;
-//                layoutHeader.setBackgroundColor(Color.parseColor("#330099"));
-//                btnLike.setVisibility(View.VISIBLE);
-//
-//            }
+
         }else if(btnLike.getId() == v.getId()){
             if(!likesList.contains(categories.get(mPosition).getObjectId())){
                 incrementLikes();
@@ -315,6 +321,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 d1=d1--;
                 likesCounterView.setText(Integer.toString(d1));
             }
+        }else if(btnMore.getId() == v.getId()){
+            enableAlertMenu();
         }
     }
 
@@ -509,27 +517,6 @@ public void savePicture(){
 
 
 
-
-//        public void disableTopMode(){
-//            ParseQuery query = new ParseQuery("picture");
-//            query.addDescendingOrder("createdAt");
-//            query.setLimit(5);
-//            query.findInBackground(new FindCallback() {
-//                @Override
-//                public void done(List objects, ParseException e) {
-//                }
-//
-//                @Override
-//                public void done(Object o, Throwable throwable) {
-//                    if (o instanceof List) {
-//                        categories = (List<ParseObject>) o;
-//                        mAdapter.insertTopPictures(categories);
-//                        mPager.setAdapter(mAdapter);
-//                    }
-//                }
-//            });
-//        }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -554,6 +541,76 @@ public void savePicture(){
 
         tinydb.putListString(SAVED_LIST,likesList);
 
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode == getActivity().RESULT_OK) {
+                if (requestCode == REQUEST_CODE_FROM_GALLERY_IMAGE) {
+
+                    Uri selectedImage = data.getData();
+                    if (!ifVideo(selectedImage)) {
+                        Intent email = new Intent(Intent.ACTION_SEND);
+                        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"Alex.Bagranov@gmail.com"});
+                        email.putExtra(Intent.EXTRA_SUBJECT, "Смешная фотография");
+                        email.putExtra(Intent.EXTRA_STREAM, selectedImage);
+                        email.putExtra(Intent.EXTRA_TEXT, "Спасибо что вы посылаете нам свои материалы, сотни пользователей обязательно увидят их! Нафаня");
+                        email.setType("message/rfc822");
+                        startActivity(Intent.createChooser(email, "Выбор меил агента"));
+                    } else {
+                        Utils.showAlert(getActivity(), "Ошибка", "Неподдерживаемый формат файла");
+                    }
+                }
+            }
+    }
+
+
+
+
+    public boolean ifVideo(Uri uri){
+        if(uri.toString().contains("video")){
+            return true;
+        }
+        return false;
+    }
+
+
+    public void enableAlertMenu(){
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+    //    builderSingle.setIcon(R.drawable.ic_launcher);
+        //builderSingle.setTitle("Дополнительные возможности");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                R.layout.dialog_list_item);
+        arrayAdapter.add("  Поделиться");
+        arrayAdapter.add("  Пригласить друга");
+
+
+        builderSingle.setAdapter(
+                arrayAdapter,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
+                                break;
+                            case 1:
+                                Intent share = new Intent(Intent.ACTION_SEND);
+                                share.setType("text/plain");
+                                share.putExtra(Intent.EXTRA_TEXT, "когда нибудь это будет приглашение в нафаню, а пока качни айдаприкол https://play.google.com/store/apps/details?id=ru.idaprikol&hl=ru");
+                                startActivity(Intent.createChooser(share, "Пригласить"));
+                                break;
+                        }
+
+                    }
+                });
+        builderSingle.show();
     }
 
 
