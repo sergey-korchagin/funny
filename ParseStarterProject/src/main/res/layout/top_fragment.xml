@@ -19,7 +19,7 @@
                 android:layout_weight="5"
                 android:gravity="right"
                 android:background="#FF00CC"
-                android:id="@+id/headerLayout">
+                android:id="@+id/headerTopLayout">
 
                 <ImageView
                     android:layout_width="40dp"
@@ -67,7 +67,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/violet"
+                android:background="#FF00CC"
                 android:layout_weight="5"
                 android:id="@+id/footerLayout">
 

@@ -3,6 +3,7 @@ package com.parse.starter.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -85,11 +86,15 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     TinyDB tinydb;
     TextView likesCounterView;
     String SAVED_LIST = "saved_list";
-
+    ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
         Constants.FROM_SETTINGS = false;
+        progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
+//        progressDialog = new ProgressDialog(getActivity(),R.style.MyTheme);
+//        progressDialog.setMessage("Картинки загружаются...");
+//        progressDialog.show();
         //likesHashMap = new HashMap<>();
         likesList = new ArrayList<>();
         tinydb = new TinyDB(getActivity());
@@ -237,9 +242,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                     mAdapter = new PhotoPagerAdapter(categories, getActivity());
                     mPager.setAdapter(mAdapter);
                     initLikeButton();
-                    likesCounterView.setText(Integer.toString((Integer)categories.get(0).get("likes")));
-
-
+                    likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
+                    progressDialog.dismiss();
 
                 }
             }

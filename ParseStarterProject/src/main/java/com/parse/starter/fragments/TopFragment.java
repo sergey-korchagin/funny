@@ -2,12 +2,14 @@ package com.parse.starter.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,12 +61,16 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     ImageView mSmallImage;
     TextView likesCounterView;
     int mPosition;
+    LinearLayout layoutHeader;
 
-
+ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
-        Constants.FROM_SETTINGS = true;
+        final View root = inflater.inflate(R.layout.top_fragment, container, false);
+        Constants.FROM_SETTINGS = false;
+        progressDialog = ProgressDialog.show(getActivity(),"","Картинки загружаются...");
+
+        layoutHeader = (LinearLayout)root.findViewById(R.id.headerTopLayout);
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
@@ -71,7 +78,8 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
         btnSave = (ImageView)root.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
 
-        btnAll = (ImageView)root.findViewById(R.id.btnTop);
+
+        btnAll = (ImageView)root.findViewById(R.id.btnAll);
         btnAll.setOnClickListener(this);
 
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
@@ -105,7 +113,7 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
                     mAdapter = new PhotoPagerAdapter(categories, getActivity());
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
-
+                    progressDialog.dismiss();
 
                 }
             }
@@ -238,7 +246,8 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     @Override
     public void onClick(View v) {
         if(btnAll.getId() == v.getId()){
-            getFragmentManager().popBackStackImmediate();
+            PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+            Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
         }if (btnShare.getId() == v.getId()) {
             if(mExternalStorageAvailable && mExternalStorageWriteable){
                 sendShareIntentPhoto(mPosition);
