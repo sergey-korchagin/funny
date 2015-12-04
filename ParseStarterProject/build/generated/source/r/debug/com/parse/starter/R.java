@@ -1559,10 +1559,11 @@ containing a value of this type.
         public static final int alertTitle=0x7f0c0030;
         public static final int always=0x7f0c0016;
         public static final int beginning=0x7f0c0013;
-        public static final int btnLike=0x7f0c0060;
-        public static final int btnSave=0x7f0c0062;
-        public static final int btnShare=0x7f0c0063;
-        public static final int btnTop=0x7f0c0061;
+        public static final int btnAll=0x7f0c006c;
+        public static final int btnLike=0x7f0c005f;
+        public static final int btnSave=0x7f0c0061;
+        public static final int btnShare=0x7f0c0062;
+        public static final int btnTop=0x7f0c0060;
         public static final int buttonPanel=0x7f0c0036;
         public static final int cancel_action=0x7f0c0050;
         public static final int checkbox=0x7f0c0038;
@@ -1581,18 +1582,17 @@ containing a value of this type.
         public static final int end_padder=0x7f0c005b;
         public static final int expand_activities_button=0x7f0c0027;
         public static final int expanded_menu=0x7f0c0037;
-        public static final int footerLayout=0x7f0c0065;
-        public static final int frameLayout=0x7f0c006a;
-        public static final int headerLayout=0x7f0c005f;
+        public static final int footerLayout=0x7f0c0064;
+        public static final int frameLayout=0x7f0c0069;
+        public static final int headerLayout=0x7f0c005e;
         public static final int home=0x7f0c0004;
         public static final int homeAsUp=0x7f0c000d;
         public static final int icon=0x7f0c002b;
         public static final int ifRoom=0x7f0c0018;
         public static final int image=0x7f0c0028;
-        public static final int imageView=0x7f0c006c;
+        public static final int imageView=0x7f0c006b;
         public static final int info=0x7f0c005a;
-        public static final int likeImageBtn=0x7f0c005d;
-        public static final int likesCounter=0x7f0c0068;
+        public static final int likesCounter=0x7f0c0067;
         public static final int line1=0x7f0c0054;
         public static final int line3=0x7f0c0058;
         public static final int listMode=0x7f0c0009;
@@ -1605,9 +1605,9 @@ containing a value of this type.
         public static final int none=0x7f0c000e;
         public static final int normal=0x7f0c000a;
         public static final int parentPanel=0x7f0c002d;
-        public static final int photos_image_pager=0x7f0c0064;
-        public static final int progressBar=0x7f0c005e;
-        public static final int progressBar2=0x7f0c006b;
+        public static final int photos_image_pager=0x7f0c0063;
+        public static final int progressBar=0x7f0c005d;
+        public static final int progressBar2=0x7f0c006a;
         public static final int progress_circular=0x7f0c0005;
         public static final int progress_horizontal=0x7f0c0006;
         public static final int radio=0x7f0c003a;
@@ -1628,7 +1628,7 @@ containing a value of this type.
         public static final int showCustom=0x7f0c000f;
         public static final int showHome=0x7f0c0010;
         public static final int showTitle=0x7f0c0011;
-        public static final int smallImage=0x7f0c0066;
+        public static final int smallImage=0x7f0c0065;
         public static final int split_action_bar=0x7f0c0007;
         public static final int src_atop=0x7f0c0020;
         public static final int src_in=0x7f0c0021;
@@ -1639,8 +1639,8 @@ containing a value of this type.
         public static final int text=0x7f0c0059;
         public static final int text2=0x7f0c0057;
         public static final int textSpacerNoButtons=0x7f0c0033;
-        public static final int textView=0x7f0c0069;
-        public static final int textView2=0x7f0c0067;
+        public static final int textView=0x7f0c0068;
+        public static final int textView2=0x7f0c0066;
         public static final int time=0x7f0c0055;
         public static final int title=0x7f0c002c;
         public static final int title_template=0x7f0c002f;
@@ -1702,6 +1702,7 @@ containing a value of this type.
         public static final int settings_fragment=0x7f040028;
         public static final int splash_screen_fragment=0x7f040029;
         public static final int support_simple_spinner_dropdown_item=0x7f04002a;
+        public static final int top_fragment=0x7f04002b;
     }
     public static final class menu {
         public static final int menu_main=0x7f0d0000;

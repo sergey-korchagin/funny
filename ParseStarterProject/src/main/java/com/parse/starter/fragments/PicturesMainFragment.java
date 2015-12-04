@@ -113,12 +113,13 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
 
-        initSmallImage();
 
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
         mPager.addOnPageChangeListener(this);
 
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
+        initSmallImage();
+
         checkIfStorageAvailable();
         getQuerySize();
         getCategories();
@@ -185,9 +186,6 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-
-        if(!isTop) {
-
     if (position % 5 == 1 && skip < querySize) {
         skip = skip + 5;
 
@@ -213,12 +211,6 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     }
     likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
-
-} else {
-            likesCounterView.setText(Integer.toString((Integer) top.get(mPosition).get("likes")));
-String tmp = Integer.toString((Integer) top.get(mPosition).get("likes"));
-    tmp.toString();
-        }
         initLikeButton();
     }
 
@@ -292,19 +284,21 @@ String tmp = Integer.toString((Integer) top.get(mPosition).get("likes"));
 
 
         }else if(btnTop.getId() == v.getId()){
-            if(!isTop){
-                enableTopMode();
-                isTop = true;
-                layoutHeader.setBackgroundColor(Color.parseColor("#FF00CC"));
-                btnLike.setVisibility(View.GONE);
-            }else {
-                skip =0;
-                disableTopMode();
-                isTop = false;
-                layoutHeader.setBackgroundColor(Color.parseColor("#330099"));
-                btnLike.setVisibility(View.VISIBLE);
-
-            }
+            TopFragment topFragment = new TopFragment();
+            Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+//            if(!isTop){
+//                enableTopMode();
+//                isTop = true;
+//                layoutHeader.setBackgroundColor(Color.parseColor("#FF00CC"));
+//                btnLike.setVisibility(View.GONE);
+//            }else {
+//                skip =0;
+//                disableTopMode();
+//                isTop = false;
+//                layoutHeader.setBackgroundColor(Color.parseColor("#330099"));
+//                btnLike.setVisibility(View.VISIBLE);
+//
+//            }
         }else if(btnLike.getId() == v.getId()){
             if(!likesList.contains(categories.get(mPosition).getObjectId())){
                 incrementLikes();
@@ -509,48 +503,28 @@ public void savePicture(){
     }
 }
 
-    public void enableTopMode(){
-        ParseQuery query = new ParseQuery("picture");
-        query.addDescendingOrder("likes");
-        query.setLimit(10);
-        query.findInBackground(new FindCallback() {
-            @Override
-            public void done(List objects, ParseException e) {
-            }
 
-            @Override
-            public void done(Object o, Throwable throwable) {
-                if (o instanceof List) {
-                    top = (List<ParseObject>) o;
-                    mAdapter.insertTopPictures(top);
-//                    mAdapter.notifyDataSetChanged();
-                    mPager.setAdapter(mAdapter);
-                    likesCounterView.setText(Integer.toString((Integer) top.get(0).get("likes")));
 
-                }
-            }
-        });
-    }
 
-        public void disableTopMode(){
-            ParseQuery query = new ParseQuery("picture");
-            query.addDescendingOrder("createdAt");
-            query.setLimit(5);
-            query.findInBackground(new FindCallback() {
-                @Override
-                public void done(List objects, ParseException e) {
-                }
-
-                @Override
-                public void done(Object o, Throwable throwable) {
-                    if (o instanceof List) {
-                        categories = (List<ParseObject>) o;
-                        mAdapter.insertTopPictures(categories);
-                        mPager.setAdapter(mAdapter);
-                    }
-                }
-            });
-        }
+//        public void disableTopMode(){
+//            ParseQuery query = new ParseQuery("picture");
+//            query.addDescendingOrder("createdAt");
+//            query.setLimit(5);
+//            query.findInBackground(new FindCallback() {
+//                @Override
+//                public void done(List objects, ParseException e) {
+//                }
+//
+//                @Override
+//                public void done(Object o, Throwable throwable) {
+//                    if (o instanceof List) {
+//                        categories = (List<ParseObject>) o;
+//                        mAdapter.insertTopPictures(categories);
+//                        mPager.setAdapter(mAdapter);
+//                    }
+//                }
+//            });
+//        }
 
     @Override
     public void onPause() {
