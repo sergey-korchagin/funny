@@ -22,6 +22,8 @@
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:textColor="#FFFFFF"
     android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:textSize="18dp"
     android:gravity="center_vertical"
     android:background="@color/violet"
     android:drawableRight="@drawable/abc_btn_switch_to_on_mtrl_00001"

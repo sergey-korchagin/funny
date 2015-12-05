@@ -17,4 +17,5 @@
 
 
     <color name="violet">#330099</color>
+    <color name="violet_transparent">#80330099</color>
 </resources>

@@ -585,8 +585,9 @@ public void savePicture(){
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.dialog_list_item);
-        arrayAdapter.add("  Поделиться");
-        arrayAdapter.add("  Пригласить друга");
+        arrayAdapter.add("Послать нам свой прикол");
+        arrayAdapter.add("Пригласить друга");
+        arrayAdapter.add("Настройки");
 
 
         builderSingle.setAdapter(
@@ -605,6 +606,10 @@ public void savePicture(){
                                 share.setType("text/plain");
                                 share.putExtra(Intent.EXTRA_TEXT, "когда нибудь это будет приглашение в нафаню, а пока качни айдаприкол https://play.google.com/store/apps/details?id=ru.idaprikol&hl=ru");
                                 startActivity(Intent.createChooser(share, "Пригласить"));
+                                break;
+                            case 2:
+                                SettingsFragment settingsFragment = new SettingsFragment();
+                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
                                 break;
                         }
 
