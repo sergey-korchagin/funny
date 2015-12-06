@@ -4,15 +4,23 @@
     android:layout_height="match_parent">
 
 
-    <com.parse.starter.utils.TouchImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/touchImage"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_gravity="top|center" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.parse.starter.utils.TouchImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/touchImage"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"

@@ -12,57 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:gravity="right"
-                android:background="@color/violet"
-                android:id="@+id/headerLayout">
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/dots"
-                    android:id="@+id/btnMore"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/btnLike" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/btnTop"
-                    android:layout_gravity="center"
-                    android:background="@drawable/icon01_top_f"
-                    android:layout_marginRight="10dp" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/icon01_save_f"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center"
-                    android:id="@+id/btnSave" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/icon01_share_f"
-                    android:id="@+id/btnShare"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_gravity="right|center_horizontal|center_vertical" />
-
-            </LinearLayout>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/photos_image_pager"
@@ -71,30 +21,82 @@
                 android:layout_gravity="center"
                 android:layout_weight="1" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/violet"
-                android:layout_weight="5"
-                android:id="@+id/footerLayout">
 
-            </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="70dp"
+            android:background="@drawable/dots"
+            android:id="@+id/btnMore"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/btnMore"
+            android:id="@+id/btnLike" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnTop"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@id/btnLike"
+
+            android:background="@drawable/icon01_top_f"
+            android:layout_marginRight="10dp" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon01_save_f"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@id/btnTop"
+
+            android:id="@+id/btnSave" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon01_share_f"
+            android:id="@+id/btnShare"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/btnSave"
+
+            android:layout_gravity="right|center_horizontal|center_vertical" />
 
         <ImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:id="@+id/smallImage"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp" />
+
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/meu"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/show_menu_icon"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:gravity="right"
+            android:id="@+id/likesLayout"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
             android:layout_weight="5">
 
             <TextView
@@ -103,7 +105,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Likes:"
                 android:id="@+id/textView2"
-                android:layout_gravity="right"
+                android:layout_gravity="right|bottom"
                 android:textStyle="bold"
                 android:layout_marginRight="10dp" />
 

@@ -1,5 +1,6 @@
 package com.parse.starter.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -13,6 +14,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -27,10 +30,13 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,6 +54,7 @@ import com.parse.ParseUser;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.Utils;
@@ -67,7 +74,7 @@ import java.util.Locale;
 /**
  * Created by User on 30/11/2015.
  */
-public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener{
 
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
@@ -101,7 +108,14 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     boolean videoSelected =false;
     int orientation;
     Bitmap photo = null;
+ImageView menuTp;
+LinearLayout likesLayout;
+    CustomTouchListener customTouchListener;
 
+//    @SuppressLint("ValidFragment")
+//    public PicturesMainFragment(List<ParseObject> objects) {
+//     this.categories = objects;
+//    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
@@ -115,6 +129,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         tinydb = new TinyDB(getActivity());
         likesList = tinydb.getListString(SAVED_LIST);
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
+        customTouchListener = this;
 
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
@@ -134,8 +149,16 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         btnMore = (ImageView)root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
-        layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
+      //  layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
+      //  menuButton = (ImageView)root.findViewById(R.id.menuButton);
+       likesLayout= (LinearLayout)root.findViewById(R.id.likesLayout);
 
+
+        btnLike.setVisibility(View.INVISIBLE);
+        btnShare.setVisibility(View.INVISIBLE);
+        btnMore.setVisibility(View.INVISIBLE);
+        btnSave.setVisibility(View.INVISIBLE);
+        btnTop.setVisibility(View.INVISIBLE);
 
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
         mPager.addOnPageChangeListener(this);
@@ -148,22 +171,52 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         getCategories();
         initSmallImage();
 
-//       final LinearLayout layout = (LinearLayout)root.findViewById(R.id.headerLayout);
-//
-//        ViewTreeObserver vto = layout.getViewTreeObserver();
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//               width  = layout.getMeasuredWidth();
-//                height = layout.getMeasuredHeight();
-//
-//            }
-//        });
-//        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(height-5,height-5);
-//        parms.gravity = Gravity.CENTER;
-//        parms.setMargins(0, 0, 30, 0);
-//        btnShare.setLayoutParams(parms);
+
+        menuTp = (ImageView)root.findViewById(R.id.meu);
+        menuTp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnLike.getVisibility() == View.INVISIBLE){
+                    Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+                    btnLike.setVisibility(View.VISIBLE);
+                    btnLike.setAnimation(animFadeIn);
+                    btnShare.setVisibility(View.VISIBLE);
+                    btnShare.setAnimation(animFadeIn);
+                    btnMore.setVisibility(View.VISIBLE);
+                    btnMore.setAnimation(animFadeIn);
+                    btnSave.setVisibility(View.VISIBLE);
+                    btnSave.setAnimation(animFadeIn);
+                    btnTop.setVisibility(View.VISIBLE);
+                    btnSave.setAnimation(animFadeIn);
+                    Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                    mSmallImage.setVisibility(View.INVISIBLE);
+                    mSmallImage.setAnimation(animFadeOut);
+                    likesLayout.setVisibility(View.INVISIBLE);
+                    likesLayout.setAnimation(animFadeOut);
+
+
+                }else{
+                    Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                    btnLike.setVisibility(View.INVISIBLE);
+                    btnLike.setAnimation(animFadeOut);
+                    btnShare.setVisibility(View.INVISIBLE);
+                    btnShare.setAnimation(animFadeOut);
+                    btnMore.setVisibility(View.INVISIBLE);
+                    btnMore.setAnimation(animFadeOut);
+                    btnSave.setVisibility(View.INVISIBLE);
+                    btnSave.setAnimation(animFadeOut);
+                    btnTop.setVisibility(View.INVISIBLE);
+                    btnTop.setAnimation(animFadeOut);
+                    Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+                    mSmallImage.setVisibility(View.VISIBLE);
+                    mSmallImage.setAnimation(animFadeIn);
+                    likesLayout.setVisibility(View.VISIBLE);
+                    likesLayout.setAnimation(animFadeIn);
+
+                }
+            }
+        });
+
         return root;
     }
 
@@ -257,7 +310,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity());
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(),customTouchListener);
                     mPager.setAdapter(mAdapter);
                     initLikeButton();
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
@@ -286,7 +339,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             }
         }else if(btnSave.getId() == v.getId()){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setCancelable(true).setMessage("Want save? Nigger!")
+            builder.setCancelable(true).setMessage("Want save?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -539,7 +592,7 @@ public void savePicture(){
     public void onDestroy() {
         super.onDestroy();
 
-        tinydb.putListString(SAVED_LIST,likesList);
+        tinydb.putListString(SAVED_LIST, likesList);
 
     }
 
@@ -617,6 +670,54 @@ public void savePicture(){
                 });
         builderSingle.show();
     }
+
+
+    @Override
+    public void fullScreenTouch() {
+        if(likesLayout.getVisibility() == View.VISIBLE)
+        {
+            Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+            menuTp.setVisibility(View.INVISIBLE);
+            menuTp.setAnimation(animFadeOut);
+            likesLayout.setVisibility(View.INVISIBLE);
+            likesLayout.setAnimation(animFadeOut);
+            mSmallImage.setVisibility(View.INVISIBLE);
+            mSmallImage.setAnimation(animFadeOut);
+
+        }else {
+            Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+
+            menuTp.setVisibility(View.VISIBLE);
+            menuTp.setAnimation(animFadeIn);
+
+            likesLayout.setVisibility(View.VISIBLE);
+            likesLayout.setAnimation(animFadeIn);
+
+            mSmallImage.setVisibility(View.VISIBLE);
+            mSmallImage.setAnimation(animFadeIn);
+
+        }
+            if (btnLike.getVisibility() == View.VISIBLE){
+                Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                btnLike.setVisibility(View.INVISIBLE);
+                btnLike.setAnimation(animFadeOut);
+                btnShare.setVisibility(View.INVISIBLE);
+                btnShare.setAnimation(animFadeOut);
+                btnMore.setVisibility(View.INVISIBLE);
+                btnMore.setAnimation(animFadeOut);
+                btnSave.setVisibility(View.INVISIBLE);
+                btnSave.setAnimation(animFadeOut);
+                btnTop.setVisibility(View.INVISIBLE);
+                btnTop.setAnimation(animFadeOut);
+                likesLayout.setVisibility(View.INVISIBLE);
+                mSmallImage.setVisibility(View.INVISIBLE);
+                menuTp.setVisibility(View.INVISIBLE);
+                menuTp.setAnimation(animFadeOut);
+
+            }
+        }
+
+
 
 
 }

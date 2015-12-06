@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
+import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.interfaces.GetMorePhotos;
 import com.parse.starter.utils.TouchImageView;
 
@@ -34,6 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import it.sephiroth.android.library.picasso.Picasso;
+
 
 /**
  * Created by User on 30/11/2015.
@@ -43,10 +48,12 @@ List<ParseObject> mImages;
     Activity activity;
     List<ParseObject> mMoreImages;
     boolean isLikeClicked = false;
+    CustomTouchListener listener;
 
-    public PhotoPagerAdapter(List<ParseObject> images, Activity activity) {
+    public PhotoPagerAdapter(List<ParseObject> images, Activity activity, CustomTouchListener listener) {
         this.mImages = images;
         this.activity = activity;
+        this.listener = listener;
         if (mImages == null)
             mImages = new ArrayList<>();
 
@@ -72,12 +79,14 @@ List<ParseObject> mImages;
         final ProgressBar progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
         if(mImages.get(position).get("mPicture")!=null){
             ParseFile applicantResume = (ParseFile) mImages.get(position).get("mPicture");
+          //  applicantResume.getUrl();
             applicantResume.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
                     if (e == null) {
                         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                         mImage.setImageBitmap(bmp);
                         progressBar.setVisibility(View.GONE);
+
 
                     } else {
                         e.printStackTrace();
@@ -86,28 +95,17 @@ List<ParseObject> mImages;
                 }
             });
         }
+        mImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.fullScreenTouch();
 
-//        final ImageView btnLike = (ImageView)root.findViewById(R.id.likeImageBtn);
-//        btnLike.setImageDrawable(activity.getResources().getDrawable(R.drawable.like_tmp));
-//
-//        btnLike.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!isLikeClicked) {
-//                    btnLike.setImageDrawable(activity.getResources().getDrawable(R.drawable.dislike_tmp));
-//                    mImages.get(position).increment("likes");
-//                    mImages.get(position).saveInBackground();
-//                    isLikeClicked = true;
-//                } else {
-//                    btnLike.setImageDrawable(activity.getResources().getDrawable(R.drawable.like_tmp));
-//                    mImages.get(position).increment("likes", -1);
-//                    mImages.get(position).saveInBackground();
-//                    isLikeClicked = false;
-//                }
-//            }
-//        });
+                return false;
+            }
+        });
 
-                ((ViewPager) container).addView(root);
+                   ((ViewPager) container).addView(root);
+
 
         return root;
 

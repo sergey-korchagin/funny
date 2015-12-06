@@ -33,6 +33,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.Utils;
 
@@ -48,7 +49,8 @@ import java.util.Locale;
 /**
  * Created by serge_000 on 04/12/2015.
  */
-public class TopFragment extends Fragment implements View.OnClickListener,ViewPager.OnPageChangeListener {
+public class TopFragment extends Fragment implements View.OnClickListener,ViewPager.OnPageChangeListener,
+        CustomTouchListener {
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
@@ -62,6 +64,7 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     TextView likesCounterView;
     int mPosition;
     LinearLayout layoutHeader;
+    CustomTouchListener customTouchListener;
 
 ProgressDialog progressDialog;
     @Override
@@ -88,7 +91,7 @@ ProgressDialog progressDialog;
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
 
-
+customTouchListener = this;
         initSmallImage();
         checkIfStorageAvailable();
         getCategories();
@@ -110,7 +113,7 @@ ProgressDialog progressDialog;
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity());
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(),customTouchListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     progressDialog.dismiss();
@@ -246,8 +249,25 @@ ProgressDialog progressDialog;
     @Override
     public void onClick(View v) {
         if(btnAll.getId() == v.getId()){
-            PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
-            Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+            ParseQuery query = new ParseQuery("picture");
+            query.addDescendingOrder("createdAt");
+            query.setLimit(5);
+            query.findInBackground(new FindCallback() {
+                @Override
+                public void done(List objects, ParseException e) {
+                }
+
+                @Override
+                public void done(Object o, Throwable throwable) {
+                    if (o instanceof List) {
+                        categories = (List<ParseObject>) o;
+
+                        PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+                        Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+
+                    }
+                }
+            });
         }if (btnShare.getId() == v.getId()) {
             if(mExternalStorageAvailable && mExternalStorageWriteable){
                 sendShareIntentPhoto(mPosition);
@@ -347,6 +367,11 @@ ProgressDialog progressDialog;
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void fullScreenTouch() {
 
     }
 }
