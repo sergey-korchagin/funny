@@ -89,6 +89,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ImageView btnTop;
     ImageView btnLike;
     ImageView btnMore;
+    ImageView btnNtShown;
     boolean mExternalStorageAvailable = false;
     boolean mExternalStorageWriteable = false;
     int width = 0;
@@ -108,9 +109,10 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     boolean videoSelected =false;
     int orientation;
     Bitmap photo = null;
-ImageView menuTp;
-LinearLayout likesLayout;
+    ImageView menuTp;
+    LinearLayout likesLayout;
     CustomTouchListener customTouchListener;
+    ArrayList<String> seenItemsLIst;
 
 //    @SuppressLint("ValidFragment")
 //    public PicturesMainFragment(List<ParseObject> objects) {
@@ -126,8 +128,10 @@ LinearLayout likesLayout;
 //        progressDialog.show();
         //likesHashMap = new HashMap<>();
         likesList = new ArrayList<>();
+        seenItemsLIst = new ArrayList<>();
         tinydb = new TinyDB(getActivity());
         likesList = tinydb.getListString(SAVED_LIST);
+        seenItemsLIst=tinydb.getListString(Constants.SEEN_LIST);
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
         customTouchListener = this;
 
@@ -145,6 +149,9 @@ LinearLayout likesLayout;
         //btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
 
         btnLike.setOnClickListener(this);
+
+        btnNtShown =(ImageView)root.findViewById(R.id.btnNotSeen);
+        btnNtShown.setOnClickListener(this);
 
 
         btnMore = (ImageView)root.findViewById(R.id.btnMore);
@@ -267,6 +274,7 @@ LinearLayout likesLayout;
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
+      //  query.whereNotContainedIn();
         query.setSkip(skip);
         query.setLimit(5);
         query.findInBackground(new FindCallback() {
@@ -285,8 +293,12 @@ LinearLayout likesLayout;
             }
         });
 
+
     }
     likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
+        if(!seenItemsLIst.contains(categories.get(mPosition).getObjectId())){
+            seenItemsLIst.add(categories.get(mPosition).getObjectId());
+        }
         initLikeButton();
     }
 
@@ -314,6 +326,9 @@ LinearLayout likesLayout;
                     mPager.setAdapter(mAdapter);
                     initLikeButton();
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
+                    if(!seenItemsLIst.contains(categories.get(0).getObjectId())) {
+                        seenItemsLIst.add(categories.get(0).getObjectId());
+                    }
                     progressDialog.dismiss();
 
                 }
@@ -323,7 +338,8 @@ LinearLayout likesLayout;
 
     @Override
     public void onResume() {
-      likesList =  tinydb.getListString(SAVED_LIST);
+        likesList =  tinydb.getListString(SAVED_LIST);
+        seenItemsLIst =  tinydb.getListString(Constants.SEEN_LIST);
 
         super.onResume();
 
@@ -376,6 +392,12 @@ LinearLayout likesLayout;
             }
         }else if(btnMore.getId() == v.getId()){
             enableAlertMenu();
+        }else if(btnNtShown.getId() == v.getId()){
+            tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+
+            NotShown notShown = new NotShown();
+            Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
+
         }
     }
 
@@ -574,8 +596,8 @@ public void savePicture(){
     public void onPause() {
         super.onPause();
 
-        tinydb.putListString(SAVED_LIST,likesList);
-
+        tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
 
     }
 
@@ -583,7 +605,8 @@ public void savePicture(){
     public void onStop() {
         super.onStop();
 
-        tinydb.putListString(SAVED_LIST,likesList);
+        tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
 
 
     }
@@ -593,6 +616,7 @@ public void savePicture(){
         super.onDestroy();
 
         tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
 
     }
 

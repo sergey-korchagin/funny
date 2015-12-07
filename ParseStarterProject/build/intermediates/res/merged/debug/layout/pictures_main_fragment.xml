@@ -27,7 +27,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="60dp"
             android:background="@drawable/dots"
             android:id="@+id/btnMore"
             android:layout_marginRight="10dp"
@@ -58,17 +58,22 @@
             android:layout_marginRight="10dp"
             android:layout_gravity="center"
             android:layout_toRightOf="@id/btnTop"
-
             android:id="@+id/btnSave" />
-
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/eye"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@id/btnSave"
+            android:id="@+id/btnNotSeen" />
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/icon01_share_f"
             android:id="@+id/btnShare"
-            android:layout_marginRight="20dp"
-            android:layout_toRightOf="@id/btnSave"
-
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/btnNotSeen"
             android:layout_gravity="right|center_horizontal|center_vertical" />
 
         <ImageView

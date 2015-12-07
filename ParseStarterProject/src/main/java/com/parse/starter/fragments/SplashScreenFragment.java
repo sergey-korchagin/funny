@@ -22,6 +22,7 @@ import com.parse.PushService;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.Utils;
 
@@ -37,10 +38,16 @@ public class SplashScreenFragment extends Fragment {
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
+    TinyDB tinydb;
+    List<String> seenItems;
+    int notSeenCounter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.splash_screen_fragment, container, false);
+        tinydb = new TinyDB(getActivity());
+        seenItems = tinydb.getListString(Constants.SEEN_LIST);
+
 //        thread = new Thread() {
 //            @Override
 //            public void run() {
@@ -61,7 +68,7 @@ public class SplashScreenFragment extends Fragment {
                 sunRiseAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-
+                        getNotSeenCounter();
                     }
 
                     @Override
@@ -95,11 +102,9 @@ public class SplashScreenFragment extends Fragment {
 //
 //    }
 
-    public void getCategories() {
+    public void getNotSeenCounter() {
 
         ParseQuery query = new ParseQuery("picture");
-        query.addDescendingOrder("createdAt");
-        query.setLimit(5);
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -109,9 +114,8 @@ public class SplashScreenFragment extends Fragment {
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-
-            //        PicturesMainFragment picturesMainFragment = new PicturesMainFragment(categories);
-               //     Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+                    notSeenCounter = categories.size()-seenItems.size();
+                    tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
 
                 }
             }
