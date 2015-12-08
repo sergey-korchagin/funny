@@ -41,6 +41,7 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     TinyDB tinydb;
     String SAVED_LIST = "saved_list";
     ImageView toAllBtn;
+    int nonSeeIndicator;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
         toAllBtn = (ImageView)root.findViewById(R.id.btnAll);
         toAllBtn.setOnClickListener(this);
 
+        nonSeeIndicator = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
         seenItemList =  tinydb.getListString(Constants.SEEN_LIST);
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
@@ -92,7 +94,7 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
                         mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                         mPager.setAdapter(mAdapter);
                         seenItemList.add(categories.get(0).getObjectId());
-
+                        nonSeeIndicator--;
                         progressDialog.dismiss();
                     }
 
@@ -116,6 +118,7 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     public void onPageSelected(int position) {
         if(!seenItemList.contains(categories.get(position).getObjectId())){
             seenItemList.add(categories.get(position).getObjectId());
+            nonSeeIndicator--;
         }
     }
 
@@ -128,7 +131,7 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     public void onClick(View v) {
         if(v.getId() == toAllBtn.getId()){
             tinydb.putListString(Constants.SEEN_LIST,seenItemList);
-
+            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,nonSeeIndicator);
             PicturesMainFragment notShown = new PicturesMainFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
 

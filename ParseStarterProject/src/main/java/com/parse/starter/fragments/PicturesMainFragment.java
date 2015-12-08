@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +20,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +43,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,6 +86,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     List<ParseObject> categories;
     List<ParseObject> updatedCategories;
     List<ParseObject> top;
+
     int skip = 0;
     int querySize;
     public int mPosition;
@@ -114,7 +120,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     CustomTouchListener customTouchListener;
     ArrayList<String> seenItemsLIst;
     TextView notSeenIndicator;
-
+    int nonSeenCount;
+FrameLayout errorLayout;
+    LinearLayout mainLayout;
 //    @SuppressLint("ValidFragment")
 //    public PicturesMainFragment(List<ParseObject> objects) {
 //     this.categories = objects;
@@ -123,6 +131,10 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
         Constants.FROM_SETTINGS = false;
+        errorLayout = (FrameLayout)root.findViewById(R.id.errorLayout);
+        mainLayout = (LinearLayout)root.findViewById(R.id.mainLinearLayout);
+        intiReciever();
+        getNotSeenCounter();
         progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
 //        progressDialog = new ProgressDialog(getActivity(),R.style.MyTheme);
 //        progressDialog.setMessage("Картинки загружаются...");
@@ -173,7 +185,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
         notSeenIndicator = (TextView)root.findViewById(R.id.btnNotSeenIndicator);
-
+        nonSeenCount = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
+        notSeenIndicator.setText(String.valueOf(nonSeenCount));
         initSmallImage();
 
         checkIfStorageAvailable();
@@ -301,6 +314,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
         if(!seenItemsLIst.contains(categories.get(mPosition).getObjectId())){
             seenItemsLIst.add(categories.get(mPosition).getObjectId());
+            nonSeenCount--;
+            notSeenIndicator.setText(String.valueOf(nonSeenCount));
         }
         initLikeButton();
     }
@@ -325,12 +340,15 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity(),customTouchListener);
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                     mPager.setAdapter(mAdapter);
                     initLikeButton();
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
-                    if(!seenItemsLIst.contains(categories.get(0).getObjectId())) {
+                    if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
                         seenItemsLIst.add(categories.get(0).getObjectId());
+                        nonSeenCount--;
+                        notSeenIndicator.setText(String.valueOf(nonSeenCount));
+
                     }
                     progressDialog.dismiss();
 
@@ -343,7 +361,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     public void onResume() {
         likesList =  tinydb.getListString(SAVED_LIST);
         seenItemsLIst =  tinydb.getListString(Constants.SEEN_LIST);
-
+        nonSeenCount = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         super.onResume();
 
     }
@@ -600,7 +618,8 @@ public void savePicture(){
         super.onPause();
 
         tinydb.putListString(SAVED_LIST, likesList);
-        tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+        tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
 
     }
 
@@ -610,6 +629,7 @@ public void savePicture(){
 
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
 
 
     }
@@ -620,6 +640,7 @@ public void savePicture(){
 
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
 
     }
 
@@ -746,5 +767,50 @@ public void savePicture(){
 
 
 
+    private  void intiReciever(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if (isDataConnected()) {
+                    // Toast.makeText( context, "Active Network Type : connected", Toast.LENGTH_SHORT ).show();
+                    errorLayout.setVisibility(View.GONE);
+                    mainLayout.setVisibility(View.VISIBLE);
+                    //getCategories();
+                } else {
+                    mainLayout.setVisibility(View.INVISIBLE);
+                    errorLayout.setVisibility(View.VISIBLE);
 
+                    progressDialog.dismiss();
+                }
+            }
+        }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+    }
+    private boolean isDataConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void getNotSeenCounter() {
+
+        ParseQuery query = new ParseQuery("picture");
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List objects, ParseException e) {
+            }
+
+            @Override
+            public void done(Object o, Throwable throwable) {
+                if (o instanceof List) {
+                    categories = (List<ParseObject>) o;
+                    nonSeenCount = categories.size()-seenItemsLIst.size();
+                    tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
+
+                }
+            }
+        });
+    }
 }

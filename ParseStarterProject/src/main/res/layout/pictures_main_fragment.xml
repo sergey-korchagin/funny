@@ -5,12 +5,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/mainRelativeLayout">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/mainLinearLayout">
 
 
 
@@ -74,7 +76,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textStyle="bold"
-            android:textColor="#B80000"
+            android:textColor="#000000"
             android:text="0"
             android:textSize="20dp"
             android:layout_toRightOf="@id/btnSave"
@@ -134,6 +136,31 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp" />
         </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:id="@+id/errorLayout"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:background="@drawable/error"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="А интернета то нету! Как теперь смотреть картинки?"
+                android:id="@+id/textView3"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+        </FrameLayout>
 
     </RelativeLayout>
 

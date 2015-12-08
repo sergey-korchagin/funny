@@ -68,13 +68,13 @@ public class SplashScreenFragment extends Fragment {
                 sunRiseAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        getNotSeenCounter();
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
                         Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+
                     }
 
                     @Override
@@ -102,23 +102,5 @@ public class SplashScreenFragment extends Fragment {
 //
 //    }
 
-    public void getNotSeenCounter() {
 
-        ParseQuery query = new ParseQuery("picture");
-        query.findInBackground(new FindCallback() {
-            @Override
-            public void done(List objects, ParseException e) {
-            }
-
-            @Override
-            public void done(Object o, Throwable throwable) {
-                if (o instanceof List) {
-                    categories = (List<ParseObject>) o;
-                    notSeenCounter = categories.size()-seenItems.size();
-                    tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
-
-                }
-            }
-        });
-    }
 }
