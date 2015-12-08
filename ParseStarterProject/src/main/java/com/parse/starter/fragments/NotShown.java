@@ -73,12 +73,12 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
                     categories = (List<ParseObject>) o;
                     if(categories.size() == 0)
                     {
+                        progressDialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setCancelable(true).setMessage("К сожалению нету новых картинок но они обязательно появятся!!")
                                 .setPositiveButton("Назад на главную", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        progressDialog.dismiss();
                                         PicturesMainFragment notShown = new PicturesMainFragment();
                                         Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
                                     }

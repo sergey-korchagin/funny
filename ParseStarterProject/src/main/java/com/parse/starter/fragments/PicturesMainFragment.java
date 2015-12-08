@@ -113,6 +113,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     LinearLayout likesLayout;
     CustomTouchListener customTouchListener;
     ArrayList<String> seenItemsLIst;
+    TextView notSeenIndicator;
 
 //    @SuppressLint("ValidFragment")
 //    public PicturesMainFragment(List<ParseObject> objects) {
@@ -171,6 +172,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         mPager.addOnPageChangeListener(this);
 
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
+        notSeenIndicator = (TextView)root.findViewById(R.id.btnNotSeenIndicator);
+
         initSmallImage();
 
         checkIfStorageAvailable();

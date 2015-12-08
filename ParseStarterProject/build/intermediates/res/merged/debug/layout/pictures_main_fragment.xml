@@ -67,6 +67,18 @@
             android:layout_gravity="center"
             android:layout_toRightOf="@id/btnSave"
             android:id="@+id/btnNotSeen" />
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#B80000"
+            android:text="0"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/btnSave"
+            android:id="@+id/btnNotSeenIndicator" />
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
