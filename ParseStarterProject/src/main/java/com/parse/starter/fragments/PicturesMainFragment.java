@@ -169,8 +169,7 @@ FrameLayout errorLayout;
 
         btnMore = (ImageView)root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
-      //  layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
-      //  menuButton = (ImageView)root.findViewById(R.id.menuButton);
+
        likesLayout= (LinearLayout)root.findViewById(R.id.likesLayout);
 
 
@@ -216,8 +215,6 @@ FrameLayout errorLayout;
                     mSmallImage.setAnimation(animFadeOut);
                     likesLayout.setVisibility(View.INVISIBLE);
                     likesLayout.setAnimation(animFadeOut);
-
-
                 }else{
                     Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     btnLike.setVisibility(View.INVISIBLE);
@@ -244,16 +241,13 @@ FrameLayout errorLayout;
     }
 
     public void initLikeButton() {
-     //   if (categories != null) {
-          if (likesList.contains(categories.get(mPosition).getObjectId())) {
+        if(isAdded()){
+            if (likesList.contains(categories.get(mPosition).getObjectId())) {
                 btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.dislike_tmp));
             } else {
                 btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
             }
-//        }
-//        if(mPosition == 0){
-//            btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
-//        }
+        }
 
     }
 
@@ -342,7 +336,6 @@ FrameLayout errorLayout;
                     categories = (List<ParseObject>) o;
                     mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                     mPager.setAdapter(mAdapter);
-                    initLikeButton();
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
                         seenItemsLIst.add(categories.get(0).getObjectId());
@@ -350,6 +343,7 @@ FrameLayout errorLayout;
                         notSeenIndicator.setText(String.valueOf(nonSeenCount));
 
                     }
+                    initLikeButton();
                     progressDialog.dismiss();
 
                 }

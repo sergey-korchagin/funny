@@ -3,15 +3,24 @@ package com.parse.starter.fragments;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -42,10 +51,15 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     String SAVED_LIST = "saved_list";
     ImageView toAllBtn;
     int nonSeeIndicator;
-
+    FrameLayout errorLayout;
+    TextView noInternetText;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.not_shown_fragment, container, false);
+        intiReciever();
+        errorLayout = (FrameLayout)root.findViewById(R.id.errorLayout);
+        noInternetText = (TextView)root.findViewById(R.id.no_internet_text);
+        noInternetText.setOnClickListener(this);
         tinydb = new TinyDB(getActivity());
         toAllBtn = (ImageView)root.findViewById(R.id.btnAll);
         toAllBtn.setOnClickListener(this);
@@ -131,10 +145,42 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     public void onClick(View v) {
         if(v.getId() == toAllBtn.getId()){
             tinydb.putListString(Constants.SEEN_LIST,seenItemList);
-            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,nonSeeIndicator);
+            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeeIndicator);
             PicturesMainFragment notShown = new PicturesMainFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
 
+        }
+        else if(noInternetText.getId() == v.getId()){
+            Intent intent=new Intent(Settings.ACTION_SETTINGS);
+            startActivity(intent);
+        }
+    }
+
+
+    private  void intiReciever(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if (isDataConnected()) {
+                    // Toast.makeText( context, "Active Network Type : connected", Toast.LENGTH_SHORT ).show();
+                    errorLayout.setVisibility(View.GONE);
+                    mPager.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    errorLayout.setVisibility(View.VISIBLE);
+                    mPager.setVisibility(View.GONE);
+                    progressDialog.dismiss();
+                }
+            }
+        }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+    }
+    private boolean isDataConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        } catch (Exception e) {
+            return false;
         }
     }
 }
