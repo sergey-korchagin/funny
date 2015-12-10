@@ -53,9 +53,11 @@ import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.PushService;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
@@ -71,6 +73,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -121,7 +124,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ArrayList<String> seenItemsLIst;
     TextView notSeenIndicator;
     int nonSeenCount;
-FrameLayout errorLayout;
+    FrameLayout errorLayout;
     LinearLayout mainLayout;
 //    @SuppressLint("ValidFragment")
 //    public PicturesMainFragment(List<ParseObject> objects) {
@@ -682,7 +685,12 @@ public void savePicture(){
                 R.layout.dialog_list_item);
         arrayAdapter.add("Послать нам свой прикол");
         arrayAdapter.add("Пригласить друга");
-        arrayAdapter.add("Настройки");
+        if(tinydb.getInt(Constants.PUSH_INDICATOR) != 1){
+            arrayAdapter.add("Отключить Push уведомления");
+        }else{
+            arrayAdapter.add("Включить Push уведомления");
+
+        }
 
 
         builderSingle.setAdapter(
@@ -703,8 +711,20 @@ public void savePicture(){
                                 startActivity(Intent.createChooser(share, "Пригласить"));
                                 break;
                             case 2:
-                                SettingsFragment settingsFragment = new SettingsFragment();
-                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
+//                                SettingsFragment settingsFragment = new SettingsFragment();
+//                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
+                                if(tinydb.getInt(Constants.PUSH_INDICATOR) != 1){
+                                    tinydb.putInt(Constants.PUSH_INDICATOR,1);
+                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                    installation.removeAll("channels", Arrays.asList("photos"));
+                                    installation.saveInBackground();
+                                }else{
+                                    tinydb.putInt(Constants.PUSH_INDICATOR, 0);
+                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                    installation.addAllUnique("channels", Arrays.asList("photos"));
+                                    installation.saveInBackground();
+                                }
+
                                 break;
                         }
 
