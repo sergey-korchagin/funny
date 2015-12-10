@@ -187,8 +187,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
         notSeenIndicator = (TextView)root.findViewById(R.id.btnNotSeenIndicator);
-        nonSeenCount = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
-        notSeenIndicator.setText(String.valueOf(nonSeenCount));
+
         initSmallImage();
 
         checkIfStorageAvailable();
@@ -822,6 +821,7 @@ public void savePicture(){
                     categories = (List<ParseObject>) o;
                     nonSeenCount = categories.size()-seenItemsLIst.size();
                     tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
+                    notSeenIndicator.setText(String.valueOf(nonSeenCount));
 
                 }
             }

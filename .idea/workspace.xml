@@ -39,17 +39,17 @@
       <file leaf-file-name="PicturesMainFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.375465">
-              <caret line="374" column="11" selection-start-line="374" selection-start-column="11" selection-end-line="391" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.62081784">
+              <caret line="823" column="0" selection-start-line="823" selection-start-column="0" selection-end-line="823" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#17732#19095#0" expanded="true" />
-                <element signature="e#19094#19095#0" expanded="true" />
-                <element signature="e#20608#21122#0" expanded="true" />
-                <element signature="e#21121#21122#0" expanded="true" />
-                <element signature="e#21539#23652#0" expanded="true" />
-                <element signature="e#23651#23652#0" expanded="true" />
-                <marker date="1449745153663" expanded="true" signature="27888:28024" placeholder="..." />
+                <element signature="e#17601#18964#0" expanded="true" />
+                <element signature="e#18963#18964#0" expanded="true" />
+                <element signature="e#20477#20991#0" expanded="true" />
+                <element signature="e#20990#20991#0" expanded="true" />
+                <element signature="e#21408#23521#0" expanded="true" />
+                <element signature="e#23520#23521#0" expanded="true" />
+                <marker date="1449755958275" expanded="true" signature="27757:27893" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -2027,7 +2027,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32995495" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32995495" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2079,13 +2079,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java</url>
-          <line>722</line>
+          <line>721</line>
           <properties />
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java</url>
-          <line>717</line>
+          <line>716</line>
           <properties />
           <option name="timeStamp" value="19" />
         </line-breakpoint>
@@ -2117,13 +2117,13 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#17732#19095#0" expanded="true" />
-            <element signature="e#19094#19095#0" expanded="true" />
-            <element signature="e#20608#21122#0" expanded="true" />
-            <element signature="e#21121#21122#0" expanded="true" />
-            <element signature="e#21539#23652#0" expanded="true" />
-            <element signature="e#23651#23652#0" expanded="true" />
-            <marker date="1449745153663" expanded="true" signature="27888:28024" placeholder="..." />
+            <element signature="e#17601#18964#0" expanded="true" />
+            <element signature="e#18963#18964#0" expanded="true" />
+            <element signature="e#20477#20991#0" expanded="true" />
+            <element signature="e#20990#20991#0" expanded="true" />
+            <element signature="e#21408#23521#0" expanded="true" />
+            <element signature="e#23520#23521#0" expanded="true" />
+            <marker date="1449755958275" expanded="true" signature="27757:27893" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -2328,17 +2328,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.375465">
-          <caret line="374" column="11" selection-start-line="374" selection-start-column="11" selection-end-line="391" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.62081784">
+          <caret line="823" column="0" selection-start-line="823" selection-start-column="0" selection-end-line="823" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#17732#19095#0" expanded="true" />
-            <element signature="e#19094#19095#0" expanded="true" />
-            <element signature="e#20608#21122#0" expanded="true" />
-            <element signature="e#21121#21122#0" expanded="true" />
-            <element signature="e#21539#23652#0" expanded="true" />
-            <element signature="e#23651#23652#0" expanded="true" />
-            <marker date="1449745153663" expanded="true" signature="27888:28024" placeholder="..." />
+            <element signature="e#17601#18964#0" expanded="true" />
+            <element signature="e#18963#18964#0" expanded="true" />
+            <element signature="e#20477#20991#0" expanded="true" />
+            <element signature="e#20990#20991#0" expanded="true" />
+            <element signature="e#21408#23521#0" expanded="true" />
+            <element signature="e#23520#23521#0" expanded="true" />
+            <marker date="1449755958275" expanded="true" signature="27757:27893" placeholder="..." />
           </folding>
         </state>
       </provider>
