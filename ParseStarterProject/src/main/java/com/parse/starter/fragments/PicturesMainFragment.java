@@ -88,7 +88,6 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
     List<ParseObject> updatedCategories;
-    List<ParseObject> top;
 
     int skip = 0;
     int querySize;
@@ -134,20 +133,21 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
         Constants.FROM_SETTINGS = false;
+
+        progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
+
         errorLayout = (FrameLayout)root.findViewById(R.id.errorLayout);
         mainLayout = (LinearLayout)root.findViewById(R.id.mainLinearLayout);
         intiReciever();
-        getNotSeenCounter();
-        progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
-//        progressDialog = new ProgressDialog(getActivity(),R.style.MyTheme);
-//        progressDialog.setMessage("Картинки загружаются...");
-//        progressDialog.show();
-        //likesHashMap = new HashMap<>();
-        likesList = new ArrayList<>();
         seenItemsLIst = new ArrayList<>();
         tinydb = new TinyDB(getActivity());
-        likesList = tinydb.getListString(SAVED_LIST);
+
         seenItemsLIst=tinydb.getListString(Constants.SEEN_LIST);
+
+        getNotSeenCounter();
+
+        likesList = new ArrayList<>();
+        likesList = tinydb.getListString(SAVED_LIST);
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
         customTouchListener = this;
 
@@ -308,6 +308,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     }
     likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
+        String t = categories.get(mPosition).getObjectId();
         if(!seenItemsLIst.contains(categories.get(mPosition).getObjectId())){
             seenItemsLIst.add(categories.get(mPosition).getObjectId());
             nonSeenCount--;
@@ -341,7 +342,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
                         seenItemsLIst.add(categories.get(0).getObjectId());
-                        nonSeenCount--;
+                        if (nonSeenCount > 0) {
+                            nonSeenCount--;
+                        }
                         notSeenIndicator.setText(String.valueOf(nonSeenCount));
 
                     }
@@ -820,6 +823,9 @@ public void savePicture(){
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
                     nonSeenCount = categories.size()-seenItemsLIst.size();
+                    if(nonSeenCount<0){
+                        nonSeenCount = 0;
+                    }
                     tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
                     notSeenIndicator.setText(String.valueOf(nonSeenCount));
 

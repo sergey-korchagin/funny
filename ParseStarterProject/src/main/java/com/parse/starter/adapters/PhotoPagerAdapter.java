@@ -125,6 +125,10 @@ List<ParseObject> mImages;
         //mImages.notifyAll();
     }
 
+    public void getMoreNotSeenPhotos(List<ParseObject> parseObjects){
+        mImages = parseObjects;
+    }
+
     public void insertTopPictures(List<ParseObject> parseObjects){
         mImages = parseObjects;
         parseObjects.toString();
