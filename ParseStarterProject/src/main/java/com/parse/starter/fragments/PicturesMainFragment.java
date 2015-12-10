@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +20,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +43,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,9 +53,11 @@ import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.PushService;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
@@ -66,6 +73,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +89,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     List<ParseObject> categories;
     List<ParseObject> updatedCategories;
     List<ParseObject> top;
+
     int skip = 0;
     int querySize;
     public int mPosition;
@@ -89,6 +98,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ImageView btnTop;
     ImageView btnLike;
     ImageView btnMore;
+    ImageView btnNtShown;
     boolean mExternalStorageAvailable = false;
     boolean mExternalStorageWriteable = false;
     int width = 0;
@@ -108,10 +118,14 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     boolean videoSelected =false;
     int orientation;
     Bitmap photo = null;
-ImageView menuTp;
-LinearLayout likesLayout;
+    ImageView menuTp;
+    LinearLayout likesLayout;
     CustomTouchListener customTouchListener;
-
+    ArrayList<String> seenItemsLIst;
+    TextView notSeenIndicator;
+    int nonSeenCount;
+    FrameLayout errorLayout;
+    LinearLayout mainLayout;
 //    @SuppressLint("ValidFragment")
 //    public PicturesMainFragment(List<ParseObject> objects) {
 //     this.categories = objects;
@@ -120,14 +134,20 @@ LinearLayout likesLayout;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
         Constants.FROM_SETTINGS = false;
+        errorLayout = (FrameLayout)root.findViewById(R.id.errorLayout);
+        mainLayout = (LinearLayout)root.findViewById(R.id.mainLinearLayout);
+        intiReciever();
+        getNotSeenCounter();
         progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
 //        progressDialog = new ProgressDialog(getActivity(),R.style.MyTheme);
 //        progressDialog.setMessage("Картинки загружаются...");
 //        progressDialog.show();
         //likesHashMap = new HashMap<>();
         likesList = new ArrayList<>();
+        seenItemsLIst = new ArrayList<>();
         tinydb = new TinyDB(getActivity());
         likesList = tinydb.getListString(SAVED_LIST);
+        seenItemsLIst=tinydb.getListString(Constants.SEEN_LIST);
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
         customTouchListener = this;
 
@@ -146,11 +166,13 @@ LinearLayout likesLayout;
 
         btnLike.setOnClickListener(this);
 
+        btnNtShown =(ImageView)root.findViewById(R.id.btnNotSeen);
+        btnNtShown.setOnClickListener(this);
+
 
         btnMore = (ImageView)root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
-      //  layoutHeader = (LinearLayout)root.findViewById(R.id.headerLayout);
-      //  menuButton = (ImageView)root.findViewById(R.id.menuButton);
+
        likesLayout= (LinearLayout)root.findViewById(R.id.likesLayout);
 
 
@@ -164,6 +186,8 @@ LinearLayout likesLayout;
         mPager.addOnPageChangeListener(this);
 
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
+        notSeenIndicator = (TextView)root.findViewById(R.id.btnNotSeenIndicator);
+
         initSmallImage();
 
         checkIfStorageAvailable();
@@ -193,8 +217,6 @@ LinearLayout likesLayout;
                     mSmallImage.setAnimation(animFadeOut);
                     likesLayout.setVisibility(View.INVISIBLE);
                     likesLayout.setAnimation(animFadeOut);
-
-
                 }else{
                     Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
                     btnLike.setVisibility(View.INVISIBLE);
@@ -221,16 +243,13 @@ LinearLayout likesLayout;
     }
 
     public void initLikeButton() {
-     //   if (categories != null) {
-          if (likesList.contains(categories.get(mPosition).getObjectId())) {
+        if(isAdded()){
+            if (likesList.contains(categories.get(mPosition).getObjectId())) {
                 btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.dislike_tmp));
             } else {
                 btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
             }
-//        }
-//        if(mPosition == 0){
-//            btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
-//        }
+        }
 
     }
 
@@ -267,6 +286,7 @@ LinearLayout likesLayout;
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
+      //  query.whereNotContainedIn();
         query.setSkip(skip);
         query.setLimit(5);
         query.findInBackground(new FindCallback() {
@@ -285,8 +305,14 @@ LinearLayout likesLayout;
             }
         });
 
+
     }
     likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
+        if(!seenItemsLIst.contains(categories.get(mPosition).getObjectId())){
+            seenItemsLIst.add(categories.get(mPosition).getObjectId());
+            nonSeenCount--;
+            notSeenIndicator.setText(String.valueOf(nonSeenCount));
+        }
         initLikeButton();
     }
 
@@ -310,10 +336,16 @@ LinearLayout likesLayout;
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity(),customTouchListener);
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                     mPager.setAdapter(mAdapter);
-                    initLikeButton();
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
+                    if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
+                        seenItemsLIst.add(categories.get(0).getObjectId());
+                        nonSeenCount--;
+                        notSeenIndicator.setText(String.valueOf(nonSeenCount));
+
+                    }
+                    initLikeButton();
                     progressDialog.dismiss();
 
                 }
@@ -323,8 +355,9 @@ LinearLayout likesLayout;
 
     @Override
     public void onResume() {
-      likesList =  tinydb.getListString(SAVED_LIST);
-
+        likesList =  tinydb.getListString(SAVED_LIST);
+        seenItemsLIst =  tinydb.getListString(Constants.SEEN_LIST);
+        nonSeenCount = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         super.onResume();
 
     }
@@ -376,6 +409,12 @@ LinearLayout likesLayout;
             }
         }else if(btnMore.getId() == v.getId()){
             enableAlertMenu();
+        }else if(btnNtShown.getId() == v.getId()){
+            tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+
+            NotShown notShown = new NotShown();
+            Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
+
         }
     }
 
@@ -574,8 +613,9 @@ public void savePicture(){
     public void onPause() {
         super.onPause();
 
-        tinydb.putListString(SAVED_LIST,likesList);
-
+        tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
 
     }
 
@@ -583,7 +623,9 @@ public void savePicture(){
     public void onStop() {
         super.onStop();
 
-        tinydb.putListString(SAVED_LIST,likesList);
+        tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
 
 
     }
@@ -593,6 +635,8 @@ public void savePicture(){
         super.onDestroy();
 
         tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
 
     }
 
@@ -640,7 +684,12 @@ public void savePicture(){
                 R.layout.dialog_list_item);
         arrayAdapter.add("Послать нам свой прикол");
         arrayAdapter.add("Пригласить друга");
-        arrayAdapter.add("Настройки");
+        if(tinydb.getInt(Constants.PUSH_INDICATOR) != 1){
+            arrayAdapter.add("Отключить Push уведомления");
+        }else{
+            arrayAdapter.add("Включить Push уведомления");
+
+        }
 
 
         builderSingle.setAdapter(
@@ -661,8 +710,20 @@ public void savePicture(){
                                 startActivity(Intent.createChooser(share, "Пригласить"));
                                 break;
                             case 2:
-                                SettingsFragment settingsFragment = new SettingsFragment();
-                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
+//                                SettingsFragment settingsFragment = new SettingsFragment();
+//                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
+                                if(tinydb.getInt(Constants.PUSH_INDICATOR) != 1){
+                                    tinydb.putInt(Constants.PUSH_INDICATOR,1);
+                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                    installation.removeAll("channels", Arrays.asList("photos"));
+                                    installation.saveInBackground();
+                                }else{
+                                    tinydb.putInt(Constants.PUSH_INDICATOR, 0);
+                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                    installation.addAllUnique("channels", Arrays.asList("photos"));
+                                    installation.saveInBackground();
+                                }
+
                                 break;
                         }
 
@@ -719,5 +780,51 @@ public void savePicture(){
 
 
 
+    private  void intiReciever(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if (isDataConnected()) {
+                    // Toast.makeText( context, "Active Network Type : connected", Toast.LENGTH_SHORT ).show();
+                    errorLayout.setVisibility(View.GONE);
+                    mainLayout.setVisibility(View.VISIBLE);
+                    //getCategories();
+                } else {
+                    mainLayout.setVisibility(View.INVISIBLE);
+                    errorLayout.setVisibility(View.VISIBLE);
 
+                    progressDialog.dismiss();
+                }
+            }
+        }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+    }
+    private boolean isDataConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public void getNotSeenCounter() {
+
+        ParseQuery query = new ParseQuery("picture");
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List objects, ParseException e) {
+            }
+
+            @Override
+            public void done(Object o, Throwable throwable) {
+                if (o instanceof List) {
+                    categories = (List<ParseObject>) o;
+                    nonSeenCount = categories.size()-seenItemsLIst.size();
+                    tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeenCount);
+                    notSeenIndicator.setText(String.valueOf(nonSeenCount));
+
+                }
+            }
+        });
+    }
 }
