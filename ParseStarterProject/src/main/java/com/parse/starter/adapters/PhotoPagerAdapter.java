@@ -27,6 +27,7 @@ import com.parse.starter.R;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.interfaces.GetMorePhotos;
 import com.parse.starter.utils.TouchImageView;
+import com.parse.starter.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -83,8 +84,14 @@ List<ParseObject> mImages;
             applicantResume.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
                     if (e == null) {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        mImage.setImageBitmap(bmp);
+                       final Bitmap bmp;
+                        try {
+                          bmp  = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            mImage.setImageBitmap(bmp);
+
+                        }catch (OutOfMemoryError er){
+                            er.printStackTrace();
+                        }
                         progressBar.setVisibility(View.GONE);
 
 

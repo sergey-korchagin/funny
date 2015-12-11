@@ -50,9 +50,9 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     TinyDB tinydb;
     String SAVED_LIST = "saved_list";
     ImageView toAllBtn;
-    int nonSeeIndicator;
     FrameLayout errorLayout;
     TextView noInternetText;
+    int notSeenCounter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.not_shown_fragment, container, false);
@@ -63,10 +63,10 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
         tinydb = new TinyDB(getActivity());
         toAllBtn = (ImageView)root.findViewById(R.id.btnAll);
         toAllBtn.setOnClickListener(this);
+        seenItemList=tinydb.getListString(Constants.SEEN_LIST);
+        notSeenCounter = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
 
-        nonSeeIndicator = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
-        seenItemList =  tinydb.getListString(Constants.SEEN_LIST);
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
         mPager.addOnPageChangeListener(this);
         getCategories();
@@ -107,8 +107,11 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
                     }else {
                         mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                         mPager.setAdapter(mAdapter);
-                        seenItemList.add(categories.get(0).getObjectId());
-                        nonSeeIndicator--;
+
+                        if (!seenItemList.contains(categories.get(0).getObjectId())) {
+                            seenItemList.add(categories.get(0).getObjectId());
+                            notSeenCounter--;
+                        }
                         progressDialog.dismiss();
                     }
 
@@ -126,26 +129,26 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
     }
 
     @Override
     public void onPageSelected(int position) {
-        if(!seenItemList.contains(categories.get(position).getObjectId())){
+        if (!seenItemList.contains(categories.get(position).getObjectId())) {
             seenItemList.add(categories.get(position).getObjectId());
-            nonSeeIndicator--;
+            notSeenCounter--;
         }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == toAllBtn.getId()){
+            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
             tinydb.putListString(Constants.SEEN_LIST,seenItemList);
-            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, nonSeeIndicator);
             PicturesMainFragment notShown = new PicturesMainFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
 

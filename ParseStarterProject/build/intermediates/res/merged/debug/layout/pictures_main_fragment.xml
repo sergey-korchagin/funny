@@ -77,7 +77,6 @@
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="#000000"
-            android:text="0"
             android:textSize="20dp"
             android:layout_toRightOf="@id/btnSave"
             android:id="@+id/btnNotSeenIndicator" />
@@ -139,7 +138,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:id="@+id/errorLayout"
             android:layout_height="match_parent">
 
