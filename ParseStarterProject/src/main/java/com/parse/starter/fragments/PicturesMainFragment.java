@@ -49,6 +49,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -258,21 +259,16 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     public void getQuerySize() {
 
         ParseQuery query = new ParseQuery("picture");
-        query.findInBackground(new FindCallback() {
+        query.countInBackground(new CountCallback() {
             @Override
-            public void done(List objects, ParseException e) {
-            }
-
-            @Override
-            public void done(Object o, Throwable throwable) {
-                if (o instanceof List) {
-                    querySize = ((List) o).size();
-                    seenItemsLIst=tinydb.getListString(Constants.SEEN_LIST);
-                    notSeenCounter = querySize - seenItemsLIst.size();
-                    notSeenIndicator.setText(String.valueOf(notSeenCounter));
-                }
+            public void done(int count, ParseException e) {
+                querySize = count;
+                seenItemsLIst=tinydb.getListString(Constants.SEEN_LIST);
+                notSeenCounter = querySize - seenItemsLIst.size();
+                notSeenIndicator.setText(String.valueOf(notSeenCounter));
             }
         });
+
 
     }
 
