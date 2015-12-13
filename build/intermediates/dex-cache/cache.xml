@@ -2,88 +2,88 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\serge_000\Desktop\funny\ParseStarterProject\libs\gson-2.4.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="0695b63d702f505b9b916e02272e3b6381bade7f">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\gson-2.4-ef3e9dc0ae0705fb8210ba9462f958778ddd76ac.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.0.1\39eff75ddcb987ff65888361a29f489c178429a3\okio-1.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="39eff75ddcb987ff65888361a29f489c178429a3">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\okio-1.0.1-d14158bf988110e918028beb9524719f1023cb59.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-9aee0016caa191306e765e35b75df7a4fc5c0ab7.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-8c9887695b092a2d87291812e82be66130210929.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.3.0\8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c\bolts-tasks-1.3.0.jar"
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.3.0\8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c\bolts-tasks-1.3.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="8a62fd16fcc1c06f284fc98e6cbded2a5af1dd4c">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\bolts-tasks-1.3.0-861f7e365a038c479d4d45110fc1a0d4698dc221.jar" />
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\bolts-tasks-1.3.0-acff59cbf7a27da7ad0699743b4eb7d33a6ecfa6.jar" />
     </item>
     <item
-        jar="C:\Users\serge_000\.gradle\caches\modules-2\files-2.1\com.parse\parse-android\1.11.0\6592129dec2caa8791d322c7e4b6b7a30e8eadae\parse-android-1.11.0.jar"
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.0.1\39eff75ddcb987ff65888361a29f489c178429a3\okio-1.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="6592129dec2caa8791d322c7e4b6b7a30e8eadae">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\parse-android-1.11.0-594c898e58b98efb4997fda05dfa4d7b1ff899a0.jar" />
+        sha1="39eff75ddcb987ff65888361a29f489c178429a3">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\okio-1.0.1-1246b9c4167370b872c67c507d97ea42d66dcddf.jar" />
     </item>
     <item
-        jar="C:\Users\serge_000\.gradle\caches\modules-2\files-2.1\com.intellij\annotations\12.0\bbcf6448f6d40abe506e2c83b70a3e8bfd2b4539\annotations-12.0.jar"
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.intellij\annotations\12.0\bbcf6448f6d40abe506e2c83b70a3e8bfd2b4539\annotations-12.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="bbcf6448f6d40abe506e2c83b70a3e8bfd2b4539">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\annotations-12.0-48bf2a68771bdbe571a37d2b4e79f374a7eb672c.jar" />
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\annotations-12.0-3620e982a90cb0900221647ec1f2c04fb910771a.jar" />
     </item>
     <item
-        jar="C:\Users\serge_000\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.1.0\9b51f7d0c19f179b52beab7cb433f8ba5cf786a4\okhttp-2.1.0.jar"
+        jar="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="9b51f7d0c19f179b52beab7cb433f8ba5cf786a4">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\okhttp-2.1.0-71b1452de28fae599782b1249abf41b79520cce4.jar" />
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-e9c84850b1ba83e1c378095b8c9a03e23cf9b492.jar" />
     </item>
     <item
-        jar="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\it.sephiroth.android.library.picasso\picasso\2.5.2.4b\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="9099e6b672d8e3e8577d6db64c4ab99f6243132c">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-99e7a218b9dcbc27b1c62e55840e15543738b98b.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-51fad9dde73c8a2a7aedab93be124e73a8cf2768.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp-urlconnection\2.1.0\6025b7df8a6a4193138723ef120e7228b6a97024\okhttp-urlconnection-2.1.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="6025b7df8a6a4193138723ef120e7228b6a97024">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\okhttp-urlconnection-2.1.0-1646b7978d9565715294ac0ee87a5e1a99778f7b.jar" />
-    </item>
-    <item
-        jar="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jar="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="C:\Users\serge_000\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-de8be5260196a3bc328be575e33e93e0a12be961.jar" />
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-ea3ce66c0cb047ad777b336cc7efb2a29466439e.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp-urlconnection\2.1.0\6025b7df8a6a4193138723ef120e7228b6a97024\okhttp-urlconnection-2.1.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6025b7df8a6a4193138723ef120e7228b6a97024">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\okhttp-urlconnection-2.1.0-77b2872f7000f1cbb6b585cbd6f6ee2db5451851.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\it.sephiroth.android.library.picasso\picasso\2.5.2.4b\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9099e6b672d8e3e8577d6db64c4ab99f6243132c">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-e580a61901196ca3e49dcda88fa7fe5aac85a54c.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\Desktop\funny\ParseStarterProject\libs\gson-2.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0695b63d702f505b9b916e02272e3b6381bade7f">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\gson-2.4-b2bd82f97ce0a051a43aacbc019a644a4b346f23.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp\okhttp\2.1.0\9b51f7d0c19f179b52beab7cb433f8ba5cf786a4\okhttp-2.1.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9b51f7d0c19f179b52beab7cb433f8ba5cf786a4">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\okhttp-2.1.0-0af56e05bfec63463ca56fce99357592d10352e3.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\classes-ff882312899dc015830f7102d9743e375baca98b.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-753a592154c6f989ecbdb6aa99706ea004b02667.jar" />
+    </item>
+    <item
+        jar="C:\Users\User\.gradle\caches\modules-2\files-2.1\com.parse\parse-android\1.11.0\6592129dec2caa8791d322c7e4b6b7a30e8eadae\parse-android-1.11.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6592129dec2caa8791d322c7e4b6b7a30e8eadae">
+        <dex dex="C:\Users\User\Desktop\funny\ParseStarterProject\build\intermediates\pre-dexed\debug\parse-android-1.11.0-adf3caa6356134507cda68f780dc8f71fd817e2b.jar" />
     </item>
 
 </items>

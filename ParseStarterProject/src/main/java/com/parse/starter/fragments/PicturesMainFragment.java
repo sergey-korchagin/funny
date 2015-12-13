@@ -46,6 +46,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
+import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -83,7 +85,9 @@ import java.util.Locale;
 /**
  * Created by User on 30/11/2015.
  */
-public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener{
+public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener {
+    //Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+    // Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
 
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
@@ -94,20 +98,13 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     int querySize;
     public int mPosition;
     ImageView btnShare;
-    ImageView btnSave;
     ImageView btnTop;
     ImageView btnLike;
     ImageView btnMore;
     ImageView btnNtShown;
     boolean mExternalStorageAvailable = false;
     boolean mExternalStorageWriteable = false;
-    int width = 0;
-    int height = 0;
     ImageView mSmallImage;
-    boolean isTop = false;
-    LinearLayout layoutHeader;
-    boolean isLikeClicked=false;
-   // HashMap<String,String> likesHashMap;
     ArrayList<String> likesList;
     TinyDB tinydb;
     TextView likesCounterView;
@@ -115,145 +112,119 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     ProgressDialog progressDialog;
     ImageView btnUpload;
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
-    boolean videoSelected =false;
-    int orientation;
-    Bitmap photo = null;
-    ImageView menuTp;
-    LinearLayout likesLayout;
+    LinearLayout menuLayout;
     CustomTouchListener customTouchListener;
     ArrayList<String> seenItemsLIst;
-    TextView notSeenIndicator;
     FrameLayout errorLayout;
     LinearLayout mainLayout;
     int notSeenCounter;
-//    @SuppressLint("ValidFragment")
-//    public PicturesMainFragment(List<ParseObject> objects) {
-//     this.categories = objects;
-//    }
+    TextView btnSendUsImage;
+    TextView btnInviteFriend;
+    TextView btnSaveImage;
+    TextView btnPushState;
+    RelativeLayout mainRelative;
+LinearLayout topLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
+        final View root = inflater.inflate(R.layout.pictures_main_fragment, container, false);
         Constants.FROM_SETTINGS = false;
+        tinydb = new TinyDB(getActivity());
 
         progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
 
-        errorLayout = (FrameLayout)root.findViewById(R.id.errorLayout);
-        mainLayout = (LinearLayout)root.findViewById(R.id.mainLinearLayout);
+        errorLayout = (FrameLayout) root.findViewById(R.id.errorLayout);
+        mainRelative = (RelativeLayout) root.findViewById(R.id.mainRelativeLayout);
+        topLayout = (LinearLayout)root.findViewById(R.id.topLayout);
+
+
+        mainLayout = (LinearLayout) root.findViewById(R.id.mainLinearLayout);
+        menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
+        menuLayout.setVisibility(View.GONE);
+        btnSendUsImage = (TextView) root.findViewById(R.id.sendUsPictre);
+        btnSendUsImage.setOnClickListener(this);
+
+        btnInviteFriend = (TextView) root.findViewById(R.id.inviteFriend);
+        btnInviteFriend.setOnClickListener(this);
+
+        btnPushState = (TextView) root.findViewById(R.id.enablePush);
+        btnPushState.setOnClickListener(this);
+
+        btnSaveImage = (TextView)root.findViewById(R.id.savePicture);
+        btnSaveImage.setOnClickListener(this);
+
+        if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
+            btnPushState.setText("Отключить Push уведомления");
+        } else {
+            btnPushState.setText("Включить Push уведомления");
+
+        }
         intiReciever();
         seenItemsLIst = new ArrayList<>();
-        tinydb = new TinyDB(getActivity());
-
 
 
         likesList = new ArrayList<>();
         likesList = tinydb.getListString(SAVED_LIST);
-        likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
+        likesCounterView = (TextView) root.findViewById(R.id.likesCounter);
         customTouchListener = this;
 
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
 
-        btnSave = (ImageView)root.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(this);
 
-        btnTop = (ImageView)root.findViewById(R.id.btnTop);
+
+        btnTop = (ImageView) root.findViewById(R.id.btnTop);
         btnTop.setOnClickListener(this);
 
-        btnLike = (ImageView)root.findViewById(R.id.btnLike);
+        btnLike = (ImageView) root.findViewById(R.id.btnLike);
         //btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
 
         btnLike.setOnClickListener(this);
 
-        btnNtShown =(ImageView)root.findViewById(R.id.btnNotSeen);
+        btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
 
 
-        btnMore = (ImageView)root.findViewById(R.id.btnMore);
+        btnMore = (ImageView) root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
 
-        likesLayout= (LinearLayout)root.findViewById(R.id.likesLayout);
-
-
-        btnLike.setVisibility(View.INVISIBLE);
-        btnShare.setVisibility(View.INVISIBLE);
-        btnMore.setVisibility(View.INVISIBLE);
-        btnSave.setVisibility(View.INVISIBLE);
-        btnTop.setVisibility(View.INVISIBLE);
 
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
         mPager.addOnPageChangeListener(this);
 
-        mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
-        notSeenIndicator = (TextView)root.findViewById(R.id.btnNotSeenIndicator);
+        mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
 
         initSmallImage();
         checkIfStorageAvailable();
         getQuerySize();
         getCategories();
 
-
-
-
-
-        menuTp = (ImageView)root.findViewById(R.id.meu);
-        menuTp.setOnClickListener(new View.OnClickListener() {
+        mPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (btnLike.getVisibility() == View.INVISIBLE){
-                    Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-                    btnLike.setVisibility(View.VISIBLE);
-                    btnLike.setAnimation(animFadeIn);
-                    btnShare.setVisibility(View.VISIBLE);
-                    btnShare.setAnimation(animFadeIn);
-                    btnMore.setVisibility(View.VISIBLE);
-                    btnMore.setAnimation(animFadeIn);
-                    btnSave.setVisibility(View.VISIBLE);
-                    btnSave.setAnimation(animFadeIn);
-                    btnTop.setVisibility(View.VISIBLE);
-                    btnSave.setAnimation(animFadeIn);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (menuLayout.getVisibility() == View.VISIBLE) {
                     Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-                    mSmallImage.setVisibility(View.INVISIBLE);
-                    mSmallImage.setAnimation(animFadeOut);
-                    likesLayout.setVisibility(View.INVISIBLE);
-                    likesLayout.setAnimation(animFadeOut);
-                }else{
-                    Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-                    btnLike.setVisibility(View.INVISIBLE);
-                    btnLike.setAnimation(animFadeOut);
-                    btnShare.setVisibility(View.INVISIBLE);
-                    btnShare.setAnimation(animFadeOut);
-                    btnMore.setVisibility(View.INVISIBLE);
-                    btnMore.setAnimation(animFadeOut);
-                    btnSave.setVisibility(View.INVISIBLE);
-                    btnSave.setAnimation(animFadeOut);
-                    btnTop.setVisibility(View.INVISIBLE);
-                    btnTop.setAnimation(animFadeOut);
-                    Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-                    mSmallImage.setVisibility(View.VISIBLE);
-                    mSmallImage.setAnimation(animFadeIn);
-                    likesLayout.setVisibility(View.VISIBLE);
-                    likesLayout.setAnimation(animFadeIn);
-
+                    menuLayout.setVisibility(View.GONE);
+                    menuLayout.setAnimation(animFadeOut);
                 }
+
+                        return false;
             }
         });
-
         return root;
     }
 
     public void initLikeButton() {
-        if(isAdded()){
+        if (isAdded()) {
             if (likesList.contains(categories.get(mPosition).getObjectId())) {
-                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.dislike_tmp));
+                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.iaicons_like_f_act));
             } else {
-                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.like_tmp));
+                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.iaicons_like_f_sttc));
             }
         }
 
     }
-
-
 
 
     public void getQuerySize() {
@@ -263,9 +234,11 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             @Override
             public void done(int count, ParseException e) {
                 querySize = count;
-                seenItemsLIst=tinydb.getListString(Constants.SEEN_LIST);
+                seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
                 notSeenCounter = querySize - seenItemsLIst.size();
-                notSeenIndicator.setText(String.valueOf(notSeenCounter));
+                if (notSeenCounter < 0) {
+                    notSeenCounter = 0;
+                }
             }
         });
 
@@ -280,40 +253,39 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-    if (position % 5 == 1 && skip < querySize) {
-        skip = skip + 5;
+        if (position % 5 == 1 && skip < querySize) {
+            skip = skip + 5;
 
-        ParseQuery query = new ParseQuery("picture");
-        query.addDescendingOrder("createdAt");
-      //  query.whereNotContainedIn();
-        query.setSkip(skip);
-        query.setLimit(5);
-        query.findInBackground(new FindCallback() {
-            @Override
-            public void done(List objects, ParseException e) {
-            }
-
-            @Override
-            public void done(Object o, Throwable throwable) {
-                if (o instanceof List) {
-                    updatedCategories = (List<ParseObject>) o;
-                    mAdapter.getMorePhotos(updatedCategories, querySize);
-                    mAdapter.notifyDataSetChanged();
-
+            ParseQuery query = new ParseQuery("picture");
+            query.addDescendingOrder("createdAt");
+            //  query.whereNotContainedIn();
+            query.setSkip(skip);
+            query.setLimit(5);
+            query.findInBackground(new FindCallback() {
+                @Override
+                public void done(List objects, ParseException e) {
                 }
-            }
-        });
+
+                @Override
+                public void done(Object o, Throwable throwable) {
+                    if (o instanceof List) {
+                        updatedCategories = (List<ParseObject>) o;
+                        mAdapter.getMorePhotos(updatedCategories, querySize);
+                        mAdapter.notifyDataSetChanged();
+
+                    }
+                }
+            });
 
 
-    }
-        if(categories.size()>=position){
+        }
+        if (categories.size() >= position) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
         }
         String t = categories.get(mPosition).getObjectId();
-        if(!seenItemsLIst.contains(t)){
+        if (!seenItemsLIst.contains(t)) {
             seenItemsLIst.add(t);
             notSeenCounter--;
-            notSeenIndicator.setText(String.valueOf(notSeenCounter));
         }
         initLikeButton();
     }
@@ -344,7 +316,6 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                     if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
                         seenItemsLIst.add(categories.get(0).getObjectId());
                         notSeenCounter--;
-                        notSeenIndicator.setText(String.valueOf(notSeenCounter));
 
                     }
                     initLikeButton();
@@ -358,8 +329,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     @Override
     public void onResume() {
         getQuerySize();
-        likesList =  tinydb.getListString(SAVED_LIST);
-        seenItemsLIst =  tinydb.getListString(Constants.SEEN_LIST);
+        likesList = tinydb.getListString(SAVED_LIST);
+        seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
         super.onResume();
 
     }
@@ -367,18 +338,19 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     @Override
     public void onClick(View v) {
         if (btnShare.getId() == v.getId()) {
-                if(mExternalStorageAvailable && mExternalStorageWriteable){
-                    sendShareIntentPhoto(mPosition);
-                }else{
-                    sendShareIntentLink(mPosition);
+            if (mExternalStorageAvailable && mExternalStorageWriteable) {
+                sendShareIntentPhoto(mPosition);
+            } else {
+                sendShareIntentLink(mPosition);
             }
-        }else if(btnSave.getId() == v.getId()){
+        } else if (btnSaveImage.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setCancelable(true).setMessage("Want save?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                        savePicture();
+                            savePicture();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -393,30 +365,71 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             alert.show();
 
 
-        }else if(btnTop.getId() == v.getId()){
+        } else if (btnTop.getId() == v.getId()) {
             TopFragment topFragment = new TopFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
 
-        }else if(btnLike.getId() == v.getId()){
-            if(!likesList.contains(categories.get(mPosition).getObjectId())){
+        } else if (btnLike.getId() == v.getId()) {
+            if (!likesList.contains(categories.get(mPosition).getObjectId())) {
                 incrementLikes();
-                int d1 = ((Integer)categories.get(mPosition).get("likes"));
-                d1=d1--;
+                int d1 = ((Integer) categories.get(mPosition).get("likes"));
+                d1 = d1--;
                 likesCounterView.setText(Integer.toString(d1));
-            }else{
+            } else {
                 decrementLikes();
-                int d1 = ((Integer)categories.get(mPosition).get("likes"));
-                d1=d1--;
+                int d1 = ((Integer) categories.get(mPosition).get("likes"));
+                d1 = d1--;
                 likesCounterView.setText(Integer.toString(d1));
             }
-        }else if(btnMore.getId() == v.getId()){
-            enableAlertMenu();
-        }else if(btnNtShown.getId() == v.getId()){
-            tinydb.putListString(Constants.SEEN_LIST,seenItemsLIst);
-            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
+        } else if (btnMore.getId() == v.getId()) {
+            //  enableAlertMenu();
+            if (menuLayout.getVisibility() == View.GONE) {
+                Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+                menuLayout.setVisibility(View.VISIBLE);
+                menuLayout.setAnimation(animFadeIn);
+            } else {
+                Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                menuLayout.setVisibility(View.GONE);
+                menuLayout.setAnimation(animFadeOut);
+            }
+        } else if (btnNtShown.getId() == v.getId()) {
+            tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
             NotShown notShown = new NotShown();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
 
+        } else if (btnSendUsImage.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
+        } else if (btnInviteFriend.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, "когда нибудь это будет приглашение в нафаню, а пока качни айдаприкол https://play.google.com/store/apps/details?id=ru.idaprikol&hl=ru");
+            startActivity(Intent.createChooser(share, "Пригласить"));
+        } else if (btnPushState.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
+            if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
+                try {
+                    btnPushState.setText("Включить Push уведомления");
+                    tinydb.putInt(Constants.PUSH_INDICATOR, 1);
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.removeAll("channels", Arrays.asList("photos"));
+                    installation.saveInBackground();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                btnPushState.setText("Отключить Push уведомления");
+
+                tinydb.putInt(Constants.PUSH_INDICATOR, 0);
+                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                installation.addAllUnique("channels", Arrays.asList("photos"));
+                installation.saveInBackground();
+            }
         }
     }
 
@@ -429,7 +442,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     }
 
-    public void incrementLikes(){
+    public void incrementLikes() {
         categories.get(mPosition).increment("likes");
         categories.get(mPosition).saveInBackground();
         likesList.add(categories.get(mPosition).getObjectId());
@@ -437,7 +450,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     }
 
-    public void sendShareIntentLink(final int position){
+    public void sendShareIntentLink(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true).setMessage("No enough storage! But you still can share link to picture!")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -470,45 +483,45 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         if (categories.get(position).get("mPicture") != null) {
             ParseFile applicantResume = (ParseFile) categories.get(position).get("mPicture");
             applicantResume.getDataInBackground(new GetDataCallback() {
-            public void done(byte[] data, ParseException e) {
-                if (e == null) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    Intent share = new Intent(Intent.ACTION_SEND);
-                    share.setType("image/jpeg");
+                                                    public void done(byte[] data, ParseException e) {
+                                                        if (e == null) {
+                                                            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                                            Intent share = new Intent(Intent.ACTION_SEND);
+                                                            share.setType("image/jpeg");
 
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "title");
-                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                                                            ContentValues values = new ContentValues();
+                                                            values.put(MediaStore.Images.Media.TITLE, "title");
+                                                            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 
-                    Uri uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            values);
+                                                            Uri uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                                    values);
 
-                    OutputStream outstream;
-                    try {
-                        outstream = getActivity().getContentResolver().openOutputStream(uri);
-                        bmp.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
-                        outstream.close();
-                    } catch (Exception ex) {
-                        System.err.println(e.toString());
-                    }
+                                                            OutputStream outstream;
+                                                            try {
+                                                                outstream = getActivity().getContentResolver().openOutputStream(uri);
+                                                                bmp.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+                                                                outstream.close();
+                                                            } catch (Exception ex) {
+                                                                System.err.println(e.toString());
+                                                            }
 
-                    share.putExtra(Intent.EXTRA_STREAM, uri);
-                    startActivity(Intent.createChooser(share, "Share picture"));
+                                                            share.putExtra(Intent.EXTRA_STREAM, uri);
+                                                            startActivity(Intent.createChooser(share, "Share picture"));
 
 
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        }
+                                                        } else {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }
 
             );
 
-            }
         }
+    }
 
 
-    public void checkIfStorageAvailable(){
+    public void checkIfStorageAvailable() {
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -525,7 +538,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         }
     }
 
-    public void initSmallImage(){
+    public void initSmallImage() {
         ParseQuery query = new ParseQuery("smallImage");
         query.addDescendingOrder("createdAt");
         query.setLimit(1);
@@ -533,22 +546,23 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             @Override
             public void done(List objects, ParseException e) {
             }
+
             @Override
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     List<ParseObject> small = (List<ParseObject>) o;
-                    if(small.get(0).get("mImage") != null){
+                    if (small.get(0).get("mImage") != null) {
                         ParseFile applicantResume = (ParseFile) small.get(0).get("mImage");
                         applicantResume.getDataInBackground(new GetDataCallback() {
                                                                 public void done(byte[] data, ParseException e) {
-                            if (e == null) {
-                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                 mSmallImage.setImageBitmap(bmp);
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+                                                                    if (e == null) {
+                                                                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                                                        mSmallImage.setImageBitmap(bmp);
+                                                                    } else {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+                                                            }
 
                         );
 
@@ -558,57 +572,56 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         });
     }
 
-public void savePicture(){
-    if(mExternalStorageWriteable && mExternalStorageAvailable){
-        //save
-        if (categories.get(mPosition).get("mPicture") != null) {
-            ParseFile applicantResume = (ParseFile) categories.get(mPosition).get("mPicture");
-            applicantResume.getDataInBackground(new GetDataCallback() {
-            public void done(byte[] data, ParseException e) {
-                if (e == null) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    //save
-                    String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                            "/FunnyPhotos";
-                    File dir = new File(file_path);
-                    if(!dir.exists())
-                        dir.mkdirs();
+    public void savePicture() {
+        if (mExternalStorageWriteable && mExternalStorageAvailable) {
+            //save
+            if (categories.get(mPosition).get("mPicture") != null) {
+                ParseFile applicantResume = (ParseFile) categories.get(mPosition).get("mPicture");
+                applicantResume.getDataInBackground(new GetDataCallback() {
+                                                        public void done(byte[] data, ParseException e) {
+                                                            if (e == null) {
+                                                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                                                //save
+                                                                String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                                                        "/FunnyPhotos";
+                                                                File dir = new File(file_path);
+                                                                if (!dir.exists())
+                                                                    dir.mkdirs();
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String currentDate= sdf.format(new Date());
-                    File file = new File(dir, "funny_" +currentDate+ ".png");
-                    try {
-                        FileOutputStream fOut = new FileOutputStream(file);
-                        bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-                        fOut.flush();
-                        fOut.close();
-                        Toast.makeText(getActivity(), "Saved to "+ file_path,  Toast.LENGTH_SHORT).show();
+                                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                                String currentDate = sdf.format(new Date());
+                                                                File file = new File(dir, "funny_" + currentDate + ".png");
+                                                                try {
+                                                                    FileOutputStream fOut = new FileOutputStream(file);
+                                                                    bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+                                                                    fOut.flush();
+                                                                    fOut.close();
+                                                                    Toast.makeText(getActivity(), "Saved to " + file_path, Toast.LENGTH_SHORT).show();
 
-                    }catch (IOException ex){
-                        ex.printStackTrace();
-                    }
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "funny");
-                    values.put(MediaStore.Images.Media.DESCRIPTION, "saved from app");
-                    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis ());
-                    values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
-                    values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));
-                    values.put("_data", file.getAbsolutePath());
+                                                                } catch (IOException ex) {
+                                                                    ex.printStackTrace();
+                                                                }
+                                                                ContentValues values = new ContentValues();
+                                                                values.put(MediaStore.Images.Media.TITLE, "funny");
+                                                                values.put(MediaStore.Images.Media.DESCRIPTION, "saved from app");
+                                                                values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+                                                                values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
+                                                                values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));
+                                                                values.put("_data", file.getAbsolutePath());
 
-                    ContentResolver cr = getActivity().getContentResolver();
-                    cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                } else {
-                    e.printStackTrace();
-                }
+                                                                ContentResolver cr = getActivity().getContentResolver();
+                                                                cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                                            } else {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    }
+                );
             }
+        } else {
+            Utils.showAlert(getActivity(), "Error", "No external storage available");
         }
-            );
-        }
-    }else{
-        Utils.showAlert(getActivity(),"Error", "No external storage available");
     }
-}
-
 
 
     @Override
@@ -616,6 +629,9 @@ public void savePicture(){
         super.onPause();
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+
 
     }
 
@@ -625,6 +641,9 @@ public void savePicture(){
 
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+
+        ShortcutBadger.with(getActivity()).count(notSeenCounter);
 
 
     }
@@ -635,6 +654,8 @@ public void savePicture(){
 
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+        ShortcutBadger.with(getActivity()).count(notSeenCounter);
 
     }
 
@@ -642,39 +663,37 @@ public void savePicture(){
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == getActivity().RESULT_OK) {
-                if (requestCode == REQUEST_CODE_FROM_GALLERY_IMAGE) {
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == REQUEST_CODE_FROM_GALLERY_IMAGE) {
 
-                    Uri selectedImage = data.getData();
-                    if (!ifVideo(selectedImage)) {
-                        Intent email = new Intent(Intent.ACTION_SEND);
-                        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"Alex.Bagranov@gmail.com"});
-                        email.putExtra(Intent.EXTRA_SUBJECT, "Смешная фотография");
-                        email.putExtra(Intent.EXTRA_STREAM, selectedImage);
-                        email.putExtra(Intent.EXTRA_TEXT, "Спасибо что вы посылаете нам свои материалы, сотни пользователей обязательно увидят их! Нафаня");
-                        email.setType("message/rfc822");
-                        startActivity(Intent.createChooser(email, "Выбор меил агента"));
-                    } else {
-                        Utils.showAlert(getActivity(), "Ошибка", "Неподдерживаемый формат файла");
-                    }
+                Uri selectedImage = data.getData();
+                if (!ifVideo(selectedImage)) {
+                    Intent email = new Intent(Intent.ACTION_SEND);
+                    email.putExtra(Intent.EXTRA_EMAIL, new String[]{"Alex.Bagranov@gmail.com"});
+                    email.putExtra(Intent.EXTRA_SUBJECT, "Смешная фотография");
+                    email.putExtra(Intent.EXTRA_STREAM, selectedImage);
+                    email.putExtra(Intent.EXTRA_TEXT, "Спасибо что вы посылаете нам свои материалы, сотни пользователей обязательно увидят их! Нафаня");
+                    email.setType("message/rfc822");
+                    startActivity(Intent.createChooser(email, "Выбор меил агента"));
+                } else {
+                    Utils.showAlert(getActivity(), "Ошибка", "Неподдерживаемый формат файла");
                 }
             }
+        }
     }
 
 
-
-
-    public boolean ifVideo(Uri uri){
-        if(uri.toString().contains("video")){
+    public boolean ifVideo(Uri uri) {
+        if (uri.toString().contains("video")) {
             return true;
         }
         return false;
     }
 
 
-    public void enableAlertMenu(){
+    public void enableAlertMenu() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-    //    builderSingle.setIcon(R.drawable.ic_launcher);
+        //    builderSingle.setIcon(R.drawable.ic_launcher);
         //builderSingle.setTitle("Дополнительные возможности");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -682,9 +701,9 @@ public void savePicture(){
                 R.layout.dialog_list_item);
         arrayAdapter.add("Послать нам свой прикол");
         arrayAdapter.add("Пригласить друга");
-        if(tinydb.getInt(Constants.PUSH_INDICATOR) != 1){
+        if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
             arrayAdapter.add("Отключить Push уведомления");
-        }else{
+        } else {
             arrayAdapter.add("Включить Push уведомления");
 
         }
@@ -710,12 +729,17 @@ public void savePicture(){
                             case 2:
 //                                SettingsFragment settingsFragment = new SettingsFragment();
 //                                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
-                                if(tinydb.getInt(Constants.PUSH_INDICATOR) != 1){
-                                    tinydb.putInt(Constants.PUSH_INDICATOR,1);
-                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                                    installation.removeAll("channels", Arrays.asList("photos"));
-                                    installation.saveInBackground();
-                                }else{
+                                if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
+                                    try {
+                                        tinydb.putInt(Constants.PUSH_INDICATOR, 1);
+                                        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                        installation.removeAll("channels", Arrays.asList("photos"));
+                                        installation.saveInBackground();
+                                    } catch (Throwable e) {
+                                        e.printStackTrace();
+                                    }
+
+                                } else {
                                     tinydb.putInt(Constants.PUSH_INDICATOR, 0);
                                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                                     installation.addAllUnique("channels", Arrays.asList("photos"));
@@ -732,53 +756,23 @@ public void savePicture(){
 
 
     @Override
-    public void fullScreenTouch() {
-        if(likesLayout.getVisibility() == View.VISIBLE)
-        {
-            Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-            menuTp.setVisibility(View.INVISIBLE);
-            menuTp.setAnimation(animFadeOut);
-            likesLayout.setVisibility(View.INVISIBLE);
-            likesLayout.setAnimation(animFadeOut);
-            mSmallImage.setVisibility(View.INVISIBLE);
-            mSmallImage.setAnimation(animFadeOut);
-
-        }else {
-            Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-
-            menuTp.setVisibility(View.VISIBLE);
-            menuTp.setAnimation(animFadeIn);
-
-            likesLayout.setVisibility(View.VISIBLE);
-            likesLayout.setAnimation(animFadeIn);
-
-            mSmallImage.setVisibility(View.VISIBLE);
-            mSmallImage.setAnimation(animFadeIn);
-
-        }
-            if (btnLike.getVisibility() == View.VISIBLE){
-                Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-                btnLike.setVisibility(View.INVISIBLE);
-                btnLike.setAnimation(animFadeOut);
-                btnShare.setVisibility(View.INVISIBLE);
-                btnShare.setAnimation(animFadeOut);
-                btnMore.setVisibility(View.INVISIBLE);
-                btnMore.setAnimation(animFadeOut);
-                btnSave.setVisibility(View.INVISIBLE);
-                btnSave.setAnimation(animFadeOut);
-                btnTop.setVisibility(View.INVISIBLE);
-                btnTop.setAnimation(animFadeOut);
-                likesLayout.setVisibility(View.INVISIBLE);
-                mSmallImage.setVisibility(View.INVISIBLE);
-                menuTp.setVisibility(View.INVISIBLE);
-                menuTp.setAnimation(animFadeOut);
-
-            }
-        }
+    public void fullScreenTouch(int touch) {
+//        switch (touch) {
+//            case 1:
+//                Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+//                topLayout.setVisibility(View.GONE);
+//                topLayout.setAnimation(animFadeOut);
+//            case 2: // отпускание
+//
+//                Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+//                topLayout.setVisibility(View.GONE);
+//                topLayout.setAnimation(animFadeIn);
+//
+//        }
+    }
 
 
-
-    private  void intiReciever(){
+    private void intiReciever() {
         getActivity().registerReceiver(new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 if (isDataConnected()) {
@@ -796,6 +790,7 @@ public void savePicture(){
         }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 
     }
+
     private boolean isDataConnected() {
         try {
             ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -804,7 +799,6 @@ public void savePicture(){
             return false;
         }
     }
-
 
 
 }

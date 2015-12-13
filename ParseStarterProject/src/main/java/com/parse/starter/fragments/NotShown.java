@@ -31,6 +31,7 @@ import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
+import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
 
 import java.util.ArrayList;
@@ -71,6 +72,27 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
         mPager.addOnPageChangeListener(this);
         getCategories();
         return root;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+
     }
 
     public void getCategories() {
@@ -122,7 +144,7 @@ public class NotShown extends Fragment implements CustomTouchListener, ViewPager
     }
 
     @Override
-    public void fullScreenTouch() {
+    public void fullScreenTouch(int t) {
 
     }
 

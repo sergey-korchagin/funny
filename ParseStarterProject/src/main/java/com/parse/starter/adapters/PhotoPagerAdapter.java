@@ -102,13 +102,22 @@ List<ParseObject> mImages;
                 }
             });
         }
-        mImage.setOnLongClickListener(new View.OnLongClickListener() {
+        mImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onLongClick(View v) {
-                listener.fullScreenTouch();
+            public boolean onTouch(View v, MotionEvent event) {
+                   switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                listener.fullScreenTouch(1);
 
+            case MotionEvent.ACTION_UP: // отпускание
+                listener.fullScreenTouch(2);
+
+
+        }
                 return false;
             }
+
+
         });
 
                    ((ViewPager) container).addView(root);

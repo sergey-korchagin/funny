@@ -25,6 +25,7 @@ import com.parse.starter.fragments.SettingsFragment;
 import com.parse.starter.fragments.SplashScreenFragment;
 import com.parse.starter.managers.ActionbarManager;
 import com.parse.starter.utils.Constants;
+import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
 
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
       ParseInstallation installation = ParseInstallation.getCurrentInstallation();
       installation.addAllUnique("channels", Arrays.asList("photos"));
       installation.saveInBackground();
+
 
 
       SplashScreenFragment splashScreenFragment = new SplashScreenFragment();

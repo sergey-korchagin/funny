@@ -17,9 +17,12 @@ import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,12 +32,15 @@ import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.CustomTouchListener;
+import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
+import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
 
 import java.io.File;
@@ -42,6 +48,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -65,6 +73,18 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     int mPosition;
     LinearLayout layoutHeader;
     CustomTouchListener customTouchListener;
+    LinearLayout menuLayout;
+    ArrayList<String> likesList;
+    String SAVED_LIST = "saved_list";
+    ImageView btnMore;
+
+    TextView btnSendUsImage;
+    TextView btnInviteFriend;
+    TextView btnSaveImage;
+    TextView btnPushState;
+    ImageView btnNtShown;
+    TinyDB tinydb;
+    private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
 
 ProgressDialog progressDialog;
     @Override
@@ -73,31 +93,84 @@ ProgressDialog progressDialog;
         Constants.FROM_SETTINGS = false;
         progressDialog = ProgressDialog.show(getActivity(),"","Картинки загружаются...");
 
-        layoutHeader = (LinearLayout)root.findViewById(R.id.headerTopLayout);
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
 
-        btnSave = (ImageView)root.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(this);
+        tinydb = new TinyDB(getActivity());
+        btnMore = (ImageView) root.findViewById(R.id.btnMore);
+        btnMore.setOnClickListener(this);
 
-
-        btnAll = (ImageView)root.findViewById(R.id.btnAll);
+        btnAll = (ImageView)root.findViewById(R.id.btnTop);
         btnAll.setOnClickListener(this);
+
+        btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
+        btnNtShown.setOnClickListener(this);
+
+        menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
+        menuLayout.setVisibility(View.GONE);
+        btnSendUsImage = (TextView) root.findViewById(R.id.sendUsPictre);
+        btnSendUsImage.setOnClickListener(this);
+
+        btnInviteFriend = (TextView) root.findViewById(R.id.inviteFriend);
+        btnInviteFriend.setOnClickListener(this);
+
+        btnPushState = (TextView) root.findViewById(R.id.enablePush);
+        btnPushState.setOnClickListener(this);
+
+        btnSaveImage = (TextView)root.findViewById(R.id.savePicture);
+        btnSaveImage.setOnClickListener(this);
+
+        if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
+            btnPushState.setText("Отключить Push уведомления");
+        } else {
+            btnPushState.setText("Включить Push уведомления");
+
+        }
+        btnLike = (ImageView) root.findViewById(R.id.btnLike);
+        btnLike.setOnClickListener(this);
+
+        likesList = new ArrayList<>();
+        likesList = tinydb.getListString(SAVED_LIST);
+
 
         mPager = (ViewPager) root.findViewById(R.id.photos_image_pager);
         mPager.addOnPageChangeListener(this);
 
+        mPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (menuLayout.getVisibility() == View.VISIBLE) {
+                    Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                    menuLayout.setVisibility(View.GONE);
+                    menuLayout.setAnimation(animFadeOut);
+                }
+                return false;
+            }
+        });
+
         mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
 
-customTouchListener = this;
+        customTouchListener = this;
         initSmallImage();
         checkIfStorageAvailable();
         getCategories();
 
         return root;
     }
+
+    public void initLikeButton() {
+        if (isAdded()) {
+            if (likesList.contains(categories.get(mPosition).getObjectId())) {
+                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.iaicons_like_f_act));
+            } else {
+                btnLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.iaicons_like_f_sttc));
+            }
+        }
+
+    }
+
 
     public void getCategories() {
 
@@ -117,6 +190,7 @@ customTouchListener = this;
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     progressDialog.dismiss();
+                    initLikeButton();
 
                 }
             }
@@ -140,15 +214,15 @@ customTouchListener = this;
                     if (small.get(0).get("mImage") != null) {
                         ParseFile applicantResume = (ParseFile) small.get(0).get("mImage");
                         applicantResume.getDataInBackground(new GetDataCallback() {
-                        public void done(byte[] data, ParseException e) {
-                            if (e == null) {
-                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                mSmallImage.setImageBitmap(bmp);
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+                                                                public void done(byte[] data, ParseException e) {
+                                                                    if (e == null) {
+                                                                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                                                        mSmallImage.setImageBitmap(bmp);
+                                                                    } else {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+                                                            }
 
                         );
 
@@ -248,35 +322,97 @@ customTouchListener = this;
 
     @Override
     public void onClick(View v) {
-        if(btnAll.getId() == v.getId()){
-            ParseQuery query = new ParseQuery("picture");
-            query.addDescendingOrder("createdAt");
-            query.setLimit(5);
-            query.findInBackground(new FindCallback() {
-                @Override
-                public void done(List objects, ParseException e) {
-                }
+        if (btnAll.getId() == v.getId()) {
+//            ParseQuery query = new ParseQuery("picture");
+//            query.addDescendingOrder("createdAt");
+//            query.setLimit(5);
+//            query.findInBackground(new FindCallback() {
+//                @Override
+//                public void done(List objects, ParseException e) {
+//                }
+//
+//                @Override
+//                public void done(Object o, Throwable throwable) {
+//                    if (o instanceof List) {
+//                        categories = (List<ParseObject>) o;
+            tinydb.putListString(SAVED_LIST, likesList);
+            PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+            Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
 
-                @Override
-                public void done(Object o, Throwable throwable) {
-                    if (o instanceof List) {
-                        categories = (List<ParseObject>) o;
-
-                        PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
-                        Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
-
-                    }
-                }
-            });
-        }if (btnShare.getId() == v.getId()) {
-            if(mExternalStorageAvailable && mExternalStorageWriteable){
+//                    }
+//                }
+//            });
+        }
+        if (btnShare.getId() == v.getId()) {
+            if (mExternalStorageAvailable && mExternalStorageWriteable) {
                 sendShareIntentPhoto(mPosition);
-            }else{
+            } else {
                 sendShareIntentLink(mPosition);
             }
-        }else if(btnSave.getId() == v.getId()){
+        } else if (btnLike.getId() == v.getId()) {
+            if (!likesList.contains(categories.get(mPosition).getObjectId())) {
+                incrementLikes();
+                int d1 = ((Integer) categories.get(mPosition).get("likes"));
+                d1 = d1--;
+                likesCounterView.setText(Integer.toString(d1));
+            } else {
+                decrementLikes();
+                int d1 = ((Integer) categories.get(mPosition).get("likes"));
+                d1 = d1--;
+                likesCounterView.setText(Integer.toString(d1));
+
+            }
+        } else if (btnMore.getId() == v.getId()) {
+            //  enableAlertMenu();
+            if (menuLayout.getVisibility() == View.GONE) {
+                Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+                menuLayout.setVisibility(View.VISIBLE);
+                menuLayout.setAnimation(animFadeIn);
+            } else {
+                Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+                menuLayout.setVisibility(View.GONE);
+                menuLayout.setAnimation(animFadeOut);
+            }
+        }else if (btnSendUsImage.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
+
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPhoto, REQUEST_CODE_FROM_GALLERY_IMAGE);
+        } else if (btnInviteFriend.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
+
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, "когда нибудь это будет приглашение в нафаню, а пока качни айдаприкол https://play.google.com/store/apps/details?id=ru.idaprikol&hl=ru");
+            startActivity(Intent.createChooser(share, "Пригласить"));
+        } else if (btnPushState.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
+
+            if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
+                try {
+                    btnPushState.setText("Включить Push уведомления");
+                    tinydb.putInt(Constants.PUSH_INDICATOR, 1);
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.removeAll("channels", Arrays.asList("photos"));
+                    installation.saveInBackground();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                btnPushState.setText("Отключить Push уведомления");
+
+                tinydb.putInt(Constants.PUSH_INDICATOR, 0);
+                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                installation.addAllUnique("channels", Arrays.asList("photos"));
+                installation.saveInBackground();
+            }
+        }
+        else if (btnSaveImage.getId() == v.getId()) {
+            menuLayout.setVisibility(View.GONE);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setCancelable(true).setMessage("Want save? Nigger!")
+            builder.setCancelable(true).setMessage("Want save?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -295,7 +431,57 @@ customTouchListener = this;
             alert.show();
 
 
+        } else if (btnNtShown.getId() == v.getId()) {
+            NotShown notShown = new NotShown();
+            Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == REQUEST_CODE_FROM_GALLERY_IMAGE) {
+
+                Uri selectedImage = data.getData();
+                if (!ifVideo(selectedImage)) {
+                    Intent email = new Intent(Intent.ACTION_SEND);
+                    email.putExtra(Intent.EXTRA_EMAIL, new String[]{"Alex.Bagranov@gmail.com"});
+                    email.putExtra(Intent.EXTRA_SUBJECT, "Смешная фотография");
+                    email.putExtra(Intent.EXTRA_STREAM, selectedImage);
+                    email.putExtra(Intent.EXTRA_TEXT, "Спасибо что вы посылаете нам свои материалы, сотни пользователей обязательно увидят их! Нафаня");
+                    email.setType("message/rfc822");
+                    startActivity(Intent.createChooser(email, "Выбор меил агента"));
+                } else {
+                    Utils.showAlert(getActivity(), "Ошибка", "Неподдерживаемый формат файла");
+                }
+            }
+        }
+    }
+
+
+    public boolean ifVideo(Uri uri) {
+        if (uri.toString().contains("video")) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public void decrementLikes() {
+        categories.get(mPosition).increment("likes", -1);
+        categories.get(mPosition).saveInBackground();
+        likesList.remove(categories.get(mPosition).getObjectId());
+        initLikeButton();
+
+    }
+
+    public void incrementLikes() {
+        categories.get(mPosition).increment("likes");
+        categories.get(mPosition).saveInBackground();
+        likesList.add(categories.get(mPosition).getObjectId());
+        initLikeButton();
 
     }
 
@@ -352,17 +538,18 @@ customTouchListener = this;
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mPosition = position;
-        if(categories!=null){
-            likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
-        }
 
     }
 
     @Override
     public void onPageSelected(int position) {
+        mPosition = position;
+        if(categories!=null){
+            likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
+        }
+        initLikeButton();
     }
 
     @Override
@@ -371,7 +558,21 @@ customTouchListener = this;
     }
 
     @Override
-    public void fullScreenTouch() {
+    public void fullScreenTouch(int t) {
 
+    }
+
+
+    @Override
+    public void onResume() {
+        likesList = tinydb.getListString(SAVED_LIST);
+        super.onResume();
+
+    }
+    @Override
+    public void onPause(){
+        tinydb.putListString(SAVED_LIST, likesList);
+
+        super.onPause();
     }
 }
