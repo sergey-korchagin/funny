@@ -294,8 +294,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             notSeenCounter--;
         }
         initLikeButton();
-
-        String tmp = String.valueOf((int)categories.get(position).get("pictureNum"));
+int tt =  (querySize - ((int)categories.get(position).get("pictureNum"))) +1;
+        String tmp = String.valueOf(tt);
         picNumber.setText(tmp);
     }
 
@@ -327,7 +327,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                         notSeenCounter--;
 
                     }
-                    String tmp = String.valueOf((int)categories.get(0).get("pictureNum"));
+                    String tmp = String.valueOf(1);
                     picNumber.setText(tmp);
                     initLikeButton();
                     progressDialog.dismiss();
