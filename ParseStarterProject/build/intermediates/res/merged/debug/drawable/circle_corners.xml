@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="#00000000"/>
+        <stroke android:width="2dip"
+            android:color="@color/white"/>
+        <corners android:bottomLeftRadius="10dp"
+            android:bottomRightRadius="10dp"
+            android:topLeftRadius="10dp"
+            android:topRightRadius="10dp"/>
+        <padding android:bottom="2dip"
+            android:left="10dip"
+            android:right="10dip"
+            android:top="2dip"/>
+
+</shape>
+<!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/drawable/circle_corners.xml -->

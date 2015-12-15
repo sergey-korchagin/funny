@@ -85,6 +85,7 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     ImageView btnNtShown;
     TinyDB tinydb;
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
+    TextView picNumber;
 
 ProgressDialog progressDialog;
     @Override
@@ -93,6 +94,7 @@ ProgressDialog progressDialog;
         Constants.FROM_SETTINGS = false;
         progressDialog = ProgressDialog.show(getActivity(),"","Картинки загружаются...");
 
+        picNumber = (TextView)root.findViewById(R.id.picNumber);
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
@@ -191,6 +193,7 @@ ProgressDialog progressDialog;
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     progressDialog.dismiss();
                     initLikeButton();
+                    picNumber.setText(String.valueOf(1));
 
                 }
             }
@@ -549,6 +552,8 @@ ProgressDialog progressDialog;
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
         }
+        int pos = position+1;
+        picNumber.setText(String.valueOf(pos));
         initLikeButton();
     }
 

@@ -93,7 +93,6 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
     List<ParseObject> updatedCategories;
-
     int skip = 0;
     int querySize;
     public int mPosition;
@@ -123,7 +122,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     TextView btnSaveImage;
     TextView btnPushState;
     RelativeLayout mainRelative;
-LinearLayout topLayout;
+    LinearLayout topLayout;
+    TextView picNumber;
+    TextView allPicNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,7 +136,9 @@ LinearLayout topLayout;
 
         errorLayout = (FrameLayout) root.findViewById(R.id.errorLayout);
         mainRelative = (RelativeLayout) root.findViewById(R.id.mainRelativeLayout);
-        topLayout = (LinearLayout)root.findViewById(R.id.topLayout);
+        topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
+        picNumber = (TextView)root.findViewById(R.id.picNumber);
+        allPicNumber = (TextView)root.findViewById(R.id.allPics);
 
 
         mainLayout = (LinearLayout) root.findViewById(R.id.mainLinearLayout);
@@ -150,7 +153,7 @@ LinearLayout topLayout;
         btnPushState = (TextView) root.findViewById(R.id.enablePush);
         btnPushState.setOnClickListener(this);
 
-        btnSaveImage = (TextView)root.findViewById(R.id.savePicture);
+        btnSaveImage = (TextView) root.findViewById(R.id.savePicture);
         btnSaveImage.setOnClickListener(this);
 
         if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
@@ -171,7 +174,6 @@ LinearLayout topLayout;
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
-
 
 
         btnTop = (ImageView) root.findViewById(R.id.btnTop);
@@ -200,6 +202,7 @@ LinearLayout topLayout;
         getQuerySize();
         getCategories();
 
+
         mPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -209,7 +212,7 @@ LinearLayout topLayout;
                     menuLayout.setAnimation(animFadeOut);
                 }
 
-                        return false;
+                return false;
             }
         });
         return root;
@@ -239,6 +242,9 @@ LinearLayout topLayout;
                 if (notSeenCounter < 0) {
                     notSeenCounter = 0;
                 }
+                String pics = "/" +querySize;
+                allPicNumber.setText(pics);
+
             }
         });
 
@@ -288,6 +294,9 @@ LinearLayout topLayout;
             notSeenCounter--;
         }
         initLikeButton();
+
+        String tmp = String.valueOf((int)categories.get(position).get("pictureNum"));
+        picNumber.setText(tmp);
     }
 
 
@@ -318,6 +327,8 @@ LinearLayout topLayout;
                         notSeenCounter--;
 
                     }
+                    String tmp = String.valueOf((int)categories.get(0).get("pictureNum"));
+                    picNumber.setText(tmp);
                     initLikeButton();
                     progressDialog.dismiss();
 

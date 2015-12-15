@@ -233,6 +233,41 @@ android:background="@drawable/bars01_f_btm"
                 android:textStyle="bold" />
         </FrameLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="55dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_corners"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/picNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/orange" />
+
+                <TextView
+                    android:id="@+id/allPics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
 </LinearLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/pictures_main_fragment.xml -->
