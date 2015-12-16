@@ -68,6 +68,7 @@ import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
+import com.parse.starter.utils.ZoomOutPageTransformer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -123,8 +124,10 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     TextView btnPushState;
     RelativeLayout mainRelative;
     LinearLayout topLayout;
+    RelativeLayout bottomLayout;
     TextView picNumber;
     TextView allPicNumber;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -137,6 +140,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         errorLayout = (FrameLayout) root.findViewById(R.id.errorLayout);
         mainRelative = (RelativeLayout) root.findViewById(R.id.mainRelativeLayout);
         topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
+        bottomLayout = (RelativeLayout)root.findViewById(R.id.bottomLayout);
         picNumber = (TextView)root.findViewById(R.id.picNumber);
         allPicNumber = (TextView)root.findViewById(R.id.allPics);
 
@@ -215,6 +219,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 return false;
             }
         });
+
+        mPager.setPageTransformer(true,new ZoomOutPageTransformer());
         return root;
     }
 
@@ -770,16 +776,23 @@ int tt =  (querySize - ((int)categories.get(position).get("pictureNum"))) +1;
     public void fullScreenTouch(int touch) {
 //        switch (touch) {
 //            case 1:
-//                Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
-//                topLayout.setVisibility(View.GONE);
-//                topLayout.setAnimation(animFadeOut);
-//            case 2: // отпускание
-//
-//                Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-//                topLayout.setVisibility(View.GONE);
-//                topLayout.setAnimation(animFadeIn);
-//
-//        }
+        Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+        Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+        if(topLayout.getVisibility() == View.VISIBLE){
+            topLayout.setVisibility(View.GONE);
+            topLayout.setAnimation(animFadeOut);
+            bottomLayout.setVisibility(View.GONE);
+            bottomLayout.setAnimation(animFadeOut);
+        }else{
+            topLayout.setVisibility(View.VISIBLE);
+            topLayout.setAnimation(animFadeIn);
+            bottomLayout.setVisibility(View.VISIBLE);
+            bottomLayout.setAnimation(animFadeIn);
+        }
+        if(menuLayout.getVisibility()==View.VISIBLE){
+            menuLayout.setVisibility(View.GONE);
+            menuLayout.setAnimation(animFadeOut);
+        }
     }
 
 
