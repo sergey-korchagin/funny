@@ -222,7 +222,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             }
         });
 
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        //mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         return root;
     }
 
