@@ -25,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +88,10 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
     TextView picNumber;
 
+    LinearLayout topLayout;
+    RelativeLayout bottomLayout;
+    LinearLayout counterLayout;
+
 ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,6 +116,9 @@ ProgressDialog progressDialog;
 
         menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
         menuLayout.setVisibility(View.GONE);
+        topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
+        bottomLayout = (RelativeLayout)root.findViewById(R.id.bottomLayout);
+        counterLayout = (LinearLayout)root.findViewById(R.id.counterLayout);
         btnSendUsImage = (TextView) root.findViewById(R.id.sendUsPictre);
         btnSendUsImage.setOnClickListener(this);
 
@@ -563,8 +571,29 @@ ProgressDialog progressDialog;
     }
 
     @Override
-    public void fullScreenTouch(int t) {
+    public void fullScreenTouch(int touch) {
 
+        Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+        Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+        if(topLayout.getVisibility() == View.VISIBLE){
+            topLayout.setVisibility(View.GONE);
+            topLayout.setAnimation(animFadeOut);
+            bottomLayout.setVisibility(View.GONE);
+            bottomLayout.setAnimation(animFadeOut);
+            counterLayout.setVisibility(View.GONE);
+            counterLayout.setAnimation(animFadeOut);
+        }else{
+            topLayout.setVisibility(View.VISIBLE);
+            topLayout.setAnimation(animFadeIn);
+            bottomLayout.setVisibility(View.VISIBLE);
+            bottomLayout.setAnimation(animFadeIn);
+            counterLayout.setVisibility(View.VISIBLE);
+            counterLayout.setAnimation(animFadeIn);
+        }
+        if(menuLayout.getVisibility()==View.VISIBLE){
+            menuLayout.setVisibility(View.GONE);
+            menuLayout.setAnimation(animFadeOut);
+        }
     }
 
 

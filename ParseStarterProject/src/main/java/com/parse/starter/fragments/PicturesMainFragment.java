@@ -127,6 +127,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     RelativeLayout bottomLayout;
     TextView picNumber;
     TextView allPicNumber;
+    LinearLayout counterLayout;
 
 
     @Override
@@ -140,9 +141,10 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         errorLayout = (FrameLayout) root.findViewById(R.id.errorLayout);
         mainRelative = (RelativeLayout) root.findViewById(R.id.mainRelativeLayout);
         topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
-        bottomLayout = (RelativeLayout)root.findViewById(R.id.bottomLayout);
-        picNumber = (TextView)root.findViewById(R.id.picNumber);
-        allPicNumber = (TextView)root.findViewById(R.id.allPics);
+        bottomLayout = (RelativeLayout) root.findViewById(R.id.bottomLayout);
+        counterLayout = (LinearLayout) root.findViewById(R.id.counterLayout);
+        picNumber = (TextView) root.findViewById(R.id.picNumber);
+        allPicNumber = (TextView) root.findViewById(R.id.allPics);
 
 
         mainLayout = (LinearLayout) root.findViewById(R.id.mainLinearLayout);
@@ -220,7 +222,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             }
         });
 
-        mPager.setPageTransformer(true,new ZoomOutPageTransformer());
+        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         return root;
     }
 
@@ -248,7 +250,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 if (notSeenCounter < 0) {
                     notSeenCounter = 0;
                 }
-                String pics = "/" +querySize;
+                String pics = "/" + querySize;
                 allPicNumber.setText(pics);
 
             }
@@ -300,7 +302,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             notSeenCounter--;
         }
         initLikeButton();
-int tt =  (querySize - ((int)categories.get(position).get("pictureNum"))) +1;
+        int tt = (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
         String tmp = String.valueOf(tt);
         picNumber.setText(tmp);
     }
@@ -778,18 +780,22 @@ int tt =  (querySize - ((int)categories.get(position).get("pictureNum"))) +1;
 //            case 1:
         Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
         Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-        if(topLayout.getVisibility() == View.VISIBLE){
+        if (topLayout.getVisibility() == View.VISIBLE) {
             topLayout.setVisibility(View.GONE);
             topLayout.setAnimation(animFadeOut);
             bottomLayout.setVisibility(View.GONE);
             bottomLayout.setAnimation(animFadeOut);
-        }else{
+            counterLayout.setVisibility(View.GONE);
+            counterLayout.setAnimation(animFadeOut);
+        } else {
             topLayout.setVisibility(View.VISIBLE);
             topLayout.setAnimation(animFadeIn);
             bottomLayout.setVisibility(View.VISIBLE);
             bottomLayout.setAnimation(animFadeIn);
+            counterLayout.setVisibility(View.VISIBLE);
+            counterLayout.setAnimation(animFadeIn);
         }
-        if(menuLayout.getVisibility()==View.VISIBLE){
+        if (menuLayout.getVisibility() == View.VISIBLE) {
             menuLayout.setVisibility(View.GONE);
             menuLayout.setAnimation(animFadeOut);
         }

@@ -29,8 +29,6 @@
         </LinearLayout>
 
 
-
-
         <LinearLayout
             android:id="@+id/menuLayout"
             android:layout_width="170dp"
@@ -42,15 +40,15 @@
 
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_gravity="center"
-                    android:background="@drawable/iaiconsmenu01_save_f"
                     android:layout_width="20dp"
-                    android:layout_height="20dp" />
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/iaiconsmenu01_save_f" />
 
                 <TextView
                     android:id="@+id/savePicture"
@@ -70,31 +68,34 @@
                 android:layout_height="2dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="25dp"
-                android:background="@color/white"></View>
+                android:background="@color/white"
+                android:visibility="invisible"></View>
 
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_gravity="center"
-                android:background="@drawable/iaiconsmenu01_sendus_f"
-                android:layout_width="20dp"
-                android:layout_marginLeft="4dp"
-                android:layout_height="20dp" />
-            <TextView
-                android:id="@+id/sendUsPictre"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:gravity="center|left"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="Послать нам свой прикол"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/iaiconsmenu01_sendus_f" />
+
+                <TextView
+                    android:id="@+id/sendUsPictre"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center|left"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Послать нам свой прикол"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
 
             <View
@@ -102,60 +103,65 @@
                 android:layout_height="2dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="25dp"
-                android:background="@color/white"></View>
+                android:background="@color/white"
+                android:visibility="invisible"></View>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_gravity="center"
-                android:background="@drawable/iaiconsmenu01_invite_f"
-                android:layout_width="20dp"
-                android:layout_marginLeft="4dp"
-                android:layout_height="20dp" />
-            <TextView
-                android:id="@+id/inviteFriend"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:gravity="center|left"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="Пригласить друга"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white" />
-</LinearLayout>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/iaiconsmenu01_invite_f" />
+
+                <TextView
+                    android:id="@+id/inviteFriend"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center|left"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Пригласить друга"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@color/white"></View>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_gravity="center"
-                android:background="@drawable/iaiconsmenu01_nonews_f"
-                android:layout_width="20dp"
-                android:layout_marginLeft="4dp"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:id="@+id/enablePush"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:gravity="center|left"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="Включить пуш уведомления"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white"
-                android:layout_marginTop="5dp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/iaiconsmenu01_nonews_f" />
+
+                <TextView
+                    android:id="@+id/enablePush"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center|left"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Включить пуш уведомления"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
 
@@ -289,7 +295,8 @@ android:background="@drawable/bars01_f_btm"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="55dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:id="@+id/counterLayout">
 
             <LinearLayout
                 android:layout_width="wrap_content"

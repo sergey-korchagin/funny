@@ -25,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +91,9 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
     int notSeenCounter;
     ProgressDialog progressDialog;
 
+    LinearLayout topLayout;
+    RelativeLayout bottomLayout;
+    LinearLayout counterLayout;
     TextView picNumber;
     TextView allPicNumber;
     int querySize;
@@ -107,7 +111,9 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
         tinydb = new TinyDB(getActivity());
         seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
-
+        topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
+        bottomLayout = (RelativeLayout)root.findViewById(R.id.bottomLayout);
+        counterLayout = (LinearLayout)root.findViewById(R.id.counterLayout);
 
         notSeenCounter = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         btnMore = (ImageView) root.findViewById(R.id.btnMore);
@@ -220,12 +226,14 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
                     }else {
                         mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                         mPager.setAdapter(mAdapter);
+                        likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
 
                         if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
                             seenItemsLIst.add(categories.get(0).getObjectId());
                             notSeenCounter--;
                         }
                         picNumber.setText(String.valueOf(1));
+                        initLikeButton();
                         progressDialog.dismiss();
                     }
 
@@ -606,8 +614,29 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
     }
 
     @Override
-    public void fullScreenTouch(int t) {
+    public void fullScreenTouch(int touch) {
 
+        Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+        Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+        if(topLayout.getVisibility() == View.VISIBLE){
+            topLayout.setVisibility(View.GONE);
+            topLayout.setAnimation(animFadeOut);
+            bottomLayout.setVisibility(View.GONE);
+            bottomLayout.setAnimation(animFadeOut);
+            counterLayout.setVisibility(View.GONE);
+            counterLayout.setAnimation(animFadeOut);
+        }else{
+            topLayout.setVisibility(View.VISIBLE);
+            topLayout.setAnimation(animFadeIn);
+            bottomLayout.setVisibility(View.VISIBLE);
+            bottomLayout.setAnimation(animFadeIn);
+            counterLayout.setVisibility(View.VISIBLE);
+            counterLayout.setAnimation(animFadeIn);
+        }
+        if(menuLayout.getVisibility()==View.VISIBLE){
+            menuLayout.setVisibility(View.GONE);
+            menuLayout.setAnimation(animFadeOut);
+        }
     }
 
 
