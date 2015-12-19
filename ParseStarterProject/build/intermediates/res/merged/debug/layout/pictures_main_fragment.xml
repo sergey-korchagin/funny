@@ -34,22 +34,37 @@
         <LinearLayout
             android:id="@+id/menuLayout"
             android:layout_width="170dp"
-            android:layout_height="160dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="60dp"
             android:background="#A6000000"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/savePicture"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center|left"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="Сохранить прикол"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white" />
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:background="@drawable/iaiconsmenu01_save_f"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:id="@+id/savePicture"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center|left"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Сохранить прикол"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
@@ -57,17 +72,30 @@
                 android:layout_marginRight="25dp"
                 android:background="@color/white"></View>
 
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@drawable/iaiconsmenu01_sendus_f"
+                android:layout_width="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_height="20dp" />
             <TextView
                 android:id="@+id/sendUsPictre"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="2dp"
                 android:gravity="center|left"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="Послать нам свой прикол"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white" />
+        </LinearLayout>
+
 
             <View
                 android:layout_width="fill_parent"
@@ -76,18 +104,28 @@
                 android:layout_marginRight="25dp"
                 android:background="@color/white"></View>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@drawable/iaiconsmenu01_invite_f"
+                android:layout_width="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_height="20dp" />
             <TextView
                 android:id="@+id/inviteFriend"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="2dp"
                 android:gravity="center|left"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="Пригласить друга"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white" />
-
+</LinearLayout>
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
@@ -95,17 +133,30 @@
                 android:layout_marginRight="25dp"
                 android:background="@color/white"></View>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@drawable/iaiconsmenu01_nonews_f"
+                android:layout_width="20dp"
+                android:layout_marginLeft="4dp"
+                android:layout_height="20dp" />
+
             <TextView
                 android:id="@+id/enablePush"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="2dp"
                 android:gravity="center|left"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:text="Включить пуш уведомления"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:layout_marginTop="5dp" />
+            </LinearLayout>
         </LinearLayout>
 
 
@@ -272,4 +323,4 @@ android:background="@drawable/bars01_f_btm"
 
     </RelativeLayout>
 
-</LinearLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/pictures_main_fragment.xml -->
+</LinearLayout><!-- From: file:/C:/Users/serge_000/Desktop/funny/ParseStarterProject/src/main/res/layout/pictures_main_fragment.xml -->
