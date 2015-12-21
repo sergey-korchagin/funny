@@ -128,6 +128,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     TextView picNumber;
     TextView allPicNumber;
     LinearLayout counterLayout;
+    ImageView pushMenuImage;
 
 
     @Override
@@ -159,13 +160,17 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         btnPushState = (TextView) root.findViewById(R.id.enablePush);
         btnPushState.setOnClickListener(this);
 
+        pushMenuImage = (ImageView)root.findViewById(R.id.pushMenuIcon);
         btnSaveImage = (TextView) root.findViewById(R.id.savePicture);
         btnSaveImage.setOnClickListener(this);
 
         if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
             btnPushState.setText("Отключить Push уведомления");
+            pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_nonews_f));
+
         } else {
             btnPushState.setText("Включить Push уведомления");
+            pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_yesnews_f));
 
         }
         intiReciever();
@@ -433,6 +438,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
                 try {
                     btnPushState.setText("Включить Push уведомления");
+                    pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_yesnews_f));
                     tinydb.putInt(Constants.PUSH_INDICATOR, 1);
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                     installation.removeAll("channels", Arrays.asList("photos"));
@@ -443,6 +449,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
             } else {
                 btnPushState.setText("Отключить Push уведомления");
+                pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_nonews_f));
 
                 tinydb.putInt(Constants.PUSH_INDICATOR, 0);
                 ParseInstallation installation = ParseInstallation.getCurrentInstallation();

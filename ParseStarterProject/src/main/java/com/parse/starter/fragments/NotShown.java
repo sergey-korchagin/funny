@@ -97,6 +97,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
     TextView picNumber;
     TextView allPicNumber;
     int querySize;
+    ImageView pushMenuImage;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.not_shown_fragment, container, false);
@@ -138,11 +139,15 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
         btnSaveImage = (TextView)root.findViewById(R.id.savePicture);
         btnSaveImage.setOnClickListener(this);
+        pushMenuImage = (ImageView)root.findViewById(R.id.pushMenuIcon);
 
         if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
             btnPushState.setText("Отключить Push уведомления");
+            pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_nonews_f));
+
         } else {
             btnPushState.setText("Включить Push уведомления");
+            pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_yesnews_f));
 
         }
         btnLike = (ImageView) root.findViewById(R.id.btnLike);
@@ -438,6 +443,8 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
             if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
                 try {
                     btnPushState.setText("Включить Push уведомления");
+                    pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_yesnews_f));
+
                     tinydb.putInt(Constants.PUSH_INDICATOR, 1);
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                     installation.removeAll("channels", Arrays.asList("photos"));
@@ -448,6 +455,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
             } else {
                 btnPushState.setText("Отключить Push уведомления");
+                pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_nonews_f));
 
                 tinydb.putInt(Constants.PUSH_INDICATOR, 0);
                 ParseInstallation installation = ParseInstallation.getCurrentInstallation();

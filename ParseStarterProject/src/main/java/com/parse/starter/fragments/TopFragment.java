@@ -58,7 +58,7 @@ import java.util.Locale;
 /**
  * Created by serge_000 on 04/12/2015.
  */
-public class TopFragment extends Fragment implements View.OnClickListener,ViewPager.OnPageChangeListener,
+public class TopFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener,
         CustomTouchListener {
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
@@ -91,15 +91,17 @@ public class TopFragment extends Fragment implements View.OnClickListener,ViewPa
     LinearLayout topLayout;
     RelativeLayout bottomLayout;
     LinearLayout counterLayout;
+    ImageView pushMenuImage;
 
-ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.top_fragment, container, false);
         Constants.FROM_SETTINGS = false;
-        progressDialog = ProgressDialog.show(getActivity(),"","Картинки загружаются...");
+        progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
 
-        picNumber = (TextView)root.findViewById(R.id.picNumber);
+        picNumber = (TextView) root.findViewById(R.id.picNumber);
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(this);
@@ -108,7 +110,7 @@ ProgressDialog progressDialog;
         btnMore = (ImageView) root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
 
-        btnAll = (ImageView)root.findViewById(R.id.btnTop);
+        btnAll = (ImageView) root.findViewById(R.id.btnTop);
         btnAll.setOnClickListener(this);
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
@@ -117,8 +119,8 @@ ProgressDialog progressDialog;
         menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
         menuLayout.setVisibility(View.GONE);
         topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
-        bottomLayout = (RelativeLayout)root.findViewById(R.id.bottomLayout);
-        counterLayout = (LinearLayout)root.findViewById(R.id.counterLayout);
+        bottomLayout = (RelativeLayout) root.findViewById(R.id.bottomLayout);
+        counterLayout = (LinearLayout) root.findViewById(R.id.counterLayout);
         btnSendUsImage = (TextView) root.findViewById(R.id.sendUsPictre);
         btnSendUsImage.setOnClickListener(this);
 
@@ -127,14 +129,18 @@ ProgressDialog progressDialog;
 
         btnPushState = (TextView) root.findViewById(R.id.enablePush);
         btnPushState.setOnClickListener(this);
+        pushMenuImage = (ImageView) root.findViewById(R.id.pushMenuIcon);
 
-        btnSaveImage = (TextView)root.findViewById(R.id.savePicture);
+        btnSaveImage = (TextView) root.findViewById(R.id.savePicture);
         btnSaveImage.setOnClickListener(this);
 
         if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
             btnPushState.setText("Отключить Push уведомления");
+            pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_nonews_f));
+
         } else {
             btnPushState.setText("Включить Push уведомления");
+            pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_yesnews_f));
 
         }
         btnLike = (ImageView) root.findViewById(R.id.btnLike);
@@ -159,8 +165,8 @@ ProgressDialog progressDialog;
             }
         });
 
-        mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
-        likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
+        mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
+        likesCounterView = (TextView) root.findViewById(R.id.likesCounter);
 
         customTouchListener = this;
         initSmallImage();
@@ -196,7 +202,7 @@ ProgressDialog progressDialog;
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity(),customTouchListener);
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     progressDialog.dismiss();
@@ -209,7 +215,7 @@ ProgressDialog progressDialog;
     }
 
 
-    public void initSmallImage(){
+    public void initSmallImage() {
         ParseQuery query = new ParseQuery("smallImage");
         query.addDescendingOrder("createdAt");
         query.setLimit(1);
@@ -243,7 +249,7 @@ ProgressDialog progressDialog;
         });
     }
 
-    public void sendShareIntentLink(final int position){
+    public void sendShareIntentLink(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true).setMessage("No enough storage! But you still can share link to picture!")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -314,7 +320,7 @@ ProgressDialog progressDialog;
     }
 
 
-    public void checkIfStorageAvailable(){
+    public void checkIfStorageAvailable() {
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -384,7 +390,7 @@ ProgressDialog progressDialog;
                 menuLayout.setVisibility(View.GONE);
                 menuLayout.setAnimation(animFadeOut);
             }
-        }else if (btnSendUsImage.getId() == v.getId()) {
+        } else if (btnSendUsImage.getId() == v.getId()) {
             menuLayout.setVisibility(View.GONE);
 
             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
@@ -403,6 +409,8 @@ ProgressDialog progressDialog;
             if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
                 try {
                     btnPushState.setText("Включить Push уведомления");
+                    pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_nonews_f));
+
                     tinydb.putInt(Constants.PUSH_INDICATOR, 1);
                     ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                     installation.removeAll("channels", Arrays.asList("photos"));
@@ -413,14 +421,14 @@ ProgressDialog progressDialog;
 
             } else {
                 btnPushState.setText("Отключить Push уведомления");
+                pushMenuImage.setBackground(getResources().getDrawable(R.drawable.iaiconsmenu01_yesnews_f));
 
                 tinydb.putInt(Constants.PUSH_INDICATOR, 0);
                 ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                 installation.addAllUnique("channels", Arrays.asList("photos"));
                 installation.saveInBackground();
             }
-        }
-        else if (btnSaveImage.getId() == v.getId()) {
+        } else if (btnSaveImage.getId() == v.getId()) {
             menuLayout.setVisibility(View.GONE);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setCancelable(true).setMessage("Want save?")
@@ -479,7 +487,6 @@ ProgressDialog progressDialog;
     }
 
 
-
     public void decrementLikes() {
         categories.get(mPosition).increment("likes", -1);
         categories.get(mPosition).saveInBackground();
@@ -496,53 +503,53 @@ ProgressDialog progressDialog;
 
     }
 
-    public void savePicture(){
-        if(mExternalStorageWriteable && mExternalStorageAvailable){
+    public void savePicture() {
+        if (mExternalStorageWriteable && mExternalStorageAvailable) {
             //save
             if (categories.get(mPosition).get("mPicture") != null) {
                 ParseFile applicantResume = (ParseFile) categories.get(mPosition).get("mPicture");
                 applicantResume.getDataInBackground(new GetDataCallback() {
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        //save
-                        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                                "/FunnyPhotos";
-                        File dir = new File(file_path);
-                        if (!dir.exists())
-                            dir.mkdirs();
+                                                        public void done(byte[] data, ParseException e) {
+                                                            if (e == null) {
+                                                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                                                //save
+                                                                String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                                                        "/FunnyPhotos";
+                                                                File dir = new File(file_path);
+                                                                if (!dir.exists())
+                                                                    dir.mkdirs();
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String currentDate = sdf.format(new Date());
-                        File file = new File(dir, "funny_" + currentDate + ".png");
-                        try {
-                            FileOutputStream fOut = new FileOutputStream(file);
-                            bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-                            fOut.flush();
-                            fOut.close();
-                            Toast.makeText(getActivity(), "Saved to " + file_path, Toast.LENGTH_SHORT).show();
+                                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                                String currentDate = sdf.format(new Date());
+                                                                File file = new File(dir, "funny_" + currentDate + ".png");
+                                                                try {
+                                                                    FileOutputStream fOut = new FileOutputStream(file);
+                                                                    bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+                                                                    fOut.flush();
+                                                                    fOut.close();
+                                                                    Toast.makeText(getActivity(), "Saved to " + file_path, Toast.LENGTH_SHORT).show();
 
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        ContentValues values = new ContentValues();
-                        values.put(MediaStore.Images.Media.TITLE, "funny");
-                        values.put(MediaStore.Images.Media.DESCRIPTION, "saved from app");
-                        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-                        values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
-                        values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));
-                        values.put("_data", file.getAbsolutePath());
+                                                                } catch (IOException ex) {
+                                                                    ex.printStackTrace();
+                                                                }
+                                                                ContentValues values = new ContentValues();
+                                                                values.put(MediaStore.Images.Media.TITLE, "funny");
+                                                                values.put(MediaStore.Images.Media.DESCRIPTION, "saved from app");
+                                                                values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+                                                                values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
+                                                                values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));
+                                                                values.put("_data", file.getAbsolutePath());
 
-                        ContentResolver cr = getActivity().getContentResolver();
-                        cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            }
+                                                                ContentResolver cr = getActivity().getContentResolver();
+                                                                cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                                            } else {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    }
                 );
             }
-        }else{
+        } else {
             Utils.showAlert(getActivity(), "Error", "No external storage available");
         }
     }
@@ -556,11 +563,11 @@ ProgressDialog progressDialog;
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-        if(categories!=null){
+        if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
         }
-        int pos = position+1;
+        int pos = position + 1;
         picNumber.setText(String.valueOf(pos));
         initLikeButton();
     }
@@ -575,14 +582,14 @@ ProgressDialog progressDialog;
 
         Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
         Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-        if(topLayout.getVisibility() == View.VISIBLE){
+        if (topLayout.getVisibility() == View.VISIBLE) {
             topLayout.setVisibility(View.GONE);
             topLayout.setAnimation(animFadeOut);
             bottomLayout.setVisibility(View.GONE);
             bottomLayout.setAnimation(animFadeOut);
             counterLayout.setVisibility(View.GONE);
             counterLayout.setAnimation(animFadeOut);
-        }else{
+        } else {
             topLayout.setVisibility(View.VISIBLE);
             topLayout.setAnimation(animFadeIn);
             bottomLayout.setVisibility(View.VISIBLE);
@@ -590,7 +597,7 @@ ProgressDialog progressDialog;
             counterLayout.setVisibility(View.VISIBLE);
             counterLayout.setAnimation(animFadeIn);
         }
-        if(menuLayout.getVisibility()==View.VISIBLE){
+        if (menuLayout.getVisibility() == View.VISIBLE) {
             menuLayout.setVisibility(View.GONE);
             menuLayout.setAnimation(animFadeOut);
         }
@@ -603,8 +610,9 @@ ProgressDialog progressDialog;
         super.onResume();
 
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         tinydb.putListString(SAVED_LIST, likesList);
 
         super.onPause();
