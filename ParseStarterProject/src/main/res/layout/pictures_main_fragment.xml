@@ -106,6 +106,7 @@
                 android:layout_toRightOf="@+id/btnTop"
                 android:background="@drawable/new_selector" />
 
+
             <TextView
                 android:id="@+id/likesCounter"
                 android:layout_width="wrap_content"

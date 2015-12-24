@@ -63,6 +63,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
+    List<ParseObject> updatedCategories;
     ImageView btnShare;
     ImageView btnSave;
     ImageView btnAll;
@@ -78,7 +79,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     ArrayList<String> likesList;
     String SAVED_LIST = "saved_list";
     ImageView btnMore;
-
+    int skip = 0;
     TextView btnSendUsImage;
     TextView btnInviteFriend;
     TextView btnSaveImage;
@@ -192,7 +193,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("likes");
-        query.setLimit(10);
+        query.setLimit(5);
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -563,6 +564,32 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
+
+
+        if (position % 5 == 1 && skip < Constants.TOP_SIZE) {
+            skip = skip + 5;
+
+            ParseQuery query = new ParseQuery("picture");
+            query.addDescendingOrder("createdAt");
+            //  query.whereNotContainedIn();
+            query.setSkip(skip);
+            query.setLimit(5);
+            query.findInBackground(new FindCallback() {
+                @Override
+                public void done(List objects, ParseException e) {
+                }
+
+                @Override
+                public void done(Object o, Throwable throwable) {
+                    if (o instanceof List) {
+                        updatedCategories = (List<ParseObject>) o;
+                        mAdapter.getMorePhotos(updatedCategories, Constants.TOP_SIZE);
+                        mAdapter.notifyDataSetChanged();
+
+                    }
+                }
+            });
+        }
         if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
