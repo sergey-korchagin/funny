@@ -231,8 +231,8 @@
 
             <ImageView
                 android:id="@+id/btnTop"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
@@ -241,8 +241,8 @@
 
             <ImageView
                 android:id="@+id/btnNotSeen"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/btnTop"
                 android:layout_gravity="center"
@@ -283,15 +283,6 @@
         android:visibility="gone">
 
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="А интернета то нету! Как теперь смотреть картинки?"
-                android:textStyle="bold" />
         </FrameLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -333,4 +324,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</LinearLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/not_shown_fragment.xml -->
+</LinearLayout><!-- From: file:/C:/Users/serge_000/Desktop/funny/ParseStarterProject/src/main/res/layout/not_shown_fragment.xml -->

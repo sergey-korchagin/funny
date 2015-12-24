@@ -144,14 +144,9 @@
             android:id="@+id/errorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/disconnected01"
             android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/error" />
 
             <TextView
                 android:id="@+id/textView3"

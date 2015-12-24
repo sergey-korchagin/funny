@@ -16,8 +16,8 @@ android:orientation="vertical">
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_gravity="center"
         android:layout_marginLeft="4dp"
         android:background="@drawable/iaiconsmenu01_save_f" />
@@ -50,8 +50,8 @@ android:orientation="vertical">
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_gravity="center"
         android:layout_marginLeft="4dp"
         android:background="@drawable/iaiconsmenu01_sendus_f" />
@@ -84,8 +84,8 @@ android:orientation="vertical">
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_gravity="center"
         android:layout_marginLeft="4dp"
         android:background="@drawable/iaiconsmenu01_invite_f" />
@@ -116,8 +116,8 @@ android:orientation="vertical">
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_gravity="center"
         android:id="@+id/pushMenuIcon"
         android:layout_marginLeft="4dp"
@@ -137,4 +137,4 @@ android:orientation="vertical">
         android:textColor="@color/white" />
 </LinearLayout>
 </LinearLayout>
-<!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/menu_layout.xml -->
+<!-- From: file:/C:/Users/serge_000/Desktop/funny/ParseStarterProject/src/main/res/layout/menu_layout.xml -->

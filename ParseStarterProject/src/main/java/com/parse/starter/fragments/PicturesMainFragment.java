@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -197,7 +198,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
-
+        if(notSeenCounter == 0){
+            btnNtShown.setVisibility(View.GONE);
+        }
 
         btnMore = (ImageView) root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
@@ -840,6 +843,19 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             return false;
         }
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
 
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+           topLayout.setVisibility(View.GONE);
+            bottomLayout.setVisibility(View.GONE);
+            counterLayout.setVisibility(View.GONE);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            topLayout.setVisibility(View.VISIBLE);
+            bottomLayout.setVisibility(View.VISIBLE);
+            counterLayout.setVisibility(View.VISIBLE);}
+    }
 
 }

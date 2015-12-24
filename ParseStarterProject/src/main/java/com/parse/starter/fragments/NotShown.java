@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -125,7 +126,9 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
-
+        if(notSeenCounter == 0){
+            btnNtShown.setVisibility(View.GONE);
+        }
         menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
         menuLayout.setVisibility(View.GONE);
         btnSendUsImage = (TextView) root.findViewById(R.id.sendUsPictre);
@@ -693,7 +696,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
     public void getQuerySize() {
 
         ParseQuery query = new ParseQuery("picture");
-        query.whereNotContainedIn("objectId",seenItemsLIst);
+        query.whereNotContainedIn("objectId", seenItemsLIst);
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
@@ -708,5 +711,20 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
             }
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            topLayout.setVisibility(View.GONE);
+            bottomLayout.setVisibility(View.GONE);
+            counterLayout.setVisibility(View.GONE);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            topLayout.setVisibility(View.VISIBLE);
+            bottomLayout.setVisibility(View.VISIBLE);
+            counterLayout.setVisibility(View.VISIBLE);}
     }
 }

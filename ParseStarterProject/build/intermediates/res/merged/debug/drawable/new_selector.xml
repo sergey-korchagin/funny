@@ -5,4 +5,4 @@
     <item android:state_focused="false" android:state_pressed="true"
         android:drawable="@drawable/iaicons_new_f_prsd" />
     <item android:drawable="@drawable/iaicons_new_f_sttc" />
-</selector><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/drawable/new_selector.xml -->
+</selector><!-- From: file:/C:/Users/serge_000/Desktop/funny/ParseStarterProject/src/main/res/drawable/new_selector.xml -->
