@@ -29,7 +29,7 @@
         </LinearLayout>
 
 
-         <include layout="@layout/menu_layout"/>
+        <include layout="@layout/menu_layout" />
 
 
         <LinearLayout
@@ -56,13 +56,13 @@
 
                 <ImageView
                     android:id="@+id/btnShare"
-                    android:paddingTop="10dp"
-                    android:paddingLeft="10dp"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="right|center_horizontal|center_vertical"
                     android:layout_marginRight="15dp"
-                    android:background="@drawable/share_selector" />
+                    android:background="@drawable/share_selector"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -81,8 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
+            android:background="@drawable/bars01_f_btm"
             android:gravity="right"
-android:background="@drawable/bars01_f_btm"
             android:orientation="horizontal">
 
 
@@ -91,9 +91,9 @@ android:background="@drawable/bars01_f_btm"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
                 android:background="@drawable/top_selector" />
 
             <ImageView
@@ -101,9 +101,9 @@ android:background="@drawable/bars01_f_btm"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/btnTop"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/btnTop"
                 android:background="@drawable/new_selector" />
 
             <TextView
@@ -111,9 +111,9 @@ android:background="@drawable/bars01_f_btm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="0"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/btnLike"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
@@ -122,12 +122,11 @@ android:background="@drawable/bars01_f_btm"
             <ImageView
                 android:id="@+id/btnLike"
                 android:layout_width="35dp"
-                android:layout_centerVertical="true"
+                android:layout_height="35dp"
 
                 android:layout_alignParentRight="true"
-                android:layout_height="35dp"
-                android:layout_marginRight="10dp"
-                 />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp" />
 
 
         </RelativeLayout>
@@ -136,14 +135,9 @@ android:background="@drawable/bars01_f_btm"
             android:id="@+id/errorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/disconnected01"
             android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/error" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -157,12 +151,12 @@ android:background="@drawable/bars01_f_btm"
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/counterLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="55dp"
-            android:gravity="center"
-            android:id="@+id/counterLayout">
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -175,18 +169,18 @@ android:background="@drawable/bars01_f_btm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/orange" />
+                    android:textColor="@color/orange"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/allPics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
