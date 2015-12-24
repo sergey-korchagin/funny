@@ -88,7 +88,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     TinyDB tinydb;
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
     TextView picNumber;
-
+int notSeenItemsCounter;
     LinearLayout topLayout;
     RelativeLayout bottomLayout;
     LinearLayout counterLayout;
@@ -108,6 +108,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         btnShare.setOnClickListener(this);
 
         tinydb = new TinyDB(getActivity());
+        notSeenItemsCounter = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         btnMore = (ImageView) root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
 
@@ -564,7 +565,9 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-
+        if(notSeenItemsCounter==0){
+            btnNtShown.setVisibility(View.GONE);
+        }
 
         if (position % 5 == 1 && skip < Constants.TOP_SIZE) {
             skip = skip + 5;

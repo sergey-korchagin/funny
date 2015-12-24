@@ -393,6 +393,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
 
         } else if (btnTop.getId() == v.getId()) {
+            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
             TopFragment topFragment = new TopFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
 
