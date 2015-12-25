@@ -37,6 +37,7 @@ import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.starter.CustomObject;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.CustomTouchListener;
@@ -207,6 +208,10 @@ int notSeenItemsCounter;
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
+//                    List<CustomObject> co = new ArrayList<CustomObject>();
+//                    for (int i = 0; i<((List) o).size();i++){
+//                        co.add(new CustomObject(categories.get(i),null));
+//                    }
                     mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));

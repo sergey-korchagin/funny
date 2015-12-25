@@ -18,10 +18,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.starter.CustomObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.interfaces.CustomTouchListener;
@@ -57,8 +61,9 @@ List<ParseObject> mImages;
         this.listener = listener;
         if (mImages == null)
             mImages = new ArrayList<>();
-
-
+            //ImageView imageView  = new ImageView(activity);
+            //
+            //mImages.add(new CustomObject(mImages.get(0).getParseObject(),imageView));
     }
     @Override
     public int getCount() {
@@ -78,18 +83,18 @@ List<ParseObject> mImages;
         View root = inflater.inflate(R.layout.photo_layout, container, false);
         final TouchImageView mImage = (TouchImageView) root.findViewById(R.id.touchImage);
         final ProgressBar progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
-        if(mImages.get(position).get("mPicture")!=null){
+        if(mImages.get(position).get("mPicture")!=null ) {// && mImages.get(position).getImageView() == null){
             ParseFile applicantResume = (ParseFile) mImages.get(position).get("mPicture");
-          //  applicantResume.getUrl();
+            //  applicantResume.getUrl();
             applicantResume.getDataInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
                     if (e == null) {
-                       final Bitmap bmp;
+                        final Bitmap bmp;
                         try {
-                          bmp  = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                             mImage.setImageBitmap(bmp);
 
-                        }catch (OutOfMemoryError er){
+                        } catch (OutOfMemoryError er) {
                             er.printStackTrace();
                         }
                         progressBar.setVisibility(View.GONE);
@@ -102,23 +107,43 @@ List<ParseObject> mImages;
                 }
             });
         }
-//        mImage.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                   switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                listener.fullScreenTouch(1);
-//
-//            case MotionEvent.ACTION_UP: // отпускание
-//                listener.fullScreenTouch(2);
-//
-//
-//        }
-//                return false;
-//            }
-//
-//
-//        });
+     if(position%10==1){
+         progressBar.setVisibility(View.VISIBLE);
+         final AdView mAdView = (AdView) root.findViewById(R.id.adView);
+         mAdView.setVisibility(View.VISIBLE);
+         mImage.setVisibility(View.GONE);
+         AdRequest adRequest = new AdRequest.Builder().build();
+         mAdView.loadAd(adRequest);
+
+         mAdView.setAdListener(new AdListener() {
+             @Override
+             public void onAdClosed() {
+                 super.onAdClosed();
+             }
+
+             @Override
+             public void onAdFailedToLoad(int errorCode) {
+                 super.onAdFailedToLoad(errorCode);
+             }
+
+             @Override
+             public void onAdLeftApplication() {
+                 super.onAdLeftApplication();
+             }
+
+             @Override
+             public void onAdOpened() {
+                 super.onAdOpened();
+             }
+
+             @Override
+             public void onAdLoaded() {
+                 super.onAdLoaded();
+                 progressBar.setVisibility(View.GONE);
+             }
+         });
+     }
+
         mImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -146,15 +171,15 @@ List<ParseObject> mImages;
 
         mImages.addAll(parseObjects);
 
+//
         //mImages.notifyAll();
     }
 
-    public void getMoreNotSeenPhotos(List<ParseObject> parseObjects){
-        mImages = parseObjects;
-    }
-
-    public void insertTopPictures(List<ParseObject> parseObjects){
-        mImages = parseObjects;
-        parseObjects.toString();
-    }
+//    public void getMoreNotSeenPhotos(List<ParseObject> parseObjects){
+//        mImages = parseObjects;
+//    }
+//
+//    public void insertTopPictures(List<ParseObject> parseObjects){
+//        mImages = parseObjects;
+//    }
 }

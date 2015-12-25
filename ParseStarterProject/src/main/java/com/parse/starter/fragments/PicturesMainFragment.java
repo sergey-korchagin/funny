@@ -23,6 +23,8 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +53,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -61,6 +67,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.PushService;
+import com.parse.starter.CustomObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
@@ -130,6 +137,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     TextView allPicNumber;
     LinearLayout counterLayout;
     ImageView pushMenuImage;
+    InterstitialAd mInterstitialAd;
 
 
     @Override
@@ -211,6 +219,41 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
 
+        final AdView mAdView = (AdView) root.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+        });
+
+
+                initInterestitial();
         initSmallImage();
         checkIfStorageAvailable();
         getQuerySize();
@@ -233,6 +276,25 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         //mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         return root;
     }
+
+
+    public void initInterestitial(){
+        mInterstitialAd = new InterstitialAd(getActivity());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
+                TopFragment topFragment = new TopFragment();
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+            }
+        });
+
+        requestNewInterstitial();
+    }
+
 
     public void initLikeButton() {
         if (isAdded()) {
@@ -338,6 +400,12 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
+
+//                    List<CustomObject> co = new ArrayList<CustomObject>();
+//                    for (int i = 0; i<((List) o).size();i++){
+//                        ImageView imageView = new ImageView(getActivity());
+//                        co.add(new CustomObject(categories.get(i),null));
+//                    }
                     mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
@@ -396,9 +464,16 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
 
         } else if (btnTop.getId() == v.getId()) {
-            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
-            TopFragment topFragment = new TopFragment();
-            Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+//            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
+//            TopFragment topFragment = new TopFragment();
+//            Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            } else {
+                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+                TopFragment topFragment = new TopFragment();
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+            }
 
         } else if (btnLike.getId() == v.getId()) {
             if (!likesList.contains(categories.get(mPosition).getObjectId())) {
@@ -858,4 +933,12 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             counterLayout.setVisibility(View.VISIBLE);}
     }
 
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
 }
