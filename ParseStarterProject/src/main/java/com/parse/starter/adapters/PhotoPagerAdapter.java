@@ -83,7 +83,7 @@ List<ParseObject> mImages;
         View root = inflater.inflate(R.layout.photo_layout, container, false);
         final TouchImageView mImage = (TouchImageView) root.findViewById(R.id.touchImage);
         final ProgressBar progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
-        if(mImages.get(position).get("mPicture")!=null ) {// && mImages.get(position).getImageView() == null){
+        if(mImages.get(position).get("mPicture")!=null && position%10!=1 ) {// && mImages.get(position).getImageView() == null){
             ParseFile applicantResume = (ParseFile) mImages.get(position).get("mPicture");
             //  applicantResume.getUrl();
             applicantResume.getDataInBackground(new GetDataCallback() {

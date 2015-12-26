@@ -205,6 +205,11 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
+        query.whereNotEqualTo("pictureNum", 10);
+        query.whereNotEqualTo("pictureNum", 20);
+        query.whereNotEqualTo("pictureNum", 30);
+        query.whereNotEqualTo("pictureNum", 40);
+
         query.whereNotContainedIn("objectId",seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
