@@ -62,11 +62,12 @@ import java.util.Locale;
 /**
  * Created by serge_000 on 04/12/2015.
  */
-public class NotShown extends Fragment implements View.OnClickListener,ViewPager.OnPageChangeListener,
+public class NotShown extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener,
         CustomTouchListener, BannerViewListener {
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
+   List<ParseObject> updatedCategories;
     ImageView btnShare;
     ImageView btnSave;
     ImageView btnAll;
@@ -83,7 +84,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
     String SAVED_LIST = "saved_list";
     ImageView btnMore;
     ArrayList<String> seenItemsLIst;
-BannerViewListener bannerViewListener;
+    BannerViewListener bannerViewListener;
     TextView btnSendUsImage;
     TextView btnInviteFriend;
     TextView btnSaveImage;
@@ -93,7 +94,7 @@ BannerViewListener bannerViewListener;
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
     int notSeenCounter;
     ProgressDialog progressDialog;
-
+    int skip = 0;
     LinearLayout topLayout;
     RelativeLayout bottomLayout;
     LinearLayout counterLayout;
@@ -101,13 +102,14 @@ BannerViewListener bannerViewListener;
     TextView allPicNumber;
     int querySize;
     ImageView pushMenuImage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.not_shown_fragment, container, false);
         Constants.FROM_SETTINGS = false;
-        progressDialog = ProgressDialog.show(getActivity(),"","Картинки загружаются...");
-        picNumber = (TextView)root.findViewById(R.id.picNumber);
-        allPicNumber = (TextView)root.findViewById(R.id.allPics);
+        progressDialog = ProgressDialog.show(getActivity(), "", "Картинки загружаются...");
+        picNumber = (TextView) root.findViewById(R.id.picNumber);
+        allPicNumber = (TextView) root.findViewById(R.id.allPics);
 
         seenItemsLIst = new ArrayList<>();
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
@@ -116,19 +118,19 @@ BannerViewListener bannerViewListener;
         tinydb = new TinyDB(getActivity());
         seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
         topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
-        bottomLayout = (RelativeLayout)root.findViewById(R.id.bottomLayout);
-        counterLayout = (LinearLayout)root.findViewById(R.id.counterLayout);
+        bottomLayout = (RelativeLayout) root.findViewById(R.id.bottomLayout);
+        counterLayout = (LinearLayout) root.findViewById(R.id.counterLayout);
 
         notSeenCounter = tinydb.getInt(Constants.SEEN_ITEMS_COUNTER);
         btnMore = (ImageView) root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
 
-        btnAll = (ImageView)root.findViewById(R.id.btnTop);
+        btnAll = (ImageView) root.findViewById(R.id.btnTop);
         btnAll.setOnClickListener(this);
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
-        if(notSeenCounter == 0){
+        if (notSeenCounter == 0) {
             btnNtShown.setVisibility(View.GONE);
         }
         menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
@@ -142,9 +144,9 @@ BannerViewListener bannerViewListener;
         btnPushState = (TextView) root.findViewById(R.id.enablePush);
         btnPushState.setOnClickListener(this);
 
-        btnSaveImage = (TextView)root.findViewById(R.id.savePicture);
+        btnSaveImage = (TextView) root.findViewById(R.id.savePicture);
         btnSaveImage.setOnClickListener(this);
-        pushMenuImage = (ImageView)root.findViewById(R.id.pushMenuIcon);
+        pushMenuImage = (ImageView) root.findViewById(R.id.pushMenuIcon);
 
         if (tinydb.getInt(Constants.PUSH_INDICATOR) != 1) {
             btnPushState.setText("Отключить Push уведомления");
@@ -177,11 +179,11 @@ BannerViewListener bannerViewListener;
             }
         });
 
-        mSmallImage = (ImageView)root.findViewById(R.id.smallImage);
-        likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
+        mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
+        likesCounterView = (TextView) root.findViewById(R.id.likesCounter);
 
         customTouchListener = this;
-        bannerViewListener =this;
+        bannerViewListener = this;
         initSmallImage();
         checkIfStorageAvailable();
         getQuerySize();
@@ -207,8 +209,9 @@ BannerViewListener bannerViewListener;
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
+        query.setLimit(5);
         query.whereNotEqualTo("isBanner", "banner");
-        query.whereNotContainedIn("objectId",seenItemsLIst);
+        query.whereNotContainedIn("objectId", seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -222,8 +225,7 @@ BannerViewListener bannerViewListener;
 //                    for (int i = 0; i<((List) o).size();i++){
 //                        co.add(new CustomObject(categories.get(i),null));
 //                    }
-                    if(categories.size() == 0)
-                    {
+                    if (categories.size() == 0) {
                         progressDialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setCancelable(true).setMessage("К сожалению нету новых картинок но они обязательно появятся!!")
@@ -239,8 +241,8 @@ BannerViewListener bannerViewListener;
                         Window window = alert.getWindow();
                         window.setGravity(Gravity.CENTER);
                         alert.show();
-                    }else {
-                        mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener,bannerViewListener);
+                    } else {
+                        mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener, bannerViewListener);
                         mPager.setAdapter(mAdapter);
                         likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
 
@@ -260,7 +262,7 @@ BannerViewListener bannerViewListener;
     }
 
 
-    public void initSmallImage(){
+    public void initSmallImage() {
         ParseQuery query = new ParseQuery("smallImage");
         query.addDescendingOrder("createdAt");
         query.setLimit(1);
@@ -294,7 +296,7 @@ BannerViewListener bannerViewListener;
         });
     }
 
-    public void sendShareIntentLink(final int position){
+    public void sendShareIntentLink(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true).setMessage("No enough storage! But you still can share link to picture!")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -365,7 +367,7 @@ BannerViewListener bannerViewListener;
     }
 
 
-    public void checkIfStorageAvailable(){
+    public void checkIfStorageAvailable() {
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -435,7 +437,7 @@ BannerViewListener bannerViewListener;
                 menuLayout.setVisibility(View.GONE);
                 menuLayout.setAnimation(animFadeOut);
             }
-        }else if (btnSendUsImage.getId() == v.getId()) {
+        } else if (btnSendUsImage.getId() == v.getId()) {
             menuLayout.setVisibility(View.GONE);
 
             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
@@ -473,8 +475,7 @@ BannerViewListener bannerViewListener;
                 installation.addAllUnique("channels", Arrays.asList("photos"));
                 installation.saveInBackground();
             }
-        }
-        else if (btnSaveImage.getId() == v.getId()) {
+        } else if (btnSaveImage.getId() == v.getId()) {
             menuLayout.setVisibility(View.GONE);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setCancelable(true).setMessage("Want save?")
@@ -535,7 +536,6 @@ BannerViewListener bannerViewListener;
     }
 
 
-
     public void decrementLikes() {
         categories.get(mPosition).increment("likes", -1);
         categories.get(mPosition).saveInBackground();
@@ -552,8 +552,8 @@ BannerViewListener bannerViewListener;
 
     }
 
-    public void savePicture(){
-        if(mExternalStorageWriteable && mExternalStorageAvailable){
+    public void savePicture() {
+        if (mExternalStorageWriteable && mExternalStorageAvailable) {
             //save
             if (categories.get(mPosition).get("mPicture") != null) {
                 ParseFile applicantResume = (ParseFile) categories.get(mPosition).get("mPicture");
@@ -598,7 +598,7 @@ BannerViewListener bannerViewListener;
                                                     }
                 );
             }
-        }else{
+        } else {
             Utils.showAlert(getActivity(), "Error", "No external storage available");
         }
     }
@@ -612,7 +612,9 @@ BannerViewListener bannerViewListener;
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-        if(categories!=null){
+
+        
+        if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
         }
@@ -621,7 +623,7 @@ BannerViewListener bannerViewListener;
             seenItemsLIst.add(t);
             notSeenCounter--;
         }
-        int pos = position+1;
+        int pos = position + 1;
         picNumber.setText(String.valueOf(pos));
 
         initLikeButton();
@@ -637,14 +639,14 @@ BannerViewListener bannerViewListener;
 
         Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
         Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
-        if(topLayout.getVisibility() == View.VISIBLE){
+        if (topLayout.getVisibility() == View.VISIBLE) {
             topLayout.setVisibility(View.GONE);
             topLayout.setAnimation(animFadeOut);
             bottomLayout.setVisibility(View.GONE);
             bottomLayout.setAnimation(animFadeOut);
             counterLayout.setVisibility(View.GONE);
             counterLayout.setAnimation(animFadeOut);
-        }else{
+        } else {
             topLayout.setVisibility(View.VISIBLE);
             topLayout.setAnimation(animFadeIn);
             bottomLayout.setVisibility(View.VISIBLE);
@@ -652,7 +654,7 @@ BannerViewListener bannerViewListener;
             counterLayout.setVisibility(View.VISIBLE);
             counterLayout.setAnimation(animFadeIn);
         }
-        if(menuLayout.getVisibility()==View.VISIBLE){
+        if (menuLayout.getVisibility() == View.VISIBLE) {
             menuLayout.setVisibility(View.GONE);
             menuLayout.setAnimation(animFadeOut);
         }
@@ -667,8 +669,9 @@ BannerViewListener bannerViewListener;
         super.onResume();
 
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
@@ -730,10 +733,11 @@ BannerViewListener bannerViewListener;
             topLayout.setVisibility(View.GONE);
             bottomLayout.setVisibility(View.GONE);
             counterLayout.setVisibility(View.GONE);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             topLayout.setVisibility(View.VISIBLE);
             bottomLayout.setVisibility(View.VISIBLE);
-            counterLayout.setVisibility(View.VISIBLE);}
+            counterLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
