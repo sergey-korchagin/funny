@@ -41,6 +41,7 @@ import com.parse.ParseQuery;
 import com.parse.starter.CustomObject;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
@@ -62,7 +63,7 @@ import java.util.Locale;
  * Created by serge_000 on 04/12/2015.
  */
 public class NotShown extends Fragment implements View.OnClickListener,ViewPager.OnPageChangeListener,
-        CustomTouchListener {
+        CustomTouchListener, BannerViewListener {
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
@@ -82,7 +83,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
     String SAVED_LIST = "saved_list";
     ImageView btnMore;
     ArrayList<String> seenItemsLIst;
-
+BannerViewListener bannerViewListener;
     TextView btnSendUsImage;
     TextView btnInviteFriend;
     TextView btnSaveImage;
@@ -180,6 +181,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
         likesCounterView = (TextView)root.findViewById(R.id.likesCounter);
 
         customTouchListener = this;
+        bannerViewListener =this;
         initSmallImage();
         checkIfStorageAvailable();
         getQuerySize();
@@ -205,11 +207,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
-        query.whereNotEqualTo("pictureNum", 10);
-        query.whereNotEqualTo("pictureNum", 20);
-        query.whereNotEqualTo("pictureNum", 30);
-        query.whereNotEqualTo("pictureNum", 40);
-
+        query.whereNotEqualTo("isBanner", "banner");
         query.whereNotContainedIn("objectId",seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
@@ -242,7 +240,7 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
                         window.setGravity(Gravity.CENTER);
                         alert.show();
                     }else {
-                        mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
+                        mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener,bannerViewListener);
                         mPager.setAdapter(mAdapter);
                         likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
 
@@ -736,5 +734,15 @@ public class NotShown extends Fragment implements View.OnClickListener,ViewPager
             topLayout.setVisibility(View.VISIBLE);
             bottomLayout.setVisibility(View.VISIBLE);
             counterLayout.setVisibility(View.VISIBLE);}
+    }
+
+    @Override
+    public void onBannerShown() {
+
+    }
+
+    @Override
+    public void onImageShown() {
+
     }
 }

@@ -28,6 +28,7 @@ import com.parse.ParseObject;
 import com.parse.starter.CustomObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
+import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.interfaces.GetMorePhotos;
 import com.parse.starter.utils.TouchImageView;
@@ -54,11 +55,13 @@ List<ParseObject> mImages;
     List<ParseObject> mMoreImages;
     boolean isLikeClicked = false;
     CustomTouchListener listener;
+    BannerViewListener bannerViewListener;
 
-    public PhotoPagerAdapter(List<ParseObject> images, Activity activity, CustomTouchListener listener) {
+    public PhotoPagerAdapter(List<ParseObject> images, Activity activity, CustomTouchListener listener,BannerViewListener bannerViewListener) {
         this.mImages = images;
         this.activity = activity;
         this.listener = listener;
+        this.bannerViewListener = bannerViewListener;
         if (mImages == null)
             mImages = new ArrayList<>();
             //ImageView imageView  = new ImageView(activity);
@@ -83,7 +86,8 @@ List<ParseObject> mImages;
         View root = inflater.inflate(R.layout.photo_layout, container, false);
         final TouchImageView mImage = (TouchImageView) root.findViewById(R.id.touchImage);
         final ProgressBar progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
-        if(mImages.get(position).get("mPicture")!=null && position%10!=1 ) {// && mImages.get(position).getImageView() == null){
+        if(mImages.get(position).get("mPicture")!=null && !mImages.get(position).get("isBanner").equals("banner") ) {// && mImages.get(position).getImageView() == null){
+            bannerViewListener.onImageShown();
             ParseFile applicantResume = (ParseFile) mImages.get(position).get("mPicture");
             //  applicantResume.getUrl();
             applicantResume.getDataInBackground(new GetDataCallback() {
@@ -107,7 +111,8 @@ List<ParseObject> mImages;
                 }
             });
         }
-     if(position%10==1){
+     if(mImages.get(position).get("isBanner").equals("banner")){
+         bannerViewListener.onBannerShown();
          progressBar.setVisibility(View.VISIBLE);
          final AdView mAdView = (AdView) root.findViewById(R.id.adView);
          mAdView.setVisibility(View.VISIBLE);

@@ -40,6 +40,7 @@ import com.parse.ParseQuery;
 import com.parse.starter.CustomObject;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
@@ -61,7 +62,7 @@ import java.util.Locale;
  * Created by serge_000 on 04/12/2015.
  */
 public class TopFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener,
-        CustomTouchListener {
+        CustomTouchListener, BannerViewListener{
     private ViewPager mPager;
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
@@ -76,6 +77,12 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     TextView likesCounterView;
     int mPosition;
     LinearLayout layoutHeader;
+
+    @Override
+    public void onImageShown() {
+
+    }
+
     CustomTouchListener customTouchListener;
     LinearLayout menuLayout;
     ArrayList<String> likesList;
@@ -90,12 +97,12 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     TinyDB tinydb;
     private final int REQUEST_CODE_FROM_GALLERY_IMAGE = 1;
     TextView picNumber;
-int notSeenItemsCounter;
+    int notSeenItemsCounter;
     LinearLayout topLayout;
     RelativeLayout bottomLayout;
     LinearLayout counterLayout;
     ImageView pushMenuImage;
-
+    BannerViewListener bannerViewListener;
     ProgressDialog progressDialog;
 
     @Override
@@ -175,6 +182,7 @@ int notSeenItemsCounter;
         likesCounterView = (TextView) root.findViewById(R.id.likesCounter);
 
         customTouchListener = this;
+        bannerViewListener = this;
         initSmallImage();
         checkIfStorageAvailable();
         getCategories();
@@ -198,6 +206,7 @@ int notSeenItemsCounter;
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("likes");
+        query.whereNotEqualTo("isBanner", "banner");
         query.setLimit(5);
         query.findInBackground(new FindCallback() {
             @Override
@@ -212,7 +221,7 @@ int notSeenItemsCounter;
 //                    for (int i = 0; i<((List) o).size();i++){
 //                        co.add(new CustomObject(categories.get(i),null));
 //                    }
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener,bannerViewListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     progressDialog.dismiss();
@@ -582,6 +591,8 @@ int notSeenItemsCounter;
 
             ParseQuery query = new ParseQuery("picture");
             query.addDescendingOrder("createdAt");
+            query.whereNotEqualTo("isBanner", "banner");
+
             //  query.whereNotContainedIn();
             query.setSkip(skip);
             query.setLimit(5);
@@ -669,5 +680,10 @@ int notSeenItemsCounter;
             topLayout.setVisibility(View.VISIBLE);
             bottomLayout.setVisibility(View.VISIBLE);
             counterLayout.setVisibility(View.VISIBLE);}
+    }
+
+    @Override
+    public void onBannerShown() {
+
     }
 }

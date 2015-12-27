@@ -71,6 +71,7 @@ import com.parse.starter.CustomObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
+import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
@@ -94,7 +95,7 @@ import java.util.Locale;
 /**
  * Created by User on 30/11/2015.
  */
-public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener {
+public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener, BannerViewListener {
     //Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
     // Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
 
@@ -138,6 +139,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     LinearLayout counterLayout;
     ImageView pushMenuImage;
     InterstitialAd mInterstitialAd;
+    BannerViewListener bannerViewListener;
 
 
     @Override
@@ -190,6 +192,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         likesList = tinydb.getListString(SAVED_LIST);
         likesCounterView = (TextView) root.findViewById(R.id.likesCounter);
         customTouchListener = this;
+        bannerViewListener = this;
 
 
         btnShare = (ImageView) root.findViewById(R.id.btnShare);
@@ -206,9 +209,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
-        if(notSeenCounter == 0){
-            btnNtShown.setVisibility(View.GONE);
-        }
+
 
         btnMore = (ImageView) root.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
@@ -253,7 +254,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         });
 
 
-                initInterestitial();
+        initInterestitial();
         initSmallImage();
         checkIfStorageAvailable();
         getQuerySize();
@@ -320,6 +321,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 if (notSeenCounter < 0) {
                     notSeenCounter = 0;
                 }
+                if (notSeenCounter == 0) {
+                    btnNtShown.setVisibility(View.GONE);
+                }
                 String pics = "/" + querySize;
                 allPicNumber.setText(pics);
 
@@ -356,6 +360,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 @Override
                 public void done(Object o, Throwable throwable) {
                     if (o instanceof List) {
+
                         updatedCategories = (List<ParseObject>) o;
                         mAdapter.getMorePhotos(updatedCategories, querySize);
                         mAdapter.notifyDataSetChanged();
@@ -368,12 +373,21 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         }
         if (categories.size() >= position) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
+            if(categories.get(position).get("isBanner").equals("banner")){
+                btnLike.setVisibility(View.INVISIBLE);
+                likesCounterView.setVisibility(View.INVISIBLE);
+            }
+            else{
+                btnLike.setVisibility(View.VISIBLE);
+                likesCounterView.setVisibility(View.VISIBLE);
+            }
         }
         String t = categories.get(mPosition).getObjectId();
         if (!seenItemsLIst.contains(t)) {
             seenItemsLIst.add(t);
             notSeenCounter--;
         }
+
         initLikeButton();
         int tt = (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
         String tmp = String.valueOf(tt);
@@ -406,7 +420,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 //                        ImageView imageView = new ImageView(getActivity());
 //                        co.add(new CustomObject(categories.get(i),null));
 //                    }
-                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener);
+                    mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener, bannerViewListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
                     if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
@@ -936,9 +950,20 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .addTestDevice("A234DD9FCF199B7AAC7BC1D45AAB5104")
                 .build();
 
         mInterstitialAd.loadAd(adRequest);
+    }
+
+
+    @Override
+    public void onBannerShown() {
+
+    }
+
+    @Override
+    public void onImageShown() {
+       ;
     }
 }
