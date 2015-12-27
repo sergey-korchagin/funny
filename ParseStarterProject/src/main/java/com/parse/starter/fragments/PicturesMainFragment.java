@@ -287,9 +287,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             @Override
             public void onAdClosed() {
                 requestNewInterstitial();
-                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
-                TopFragment topFragment = new TopFragment();
-                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+//                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
+//                TopFragment topFragment = new TopFragment();
+//                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
             }
         });
 
@@ -393,6 +393,13 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             seenItemsLIst.add(t);
             notSeenCounter--;
         }
+if(position == 6){
+    if (mInterstitialAd.isLoaded()) {
+        mInterstitialAd.show();
+    } else {
+    }
+}
+
 
         initLikeButton();
         int tt = (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
@@ -487,13 +494,13 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 //            tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
 //            TopFragment topFragment = new TopFragment();
 //            Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
-            if (mInterstitialAd.isLoaded()) {
-                mInterstitialAd.show();
-            } else {
-                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-                TopFragment topFragment = new TopFragment();
-                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
-            }
+//            if (mInterstitialAd.isLoaded()) {
+//                mInterstitialAd.show();
+//            } else {
+//                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+//                TopFragment topFragment = new TopFragment();
+//                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+//            }
 
         } else if (btnLike.getId() == v.getId()) {
             if (!likesList.contains(categories.get(mPosition).getObjectId())) {
