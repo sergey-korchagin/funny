@@ -497,9 +497,9 @@ if(position == 6){
 //            if (mInterstitialAd.isLoaded()) {
 //                mInterstitialAd.show();
 //            } else {
-//                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-//                TopFragment topFragment = new TopFragment();
-//                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+                TopFragment topFragment = new TopFragment();
+                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
 //            }
 
         } else if (btnLike.getId() == v.getId()) {

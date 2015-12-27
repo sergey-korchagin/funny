@@ -46,34 +46,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TopFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/TopFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="23.862068">
-              <caret line="359" column="21" selection-start-line="359" selection-start-column="16" selection-end-line="359" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.07992565">
+              <caret line="208" column="9" selection-start-line="208" selection-start-column="9" selection-end-line="208" selection-end-column="9" />
               <folding>
-                <element signature="e#10460#11193#0" expanded="true" />
-                <element signature="e#11192#11193#0" expanded="true" />
-                <element signature="e#11236#11464#0" expanded="true" />
-                <element signature="e#11463#11464#0" expanded="true" />
+                <element signature="e#10462#11195#0" expanded="true" />
+                <element signature="e#11194#11195#0" expanded="true" />
+                <element signature="e#11238#11466#0" expanded="true" />
+                <element signature="e#11465#11466#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PicturesMainFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PicturesMainFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.436803">
-              <caret line="289" column="16" selection-start-line="289" selection-start-column="16" selection-end-line="291" selection-end-column="103" />
+            <state vertical-scroll-proportion="-10.275862">
+              <caret line="499" column="38" selection-start-line="499" selection-start-column="38" selection-end-line="501" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#9982#10372#0" expanded="true" />
                 <element signature="e#10371#10372#0" expanded="true" />
                 <element signature="e#16391#16636#0" expanded="true" />
                 <element signature="e#16635#16636#0" expanded="true" />
-                <element signature="e#41463#41464#0" expanded="true" />
-                <element signature="e#41478#41479#0" expanded="true" />
+                <element signature="e#41457#41458#0" expanded="true" />
+                <element signature="e#41472#41473#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1640,13 +1640,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/interfaces/BannerViewListener.java" />
-        <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/TopFragment.java" />
         <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/NotShown.java" />
         <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/adapters/PhotoPagerAdapter.java" />
         <option value="$PROJECT_DIR$/ParseStarterProject/build.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/utils/AnalyticsApplication.java" />
         <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java" />
+        <option value="$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/TopFragment.java" />
       </list>
     </option>
   </component>
@@ -2081,31 +2081,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/TopFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="23.862068">
-          <caret line="359" column="21" selection-start-line="359" selection-start-column="16" selection-end-line="359" selection-end-column="21" />
-          <folding>
-            <element signature="e#10460#11193#0" expanded="true" />
-            <element signature="e#11192#11193#0" expanded="true" />
-            <element signature="e#11236#11464#0" expanded="true" />
-            <element signature="e#11463#11464#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/PicturesMainFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.436803">
-          <caret line="289" column="16" selection-start-line="289" selection-start-column="16" selection-end-line="291" selection-end-column="103" />
+        <state vertical-scroll-proportion="-10.275862">
+          <caret line="499" column="38" selection-start-line="499" selection-start-column="38" selection-end-line="501" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#9982#10372#0" expanded="true" />
             <element signature="e#10371#10372#0" expanded="true" />
             <element signature="e#16391#16636#0" expanded="true" />
             <element signature="e#16635#16636#0" expanded="true" />
-            <element signature="e#41463#41464#0" expanded="true" />
-            <element signature="e#41478#41479#0" expanded="true" />
+            <element signature="e#41457#41458#0" expanded="true" />
+            <element signature="e#41472#41473#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/fragments/TopFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07992565">
+          <caret line="208" column="9" selection-start-line="208" selection-start-column="9" selection-end-line="208" selection-end-column="9" />
+          <folding>
+            <element signature="e#10462#11195#0" expanded="true" />
+            <element signature="e#11194#11195#0" expanded="true" />
+            <element signature="e#11238#11466#0" expanded="true" />
+            <element signature="e#11465#11466#0" expanded="true" />
           </folding>
         </state>
       </provider>

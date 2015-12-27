@@ -206,7 +206,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("likes");
-        query.whereNotEqualTo("isBanner", "banner");
+       // query.whereNotEqualTo("isBanner", "banner");
         query.setLimit(5);
         query.findInBackground(new FindCallback() {
             @Override
@@ -591,7 +591,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 
             ParseQuery query = new ParseQuery("picture");
             query.addDescendingOrder("createdAt");
-            query.whereNotEqualTo("isBanner", "banner");
+          //  query.whereNotEqualTo("isBanner", "banner");
 
             //  query.whereNotContainedIn();
             query.setSkip(skip);
