@@ -1,14 +1,22 @@
+
 apply plugin: 'com.android.application'
+//apply plugin: 'com.google.gms.google-services'
+
 apply plugin: 'com.parse'
+
 
 buildscript {
   repositories {
     mavenCentral()
     maven { url 'https://maven.parse.com/repo' }
+      jcenter()
 
   }
   dependencies {
     classpath 'com.parse.tools:gradle:1.+'
+
+
+
   }
 }
 
@@ -38,6 +46,9 @@ dependencies {
     compile 'it.sephiroth.android.library.picasso:picasso:2.5.2.4b'
     compile 'com.google.android.gms:play-services-ads:8.3.0'
     compile files('libs/gson-2.4.jar')
+   // compile 'com.google.android.gms:play-services-analytics:8.3.0'
+
+
 
 
 }

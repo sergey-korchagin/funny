@@ -376,10 +376,16 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             if(categories.get(position).get("isBanner").equals("banner")){
                 btnLike.setVisibility(View.INVISIBLE);
                 likesCounterView.setVisibility(View.INVISIBLE);
+                btnMore.setClickable(false);
+                btnShare.setClickable(false);
             }
             else{
                 btnLike.setVisibility(View.VISIBLE);
                 likesCounterView.setVisibility(View.VISIBLE);
+                btnMore.setClickable(true);
+                btnShare.setClickable(true);
+
+
             }
         }
         String t = categories.get(mPosition).getObjectId();
