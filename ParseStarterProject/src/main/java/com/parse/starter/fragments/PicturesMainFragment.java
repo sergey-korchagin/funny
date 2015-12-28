@@ -426,7 +426,7 @@ if(position == 6){
             @Override
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
-                    categories = (List<ParseObject>) o;
+                   categories = (List<ParseObject>) o;
 
 //                    List<CustomObject> co = new ArrayList<CustomObject>();
 //                    for (int i = 0; i<((List) o).size();i++){

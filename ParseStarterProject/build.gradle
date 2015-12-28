@@ -1,23 +1,29 @@
-
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 //apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.parse'
 
 
 buildscript {
-  repositories {
-    mavenCentral()
-    maven { url 'https://maven.parse.com/repo' }
-      jcenter()
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.parse.com/repo' }
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }
 
-  }
-  dependencies {
-    classpath 'com.parse.tools:gradle:1.+'
+    }
+    dependencies {
+        classpath 'com.parse.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.+'
 
 
-
-  }
+    }
 }
 
 android {
@@ -40,17 +46,19 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+
+    compile files('libs/gson-2.4.jar')
+    // compile 'com.google.android.gms:play-services-analytics:8.3.0'
+
+
     compile 'com.parse.bolts:bolts-tasks:1.3.0'
     compile 'com.parse:parse-android:1.11.0'
     compile 'it.sephiroth.android.library.picasso:picasso:2.5.2.4b'
     compile 'com.google.android.gms:play-services-ads:8.3.0'
-    compile files('libs/gson-2.4.jar')
-   // compile 'com.google.android.gms:play-services-analytics:8.3.0'
-
-
-
-
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
 }
 
 /* Uncomment if you enable ProGuard and you want to automatically upload symbols on build.

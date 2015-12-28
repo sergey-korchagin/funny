@@ -10,9 +10,11 @@ package com.parse.starter;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
+import io.fabric.sdk.android.Fabric;
 
 
 public class StarterApplication extends Application {
@@ -20,6 +22,7 @@ public class StarterApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    Fabric.with(this, new Crashlytics());
 
     // Enable Local Datastore.
     Parse.enableLocalDatastore(this);

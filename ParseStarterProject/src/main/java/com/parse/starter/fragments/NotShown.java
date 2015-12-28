@@ -613,7 +613,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     public void onPageSelected(int position) {
         mPosition = position;
 
-        
+
         if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.starter.fragments.PicturesMainFragment;
@@ -29,6 +30,8 @@ import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
 
 import java.util.Arrays;
+
+import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
       installation.addAllUnique("channels", Arrays.asList("photos"));
       installation.saveInBackground();
 
-
+      Fabric.with(this, new Crashlytics());
 
       SplashScreenFragment splashScreenFragment = new SplashScreenFragment();
       Utils.replaceFragment(getFragmentManager(), android.R.id.content, splashScreenFragment, false);
