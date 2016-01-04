@@ -10,4 +10,4 @@
         android:text="Settings screen under production"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
-</LinearLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/settings_fragment.xml -->
+</LinearLayout>

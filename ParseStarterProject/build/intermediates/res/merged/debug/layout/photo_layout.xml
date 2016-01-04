@@ -45,4 +45,4 @@
         android:id="@+id/progressBar"
         android:layout_gravity="center" />
 
-</FrameLayout><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/layout/photo_layout.xml -->
+</FrameLayout>

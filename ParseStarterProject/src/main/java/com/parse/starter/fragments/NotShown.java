@@ -38,11 +38,11 @@ import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.starter.CustomObject;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
+import com.parse.starter.managers.AnalyticsManager;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.ShortcutBadger;
@@ -188,6 +188,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
         checkIfStorageAvailable();
         getQuerySize();
         getCategories();
+        AnalyticsManager.getInstance().sendScreenEvent(AnalyticsManager.SCREEN_NEW);
 
         return root;
     }
@@ -220,15 +221,15 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
             @Override
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
-                    categories = (List<ParseObject>) o;
-                    List<CustomObject> co = new ArrayList<CustomObject>();
+                  categories = (List<ParseObject>) o;
+//                    List<CustomObject> co = new ArrayList<CustomObject>();
 //                    for (int i = 0; i<((List) o).size();i++){
 //                        co.add(new CustomObject(categories.get(i),null));
 //                    }
                     if (categories.size() == 0) {
                         progressDialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setCancelable(true).setMessage("К сожалению нету новых картинок но они обязательно появятся!!")
+                        builder.setCancelable(true).setMessage("К сожалению нет новых картинок но они обязательно появятся!!")
                                 .setPositiveButton("Назад на главную", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -672,12 +673,15 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
 
     @Override
     public void onPause() {
+        super.onPause();
+
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        if(isAdded()){
+            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        }
 
-        super.onPause();
     }
 
     @Override
@@ -688,8 +692,9 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
 
-        ShortcutBadger.with(getActivity()).count(notSeenCounter);
-
+        if(isAdded()){
+            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        }
 
     }
 
@@ -700,8 +705,9 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-        ShortcutBadger.with(getActivity()).count(notSeenCounter);
-
+        if(isAdded()){
+            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        }
     }
 
     public void getQuerySize() {

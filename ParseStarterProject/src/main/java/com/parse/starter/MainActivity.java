@@ -19,12 +19,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.Tracker;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.parse.starter.fragments.PicturesMainFragment;
 import com.parse.starter.fragments.SettingsFragment;
 import com.parse.starter.fragments.SplashScreenFragment;
 import com.parse.starter.managers.ActionbarManager;
+import com.parse.starter.managers.AnalyticsManager;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.ShortcutBadger;
 import com.parse.starter.utils.Utils;
@@ -36,6 +38,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
   private ShareActionProvider mShareActionProvider;
+    Tracker mTracker;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,17 @@ public class MainActivity extends AppCompatActivity {
       installation.saveInBackground();
 
       Fabric.with(this, new Crashlytics());
+
+      AnalyticsManager.getInstance().init(getApplicationContext());
+      String userName;
+      userName = Utils.getUsername(this);
+      if(userName!=null){
+          AnalyticsManager.getInstance().setUserName(userName);
+      }
+      else{
+          AnalyticsManager.getInstance().setUserName("no name user");
+      }
+
 
       SplashScreenFragment splashScreenFragment = new SplashScreenFragment();
       Utils.replaceFragment(getFragmentManager(), android.R.id.content, splashScreenFragment, false);

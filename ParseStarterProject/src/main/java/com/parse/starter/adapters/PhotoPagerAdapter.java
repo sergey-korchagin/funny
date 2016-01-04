@@ -25,7 +25,6 @@ import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.starter.CustomObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.interfaces.BannerViewListener;
@@ -86,7 +85,7 @@ List<ParseObject> mImages;
         View root = inflater.inflate(R.layout.photo_layout, container, false);
         final TouchImageView mImage = (TouchImageView) root.findViewById(R.id.touchImage);
         final ProgressBar progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
-        if(mImages.get(position).get("mPicture")!=null && !mImages.get(position).get("isBanner").equals("banner") ) {// && mImages.get(position).getImageView() == null){
+        if(mImages.get(position).get("mPicture")!=null){ //&& !mImages.get(position).get("isBanner").equals("banner") ) {// && mImages.get(position).getImageView() == null){
             bannerViewListener.onImageShown();
             ParseFile applicantResume = (ParseFile) mImages.get(position).get("mPicture");
             //  applicantResume.getUrl();
@@ -111,43 +110,43 @@ List<ParseObject> mImages;
                 }
             });
         }
-     if(mImages.get(position).get("isBanner").equals("banner")){
-         bannerViewListener.onBannerShown();
-         progressBar.setVisibility(View.VISIBLE);
-         final AdView mAdView = (AdView) root.findViewById(R.id.adView);
-         mAdView.setVisibility(View.VISIBLE);
-         mImage.setVisibility(View.GONE);
-         AdRequest adRequest = new AdRequest.Builder().build();
-         mAdView.loadAd(adRequest);
-
-         mAdView.setAdListener(new AdListener() {
-             @Override
-             public void onAdClosed() {
-                 super.onAdClosed();
-             }
-
-             @Override
-             public void onAdFailedToLoad(int errorCode) {
-                 super.onAdFailedToLoad(errorCode);
-             }
-
-             @Override
-             public void onAdLeftApplication() {
-                 super.onAdLeftApplication();
-             }
-
-             @Override
-             public void onAdOpened() {
-                 super.onAdOpened();
-             }
-
-             @Override
-             public void onAdLoaded() {
-                 super.onAdLoaded();
-                 progressBar.setVisibility(View.GONE);
-             }
-         });
-     }
+//     if(mImages.get(position).get("isBanner").equals("banner")){
+//         bannerViewListener.onBannerShown();
+//         progressBar.setVisibility(View.VISIBLE);
+//         final AdView mAdView = (AdView) root.findViewById(R.id.adView);
+//         mAdView.setVisibility(View.VISIBLE);
+//         mImage.setVisibility(View.GONE);
+//         AdRequest adRequest = new AdRequest.Builder().build();
+//         mAdView.loadAd(adRequest);
+//
+//         mAdView.setAdListener(new AdListener() {
+//             @Override
+//             public void onAdClosed() {
+//                 super.onAdClosed();
+//             }
+//
+//             @Override
+//             public void onAdFailedToLoad(int errorCode) {
+//                 super.onAdFailedToLoad(errorCode);
+//             }
+//
+//             @Override
+//             public void onAdLeftApplication() {
+//                 super.onAdLeftApplication();
+//             }
+//
+//             @Override
+//             public void onAdOpened() {
+//                 super.onAdOpened();
+//             }
+//
+//             @Override
+//             public void onAdLoaded() {
+//                 super.onAdLoaded();
+//                 progressBar.setVisibility(View.GONE);
+//             }
+//         });
+  //   }
 
         mImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

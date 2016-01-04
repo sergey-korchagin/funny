@@ -17,4 +17,4 @@
         android:repeatMode="reverse"
         android:interpolator="@android:anim/linear_interpolator"
         android:duration="100" />
-</set><!-- From: file:/C:/Users/User/Desktop/funny/ParseStarterProject/src/main/res/anim/shake.xml -->
+</set>

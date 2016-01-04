@@ -1,10 +1,16 @@
 package com.parse.starter.utils;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by User on 30/11/2015.
@@ -42,5 +48,28 @@ public class Utils {
         int t = Integer.valueOf(string);
         t = t-1;
         return String.valueOf(t);
+    }
+
+    public static String getUsername(Activity activity) {
+        AccountManager manager = AccountManager.get(activity);
+        Account[] accounts = manager.getAccountsByType("com.google");
+        List<String> possibleEmails = new LinkedList<String>();
+
+        for (Account account : accounts) {
+            // TODO: Check possibleEmail against an email regex or treat
+            // account.name as an email address only for certain account.type
+            // values.
+            possibleEmails.add(account.name);
+        }
+
+        if (!possibleEmails.isEmpty() && possibleEmails.get(0) != null) {
+            String email = possibleEmails.get(0);
+            String[] parts = email.split("@");
+            if (parts.length > 0 && parts[0] != null)
+                return parts[0];
+            else
+                return null;
+        } else
+            return null;
     }
 }

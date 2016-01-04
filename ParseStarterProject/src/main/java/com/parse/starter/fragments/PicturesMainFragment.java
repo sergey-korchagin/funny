@@ -67,12 +67,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.PushService;
-import com.parse.starter.CustomObject;
 import com.parse.starter.MainActivity;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
+import com.parse.starter.managers.AnalyticsManager;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.ShortcutBadger;
@@ -220,38 +220,38 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
 
-        final AdView mAdView = (AdView) root.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        mAdView.loadAd(adRequest);
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                super.onAdFailedToLoad(errorCode);
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                super.onAdLeftApplication();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                mAdView.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-        });
+//        final AdView mAdView = (AdView) root.findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//
+//        mAdView.loadAd(adRequest);
+//
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                super.onAdFailedToLoad(errorCode);
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                super.onAdLeftApplication();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//
+//            @Override
+//            public void onAdLoaded() {
+//                mAdView.setVisibility(View.VISIBLE);
+//                super.onAdLoaded();
+//            }
+//        });
 
 
         initInterestitial();
@@ -275,6 +275,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         });
 
         //mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+
+        AnalyticsManager.getInstance().sendScreenEvent(AnalyticsManager.SCREEN_ALL);
         return root;
     }
 
@@ -393,7 +395,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             seenItemsLIst.add(t);
             notSeenCounter--;
         }
-if(position == 6){
+if(position == 6 || position == 54){
     if (mInterstitialAd.isLoaded()) {
         mInterstitialAd.show();
     } else {
@@ -426,7 +428,7 @@ if(position == 6){
             @Override
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
-                   categories = (List<ParseObject>) o;
+                    categories = (List<ParseObject>) o;
 
 //                    List<CustomObject> co = new ArrayList<CustomObject>();
 //                    for (int i = 0; i<((List) o).size();i++){
@@ -765,7 +767,7 @@ if(position == 6){
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+
 
 
     }
@@ -777,8 +779,10 @@ if(position == 6){
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
+        if(isAdded()){
+            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        }
 
-        ShortcutBadger.with(getActivity()).count(notSeenCounter);
 
 
     }
@@ -786,11 +790,12 @@ if(position == 6){
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-        ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        if(isAdded()){
+            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        }
 
     }
 

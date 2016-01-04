@@ -30,6 +30,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -37,11 +40,11 @@ import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.starter.CustomObject;
 import com.parse.starter.R;
 import com.parse.starter.adapters.PhotoPagerAdapter;
 import com.parse.starter.interfaces.BannerViewListener;
 import com.parse.starter.interfaces.CustomTouchListener;
+import com.parse.starter.managers.AnalyticsManager;
 import com.parse.starter.managers.TinyDB;
 import com.parse.starter.utils.Constants;
 import com.parse.starter.utils.ShortcutBadger;
@@ -186,7 +189,40 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         initSmallImage();
         checkIfStorageAvailable();
         getCategories();
+        AnalyticsManager.getInstance().sendScreenEvent(AnalyticsManager.SCREEN_TOP);
 
+        final AdView mAdView = (AdView) root.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                mAdView.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+        });
         return root;
     }
 
@@ -663,7 +699,6 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     @Override
     public void onPause() {
         tinydb.putListString(SAVED_LIST, likesList);
-
         super.onPause();
     }
 
