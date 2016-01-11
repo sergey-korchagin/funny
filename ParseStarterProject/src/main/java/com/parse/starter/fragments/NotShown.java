@@ -220,6 +220,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                   categories = (List<ParseObject>) o;
+                    //remember seen
                     for(int i = 0; i<((List<ParseObject>) o).size();i++){
                         seenItemsLIst.add(((List<ParseObject>) o).get(i).getObjectId());
                     }
