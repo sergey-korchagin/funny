@@ -763,18 +763,19 @@ if(position == 6 || position == 54){
 
     @Override
     public void onPause() {
-        super.onPause();
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
 
-
+        if(isAdded()){
+            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+        }
+        super.onPause();
 
     }
 
     @Override
     public void onStop() {
-        super.onStop();
 
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
@@ -782,6 +783,7 @@ if(position == 6 || position == 54){
         if(isAdded()){
             ShortcutBadger.with(getActivity()).count(notSeenCounter);
         }
+        super.onStop();
 
 
 
@@ -789,13 +791,13 @@ if(position == 6 || position == 54){
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         tinydb.putListString(SAVED_LIST, likesList);
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
         if(isAdded()){
             ShortcutBadger.with(getActivity()).count(notSeenCounter);
         }
+        super.onDestroy();
 
     }
 
