@@ -283,7 +283,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     public void initInterestitial(){
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-4305158415143864/7682225439");
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -970,7 +970,7 @@ if(position == 6 || position == 54){
 
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("A234DD9FCF199B7AAC7BC1D45AAB5104")
+                .addTestDevice("43BC114261963850F5B021A66F5A07FB")
                 .build();
 
         mInterstitialAd.loadAd(adRequest);

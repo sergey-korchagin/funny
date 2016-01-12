@@ -192,7 +192,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         AnalyticsManager.getInstance().sendScreenEvent(AnalyticsManager.SCREEN_TOP);
 
         final AdView mAdView = (AdView) root.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("43BC114261963850F5B021A66F5A07FB").build();
 
         mAdView.loadAd(adRequest);
 
@@ -223,6 +223,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
                 super.onAdLoaded();
             }
         });
+
         return root;
     }
 

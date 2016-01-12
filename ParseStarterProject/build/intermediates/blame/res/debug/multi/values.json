@@ -8611,7 +8611,14 @@
                     "endOffset": 28878
                 },
                 "from": {
-                    "file": "C:\\Users\\User\\Desktop\\funny\\ParseStarterProject\\src\\main\\res\\values\\strings.xml"
+                    "file": "C:\\Users\\User\\Desktop\\funny\\ParseStarterProject\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 150,
+                        "endColumn": 84,
+                        "endOffset": 230
+                    }
                 }
             },
             {
