@@ -706,11 +706,12 @@ int string create_calendar_message 0x7f080037
 int string create_calendar_title 0x7f080038
 int string decline 0x7f080039
 int string gcm_defaultSenderId 0x7f08003a
-int string parse_app_id 0x7f08003b
-int string parse_client_key 0x7f08003c
+int string interestial 0x7f08003b
+int string parse_app_id 0x7f08003c
+int string parse_client_key 0x7f08003d
 int string status_bar_notification_info_overflow 0x7f08002f
-int string store_picture_message 0x7f08003d
-int string store_picture_title 0x7f08003e
+int string store_picture_message 0x7f08003e
+int string store_picture_title 0x7f08003f
 int style AlertDialog_AppCompat 0x7f0a007a
 int style AlertDialog_AppCompat_Light 0x7f0a007b
 int style Animation_AppCompat_Dialog 0x7f0a007c

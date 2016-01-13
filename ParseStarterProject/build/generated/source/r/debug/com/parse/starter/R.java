@@ -1905,11 +1905,12 @@ containing a value of this type.
         public static final int create_calendar_title=0x7f080038;
         public static final int decline=0x7f080039;
         public static final int gcm_defaultSenderId=0x7f08003a;
-        public static final int parse_app_id=0x7f08003b;
-        public static final int parse_client_key=0x7f08003c;
+        public static final int interestial=0x7f08003b;
+        public static final int parse_app_id=0x7f08003c;
+        public static final int parse_client_key=0x7f08003d;
         public static final int status_bar_notification_info_overflow=0x7f08002f;
-        public static final int store_picture_message=0x7f08003d;
-        public static final int store_picture_title=0x7f08003e;
+        public static final int store_picture_message=0x7f08003e;
+        public static final int store_picture_title=0x7f08003f;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f0a007a;

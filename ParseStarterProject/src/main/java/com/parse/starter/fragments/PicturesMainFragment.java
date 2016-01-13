@@ -283,7 +283,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     public void initInterestitial(){
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-4305158415143864/7682225439");
+        mInterstitialAd.setAdUnitId(getString(R.string.interestial));//"ca-app-pub-4305158415143864/7682225439");
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
