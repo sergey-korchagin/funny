@@ -209,7 +209,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
-        query.setLimit(5);
+       // query.setLimit(5);
         query.whereNotContainedIn("objectId", seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
@@ -221,13 +221,10 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
                 if (o instanceof List) {
                   categories = (List<ParseObject>) o;
                     //remember seen
-                    for(int i = 0; i<((List<ParseObject>) o).size();i++){
-                        seenItemsLIst.add(((List<ParseObject>) o).get(i).getObjectId());
-                    }
-//                    List<CustomObject> co = new ArrayList<CustomObject>();
-//                    for (int i = 0; i<((List) o).size();i++){
-//                        co.add(new CustomObject(categories.get(i),null));
+//                    for(int i = 0; i<((List<ParseObject>) o).size();i++){
+//                        seenItemsLIst.add(((List<ParseObject>) o).get(i).getObjectId());
 //                    }
+
                     if (categories.size() == 0) {
                         progressDialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -603,106 +600,6 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-        if(position%5==0){
-
-            ParseQuery query = new ParseQuery("picture");
-            query.addDescendingOrder("createdAt");
-            query.setLimit(5);
-            query.whereNotContainedIn("objectId", seenItemsLIst);
-            query.findInBackground(new FindCallback() {
-                @Override
-                public void done(List objects, ParseException e) {
-                }
-
-                @Override
-                public void done(Object o, Throwable throwable) {
-                    if (o instanceof List) {
-                        updatedCategories = (List<ParseObject>) o;
-//                    List<CustomObject> co = new ArrayList<CustomObject>();
-//                    for (int i = 0; i<((List) o).size();i++){
-//                        co.add(new CustomObject(categories.get(i),null));
-//                    }
-                        if (updatedCategories.size() == 0) {
-                            progressDialog.dismiss();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setCancelable(true).setMessage("К сожалению нет новых картинок но они обязательно появятся!!")
-                                    .setPositiveButton("Назад на главную", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            PicturesMainFragment notShown = new PicturesMainFragment();
-                                            Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
-                                        }
-                                    });
-
-                            AlertDialog alert = builder.create();
-                            Window window = alert.getWindow();
-                            window.setGravity(Gravity.CENTER);
-                            alert.show();
-                        } else {
-                            mAdapter.getMorePhotos(updatedCategories, querySize);
-                            mAdapter.notifyDataSetChanged();
-                            likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
-
-                            if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
-                                seenItemsLIst.add(categories.get(0).getObjectId());
-                                notSeenCounter--;
-                            }
-                            picNumber.setText(String.valueOf(1));
-                            initLikeButton();
-                            progressDialog.dismiss();
-                        }
-
-
-                    }
-                }
-            });
-        }
-
-        if(position%5==1){
-            ParseQuery query = new ParseQuery("picture");
-            query.addDescendingOrder("createdAt");
-            query.setLimit(5);
-            query.whereNotContainedIn("objectId", seenItemsLIst);
-            query.findInBackground(new FindCallback() {
-                @Override
-                public void done(List objects, ParseException e) {
-                }
-
-                @Override
-                public void done(Object o, Throwable throwable) {
-                    if (o instanceof List) {
-                        updatedCategories = (List<ParseObject>) o;
-                        for(int i = 0; i<((List<ParseObject>) o).size();i++){
-                            seenItemsLIst.add(((List<ParseObject>) o).get(i).getObjectId());
-                        }
-                        if (updatedCategories.size() == 0) {
-                            progressDialog.dismiss();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setCancelable(true).setMessage("К сожалению нет новых картинок но они обязательно появятся!!")
-                                    .setPositiveButton("Назад на главную", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            PicturesMainFragment notShown = new PicturesMainFragment();
-                                            Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
-                                        }
-                                    });
-
-                            AlertDialog alert = builder.create();
-                            Window window = alert.getWindow();
-                            window.setGravity(Gravity.CENTER);
-                            alert.show();
-                        } else {
-                            mAdapter.getMorePhotos(updatedCategories, querySize);
-                            mAdapter.notifyDataSetChanged();
-
-                        }
-
-
-                    }
-                }
-            });
-        }
-
 
         if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
