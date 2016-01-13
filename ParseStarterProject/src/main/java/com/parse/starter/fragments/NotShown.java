@@ -209,7 +209,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
 
         ParseQuery query = new ParseQuery("picture");
         query.addDescendingOrder("createdAt");
-       // query.setLimit(5);
+        //query.setLimit(5);
         query.whereNotContainedIn("objectId", seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
@@ -220,10 +220,13 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                   categories = (List<ParseObject>) o;
-                    //remember seen
-//                    for(int i = 0; i<((List<ParseObject>) o).size();i++){
-//                        seenItemsLIst.add(((List<ParseObject>) o).get(i).getObjectId());
+//                    //remember seen
+//                    int s  =  categories.size();
+//                    if(s!=0){
+//                        seenItemsLIst.add(categories.get(s-1).getObjectId());
+//                        notSeenCounter--;
 //                    }
+
 
                     if (categories.size() == 0) {
                         progressDialog.dismiss();
@@ -600,6 +603,8 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
+
+
 
         if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));

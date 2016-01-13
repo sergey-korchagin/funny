@@ -430,11 +430,7 @@ if(position == 6 || position == 54){
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
 
-//                    List<CustomObject> co = new ArrayList<CustomObject>();
-//                    for (int i = 0; i<((List) o).size();i++){
-//                        ImageView imageView = new ImageView(getActivity());
-//                        co.add(new CustomObject(categories.get(i),null));
-//                    }
+
                     mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener, bannerViewListener);
                     mPager.setAdapter(mAdapter);
                     likesCounterView.setText(Integer.toString((Integer) categories.get(0).get("likes")));
