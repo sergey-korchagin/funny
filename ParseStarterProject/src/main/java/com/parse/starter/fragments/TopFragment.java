@@ -129,9 +129,9 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
-        if(notSeenItemsCounter == 0){
-            btnNtShown.setVisibility(View.GONE);
-        }
+//        if(notSeenItemsCounter == 0){
+//            btnNtShown.setVisibility(View.GONE);
+//        }
         menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
         menuLayout.setVisibility(View.GONE);
         topLayout = (LinearLayout) root.findViewById(R.id.topLayout);
@@ -619,9 +619,9 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-        if(notSeenItemsCounter==0){
-            btnNtShown.setVisibility(View.GONE);
-        }
+      //  if(notSeenItemsCounter==0){
+        //    btnNtShown.setVisibility(View.GONE);
+       // }
 
         if (position % 5 == 1 && skip < Constants.TOP_SIZE) {
             skip = skip + 5;

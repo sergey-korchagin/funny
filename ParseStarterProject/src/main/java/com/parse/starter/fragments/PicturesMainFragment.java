@@ -323,9 +323,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 if (notSeenCounter < 0) {
                     notSeenCounter = 0;
                 }
-                if (notSeenCounter == 0) {
-                    btnNtShown.setVisibility(View.GONE);
-                }
+//                if (notSeenCounter == 0) {
+//                    btnNtShown.setVisibility(View.GONE);
+//                }
                 String pics = "/" + querySize;
                 allPicNumber.setText(pics);
 
@@ -342,9 +342,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int position) {
-        if(notSeenCounter == 0){
-            btnNtShown.setVisibility(View.GONE);
-        }
+       // if(notSeenCounter == 0){
+        //    btnNtShown.setVisibility(View.GONE);
+       // }
         mPosition = position;
         if (position % 5 == 1 && skip < querySize) {
             skip = skip + 5;

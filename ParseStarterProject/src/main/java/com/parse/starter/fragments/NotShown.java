@@ -102,6 +102,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     TextView allPicNumber;
     int querySize;
     ImageView pushMenuImage;
+    int lastSeen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -208,9 +209,9 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     public void getCategories() {
 
         ParseQuery query = new ParseQuery("picture");
-        query.addDescendingOrder("createdAt");
+        query.addAscendingOrder("createdAt");
         //query.setLimit(5);
-        query.whereNotContainedIn("objectId", seenItemsLIst);
+      //  query.whereNotContainedIn("objectId", seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -603,12 +604,35 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
+        if (position % 5 == 1 && skip < querySize) {
+            skip = skip + 5;
 
+            ParseQuery query = new ParseQuery("picture");
+            query.addAscendingOrder("createdAt");
+            //  query.whereNotContainedIn();
+            query.setSkip(skip);
+            query.setLimit(5);
+            query.findInBackground(new FindCallback() {
+                @Override
+                public void done(List objects, ParseException e) {
+                }
 
+                @Override
+                public void done(Object o, Throwable throwable) {
+                    if (o instanceof List) {
+
+                        updatedCategories = (List<ParseObject>) o;
+                        mAdapter.getMorePhotos(updatedCategories, querySize);
+                        mAdapter.notifyDataSetChanged();
+
+                    }
+                }
+            });
+        }
 
         if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
-
+lastSeen = (Integer) categories.get(mPosition).get("likes");
         }
         String t = categories.get(mPosition).getObjectId();
         if (!seenItemsLIst.contains(t)) {
@@ -704,7 +728,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     public void getQuerySize() {
 
         ParseQuery query = new ParseQuery("picture");
-        query.whereNotContainedIn("objectId", seenItemsLIst);
+      //  query.whereNotContainedIn("objectId", seenItemsLIst);
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
