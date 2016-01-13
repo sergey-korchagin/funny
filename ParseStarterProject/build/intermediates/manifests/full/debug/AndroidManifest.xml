@@ -56,13 +56,13 @@
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <permission
-        android:name="com.parse.starter.permission.C2D_MESSAGE"
+        android:name="com.parse.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE" />
 
     <application
-        android:name="com.parse.starter.StarterApplication"
+        android:name="com.nafunny.app.StarterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -76,7 +76,7 @@
             android:value="@string/parse_client_key" />
 
         <activity
-            android:name="com.parse.starter.MainActivity"
+            android:name="com.nafunny.app.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -99,7 +99,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.parse.starter.receivers.CustomParseBroadcastReceiver"
+            android:name="com.nafunny.app.receivers.CustomParseBroadcastReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="action.add.badge" />
