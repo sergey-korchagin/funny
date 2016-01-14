@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ParseStarterProject/NaFunny.iml" filepath="$PROJECT_DIR$/ParseStarterProject/NaFunny.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NaFunny/NaFunny.iml" filepath="$PROJECT_DIR$/NaFunny/NaFunny.iml" />
       <module fileurl="file://$PROJECT_DIR$/funny.iml" filepath="$PROJECT_DIR$/funny.iml" />
     </modules>
   </component>
