@@ -644,7 +644,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
             btnNtShown.setVisibility(View.GONE);
         }
 
-        if (position % 5 == 1 && skip < Constants.TOP_SIZE) {
+        if (position % 5 == 1 && skip < Constants.TOP_SIZE - 5) {
             skip = skip + 5;
 
             ParseQuery query = new ParseQuery("picture");
