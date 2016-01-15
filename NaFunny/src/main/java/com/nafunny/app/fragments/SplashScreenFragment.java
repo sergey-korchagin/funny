@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.parse.CountCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.nafunny.app.R;
@@ -22,6 +23,7 @@ import com.nafunny.app.utils.Constants;
 import com.nafunny.app.utils.Utils;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +37,7 @@ public class SplashScreenFragment extends Fragment {
     private PhotoPagerAdapter mAdapter;
     List<ParseObject> categories;
     TinyDB tinydb;
-    List<String> seenItems;
+    ArrayList<String> seenItems;
     int querySize;
 
     @Nullable
@@ -44,8 +46,7 @@ public class SplashScreenFragment extends Fragment {
         final View root = inflater.inflate(R.layout.splash_screen_fragment, container, false);
         tinydb = new TinyDB(getActivity());
 
-        Constants.FROM_SETTINGS = false;
-
+        seenItems = new ArrayList<>();
         ImageView sunImageView = (ImageView) root.findViewById(R.id.imageView);
         Animation sunRiseAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
 
@@ -57,11 +58,11 @@ public class SplashScreenFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-//                int t = tinydb.getInt(Constants.LAST_ON_CONNECTION);
-//                if (t == 0) {
-//                    getQuerySize();
-//                    tinydb.putInt(Constants.LAST_ON_CONNECTION, querySize);
-//                }
+                boolean t = tinydb.getBoolean(Constants.LAST_ON_CONNECTION);
+                if (!t) {
+                    getQuerySize();
+
+                }
                 PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
                 Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
 
@@ -79,22 +80,36 @@ public class SplashScreenFragment extends Fragment {
 
 
 
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        ((MainActivity) activity).hideActionbar();
-//
-//    }
-public void getQuerySize() {
-    ParseQuery query = new ParseQuery("picture");
-    query.countInBackground(new CountCallback() {
-        @Override
-        public void done(int count, ParseException e) {
-           querySize =  count;
-        }
-    });
+    public void getQuerySize() {
 
+        ParseQuery query = new ParseQuery("picture");
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(int count, ParseException e) {
+                querySize = count;
 
-}
+                ParseQuery query = new ParseQuery("picture");
+                query.addDescendingOrder("createdAt");
+                query.setLimit(querySize);
+                query.findInBackground(new FindCallback() {
+                    @Override
+                    public void done(List objects, ParseException e) {
+                    }
 
+                    @Override
+                    public void done(Object o, Throwable throwable) {
+                        if (o instanceof List) {
+                            categories = (List<ParseObject>) o;
+                            for (int i = 0; i < categories.size(); i++) {
+                                seenItems.add(categories.get(i).getObjectId().toString());
+                            }
+                            tinydb.putBoolean(Constants.LAST_ON_CONNECTION, true);
+                            tinydb.putListString(Constants.SEEN_LIST,seenItems);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
 }

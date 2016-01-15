@@ -19,8 +19,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.nafunny.app.fragments.SplashScreenFragment;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
-import com.nafunny.app.R;
-import com.nafunny.app.fragments.SettingsFragment;
 import com.nafunny.app.managers.AnalyticsManager;
 import com.nafunny.app.utils.Constants;
 import com.nafunny.app.utils.Utils;
@@ -79,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
     public final boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                SettingsFragment settingsFragment = new SettingsFragment();
-                Utils.replaceFragment(getFragmentManager(), android.R.id.content, settingsFragment, true);
                 return  true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -90,12 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!Constants.FROM_SETTINGS){
+
             super.onBackPressed();
-        }else {
-            getFragmentManager().popBackStackImmediate();
-            Constants.FROM_SETTINGS = false;
-        }
 
     }
 }

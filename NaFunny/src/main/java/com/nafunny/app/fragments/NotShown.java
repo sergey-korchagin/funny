@@ -197,9 +197,10 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
 
         customTouchListener = this;
         bannerViewListener = this;
+        getQuerySize();
+
         initSmallImage();
         checkIfStorageAvailable();
-        getQuerySize();
         getCategories();
         AnalyticsManager.getInstance().sendScreenEvent(AnalyticsManager.SCREEN_NEW);
 
@@ -221,8 +222,7 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
     public void getCategories() {
 
         ParseQuery query = new ParseQuery("picture");
-        query.addDescendingOrder("createdAt");
-        //query.setLimit(5);
+        query.setLimit(querySize);
         query.whereNotContainedIn("objectId", seenItemsLIst);
         query.findInBackground(new FindCallback() {
             @Override
