@@ -648,7 +648,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
             skip = skip + 5;
 
             ParseQuery query = new ParseQuery("picture");
-            query.addDescendingOrder("createdAt");
+            query.addDescendingOrder("likes");
           //  query.whereNotEqualTo("isBanner", "banner");
 
             //  query.whereNotContainedIn();
