@@ -13,6 +13,7 @@ import com.nafunny.app.bager.ApexHomeBadger;
 import com.nafunny.app.bager.AsusHomeLauncher;
 import com.nafunny.app.bager.DefaultBadger;
 import com.nafunny.app.bager.LGHomeBadger;
+import com.nafunny.app.bager.XiaomiHomeBadger;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedList;
@@ -72,7 +73,7 @@ public abstract class ShortcutBadger {
             String currentHomePackage = resolveInfo.activityInfo.packageName;
 
             if (Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
-             //   mShortcutBadger = new XiaomiHomeBadger(context);
+                mShortcutBadger = new XiaomiHomeBadger(context);
                 return mShortcutBadger;
             }
 

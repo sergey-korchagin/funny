@@ -293,7 +293,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             btnNtShown.setVisibility(View.GONE);
         }
 
-        int tt = (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
+        int tt = position+1;// (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
         String tmp = String.valueOf(tt);
         picNumber.setText(tmp);
 
