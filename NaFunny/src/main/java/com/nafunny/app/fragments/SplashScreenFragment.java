@@ -62,9 +62,11 @@ public class SplashScreenFragment extends Fragment {
                 if (!t) {
                     getQuerySize();
 
+                }else{
+                    PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
                 }
-                PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
-                Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+
 
             }
 
@@ -74,6 +76,7 @@ public class SplashScreenFragment extends Fragment {
             }
         });
         sunImageView.startAnimation(sunRiseAnimation);
+
 
         return root;
     }
@@ -104,7 +107,10 @@ public class SplashScreenFragment extends Fragment {
                                 seenItems.add(categories.get(i).getObjectId().toString());
                             }
                             tinydb.putBoolean(Constants.LAST_ON_CONNECTION, true);
-                            tinydb.putListString(Constants.SEEN_LIST,seenItems);
+                            tinydb.putListString(Constants.SEEN_LIST, seenItems);
+
+                            PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+                            Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
                         }
 
                     }

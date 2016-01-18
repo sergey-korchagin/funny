@@ -1,5 +1,6 @@
 package com.nafunny.app.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -237,9 +238,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             @Override
             public void onAdClosed() {
                 requestNewInterstitial();
-//                tinydb.putInt(Constants.SEEN_ITEMS_COUNTER,notSeenCounter);
-//                TopFragment topFragment = new TopFragment();
-//                Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
+
             }
         });
 
@@ -268,10 +267,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 querySize = count;
                 seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
                 notSeenCounter = querySize - seenItemsLIst.size();
-                if (notSeenCounter < 0) {
+
+                if (notSeenCounter <= 0) {
                     notSeenCounter = 0;
-                }
-                if (notSeenCounter == 0) {
                     btnNtShown.setVisibility(View.GONE);
                 }
                 String pics = "/" + querySize;
@@ -290,9 +288,15 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int position) {
-        if(notSeenCounter == 0){
+        if(notSeenCounter <= 0){
+            notSeenCounter = 0;
             btnNtShown.setVisibility(View.GONE);
         }
+
+        int tt = (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
+        String tmp = String.valueOf(tt);
+        picNumber.setText(tmp);
+
         mPosition = position;
         if (position % 5 == 1 && skip < querySize) {
             skip = skip + 5;
@@ -343,18 +347,15 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             seenItemsLIst.add(t);
             notSeenCounter--;
         }
-if(position == 6 || position == 54){
-    if (mInterstitialAd.isLoaded()) {
-        mInterstitialAd.show();
-    } else {
-    }
-}
+        if(position == 6 || position == 55 || position == 150){
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            }
+        }
 
 
         initLikeButton();
-        int tt = (querySize - ((int) categories.get(position).get("pictureNum"))) + 1;
-        String tmp = String.valueOf(tt);
-        picNumber.setText(tmp);
+
     }
 
 
@@ -455,7 +456,9 @@ if(position == 6 || position == 54){
 //                mInterstitialAd.show();
 //            } else {
                 tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
-                TopFragment topFragment = new TopFragment();
+            tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+
+            TopFragment topFragment = new TopFragment();
                 Utils.replaceFragment(getFragmentManager(), android.R.id.content, topFragment, true);
 //            }
 
@@ -753,7 +756,10 @@ if(position == 6 || position == 54){
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
         if(isAdded()){
-            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+            Activity activity = getActivity();
+            if(activity!=null){
+                ShortcutBadger.with(getActivity()).count(notSeenCounter);
+            }
         }
         if(receiver!=null && isRegistered){
             getActivity().unregisterReceiver(receiver);
@@ -772,8 +778,9 @@ if(position == 6 || position == 54){
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
         if(isAdded()){
-            ShortcutBadger.with(getActivity()).count(notSeenCounter);
-        }
+            if(getActivity()!=null){
+                ShortcutBadger.with(getActivity()).count(notSeenCounter);
+            }        }
         if(receiver!=null && isRegistered){
             getActivity().unregisterReceiver(receiver);
             isRegistered = false;

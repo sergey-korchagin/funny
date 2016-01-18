@@ -16,5 +16,5 @@
         android:repeatCount="7"
         android:repeatMode="reverse"
         android:interpolator="@android:anim/linear_interpolator"
-        android:duration="120" />
+        android:duration="180" />
 </set>

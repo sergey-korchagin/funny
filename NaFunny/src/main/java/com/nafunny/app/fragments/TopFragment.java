@@ -42,6 +42,7 @@ import com.nafunny.app.interfaces.BannerViewListener;
 import com.nafunny.app.interfaces.CustomTouchListener;
 import com.nafunny.app.managers.AnalyticsManager;
 import com.nafunny.app.managers.TinyDB;
+import com.nafunny.app.utils.ShortcutBadger;
 import com.nafunny.app.utils.Utils;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -114,6 +115,7 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     boolean isRegistered;
     FrameLayout errorLayout;
     LinearLayout mainLayout;
+    ArrayList<String> seenItemsLIst;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.top_fragment, container, false);
@@ -135,7 +137,8 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 
         btnNtShown = (ImageView) root.findViewById(R.id.btnNotSeen);
         btnNtShown.setOnClickListener(this);
-        if(notSeenItemsCounter == 0){
+        if(notSeenItemsCounter <= 0){
+            notSeenItemsCounter = 0;
             btnNtShown.setVisibility(View.GONE);
         }
         menuLayout = (LinearLayout) root.findViewById(R.id.menuLayout);
@@ -169,6 +172,8 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         }
 
         intiReciever();
+        seenItemsLIst = new ArrayList<>();
+        seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
 
         btnLike = (ImageView) root.findViewById(R.id.btnLike);
         btnLike.setOnClickListener(this);
@@ -275,6 +280,11 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
                     progressDialog.dismiss();
                     initLikeButton();
                     picNumber.setText(String.valueOf(1));
+                    if (!seenItemsLIst.contains(categories.get(0).getObjectId())) {
+                        seenItemsLIst.add(categories.get(0).getObjectId());
+                        notSeenItemsCounter--;
+
+                    }
 
                 }
             }
@@ -422,6 +432,8 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 //                    if (o instanceof List) {
 //                        categories = (List<ParseObject>) o;
             tinydb.putListString(SAVED_LIST, likesList);
+            tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+
             PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
 
@@ -528,6 +540,9 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
 
 
         } else if (btnNtShown.getId() == v.getId()) {
+            tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+            tinydb.putListString(SAVED_LIST, likesList);
+
             NotShown notShown = new NotShown();
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, notShown, false);
         }
@@ -640,7 +655,8 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
     @Override
     public void onPageSelected(int position) {
         mPosition = position;
-        if(notSeenItemsCounter==0){
+        if(notSeenItemsCounter<=0){
+            notSeenItemsCounter = 0;
             btnNtShown.setVisibility(View.GONE);
         }
 
@@ -673,6 +689,11 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         if (categories != null) {
             likesCounterView.setText(Integer.toString((Integer) categories.get(mPosition).get("likes")));
 
+        }
+        String t = categories.get(mPosition).getObjectId();
+        if (!seenItemsLIst.contains(t)) {
+            seenItemsLIst.add(t);
+            notSeenItemsCounter--;
         }
         int pos = position + 1;
         picNumber.setText(String.valueOf(pos));
@@ -723,9 +744,40 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         btnNtShown.setOnClickListener(this);
         btnMore.setOnClickListener(this);
         likesList = tinydb.getListString(SAVED_LIST);
+        seenItemsLIst = tinydb.getListString(Constants.SEEN_LIST);
+
         super.onResume();
 
     }
+    @Override
+    public void onStop(){
+
+        tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenItemsCounter);
+
+        if(receiver!=null && isRegistered){
+            getActivity().unregisterReceiver(receiver);
+            isRegistered = false;
+
+        }
+        super.onStop();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        tinydb.putListString(SAVED_LIST, likesList);
+        tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
+        tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenItemsCounter);
+        if(receiver!=null && isRegistered){
+            getActivity().unregisterReceiver(receiver);
+            isRegistered = false;
+
+        }
+        super.onDestroy();
+    }
+
 
     @Override
     public void onPause() {
