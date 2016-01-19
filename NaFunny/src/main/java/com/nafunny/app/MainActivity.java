@@ -43,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
       ParseInstallation installation = ParseInstallation.getCurrentInstallation();
       installation.addAllUnique("channels", Arrays.asList("photos"));
+      String user;
+      user = Utils.getUsername(this);
+      if(user!=null){
+            installation.put("userName",user);
+      }
+      else{
+          installation.put("userName","anonimus");
+      }
       installation.saveInBackground();
 
       Fabric.with(this, new Crashlytics());

@@ -201,7 +201,6 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
 
         initSmallImage();
         checkIfStorageAvailable();
-        getCategories();
         AnalyticsManager.getInstance().sendScreenEvent(AnalyticsManager.SCREEN_NEW);
 
         return root;
@@ -718,7 +717,8 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
 
         if(isAdded()){
-            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+           // ShortcutBadger.with(getActivity()).count(notSeenCounter);
+            ShortcutBadger.with(getActivity()).count(0);
         }
         super.onStop();
 
@@ -731,7 +731,8 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
         tinydb.putListString(Constants.SEEN_LIST, seenItemsLIst);
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
         if(isAdded()){
-            ShortcutBadger.with(getActivity()).count(notSeenCounter);
+            //ShortcutBadger.with(getActivity()).count(notSeenCounter);
+            ShortcutBadger.with(getActivity()).count(0);
         }
         super.onDestroy();
 
@@ -752,9 +753,11 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
                 }
                 String pics = "/" + querySize;
                 allPicNumber.setText(pics);
-
+                getCategories();
             }
         });
+
+
     }
 
     @Override

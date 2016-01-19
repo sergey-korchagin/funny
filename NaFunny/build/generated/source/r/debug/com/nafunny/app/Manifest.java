@@ -14,6 +14,6 @@ public final class Manifest {
       to match your app's package name + ".permission.C2D_MESSAGE".
     
          */
-        public static final String C2D_MESSAGE="com.parse.app.permission.C2D_MESSAGE";
+        public static final String C2D_MESSAGE="com.nafunny.app.permission.C2D_MESSAGE";
     }
 }

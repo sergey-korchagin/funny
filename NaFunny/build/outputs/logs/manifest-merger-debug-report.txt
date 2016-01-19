@@ -105,16 +105,16 @@ uses-permission#com.majeur.launcher.permission.UPDATE_BADGE
 ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:48:5-82
 	android:name
 		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:48:22-80
-permission#com.parse.app.permission.C2D_MESSAGE
-ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:54:5-55:63
+permission#com.nafunny.app.permission.C2D_MESSAGE
+ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:54:5-55:65
 	android:protectionLevel
 		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:54:17-52
 	android:name
-		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:55:9-60
-uses-permission#com.parse.starter.permission.C2D_MESSAGE
-ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:56:5-80
+		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:55:9-62
+uses-permission#com.nafunny.app.permission.C2D_MESSAGE
+ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:56:5-78
 	android:name
-		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:56:22-77
+		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:56:22-75
 application
 ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:59:5-116:19
 MERGED from [com.google.android.gms:play-services-measurement:8.3.0] C:\Users\User\Desktop\funny\NaFunny\build\intermediates\exploded-aar\com.google.android.gms\play-services-measurement\8.3.0\AndroidManifest.xml:26:5-46:19
@@ -226,7 +226,7 @@ ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:100:
 		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:101:13-73
 	android:name
 		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:100:19-64
-intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+com.parse.starter
+intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+com.nafunny.app
 ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:102:13-110:29
 action#com.google.android.c2dm.intent.RECEIVE
 ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:103:17-81
@@ -236,10 +236,10 @@ action#com.google.android.c2dm.intent.REGISTRATION
 ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:104:17-86
 	android:name
 		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:104:25-83
-category#com.parse.starter
-ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:109:17-62
+category#com.nafunny.app
+ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:109:17-60
 	android:name
-		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:109:27-59
+		ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:109:27-57
 meta-data#io.fabric.ApiKey
 ADDED from C:\Users\User\Desktop\funny\NaFunny\src\main\AndroidManifest.xml:113:9-115:72
 	android:value

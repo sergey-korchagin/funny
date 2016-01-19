@@ -207,7 +207,6 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         initSmallImage();
         checkIfStorageAvailable();
         getQuerySize();
-        getCategories();
 
 
         mPager.setOnTouchListener(new View.OnTouchListener() {
@@ -222,6 +221,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                 return false;
             }
         });
+        getCategories();
 
         //mPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
@@ -758,7 +758,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         if(isAdded()){
             Activity activity = getActivity();
             if(activity!=null){
-                ShortcutBadger.with(getActivity()).count(notSeenCounter);
+               // ShortcutBadger.with(getActivity()).count(notSeenCounter);
+                ShortcutBadger.with(getActivity()).count(0);
             }
         }
         if(receiver!=null && isRegistered){
@@ -779,7 +780,8 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         tinydb.putInt(Constants.SEEN_ITEMS_COUNTER, notSeenCounter);
         if(isAdded()){
             if(getActivity()!=null){
-                ShortcutBadger.with(getActivity()).count(notSeenCounter);
+                //ShortcutBadger.with(getActivity()).count(notSeenCounter);
+                ShortcutBadger.with(getActivity()).count(0);
             }        }
         if(receiver!=null && isRegistered){
             getActivity().unregisterReceiver(receiver);

@@ -23,7 +23,7 @@ TinyDB tinyDB;
         tinyDB = new TinyDB(context);
         counter = tinyDB.getInt(Constants.SEEN_ITEMS_COUNTER);
 
-        int badgeCount = counter+15;
+        int badgeCount = 15;//counter+15;
         ShortcutBadger.with(context).count(badgeCount);
     }
     }

@@ -1,12 +1,16 @@
 package com.nafunny.app.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -24,6 +28,8 @@ import com.nafunny.app.utils.Utils;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,6 +44,7 @@ public class SplashScreenFragment extends Fragment {
     List<ParseObject> categories;
     TinyDB tinydb;
     ArrayList<String> seenItems;
+    ArrayList<String> likeList;
     int querySize;
 
     @Nullable
@@ -47,6 +54,9 @@ public class SplashScreenFragment extends Fragment {
         tinydb = new TinyDB(getActivity());
 
         seenItems = new ArrayList<>();
+        seenItems = tinydb.getListString(Constants.SEEN_LIST);
+
+        likeList = new ArrayList<>();
         ImageView sunImageView = (ImageView) root.findViewById(R.id.imageView);
         Animation sunRiseAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
 
@@ -58,16 +68,22 @@ public class SplashScreenFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                boolean t = tinydb.getBoolean(Constants.LAST_ON_CONNECTION);
-                if (!t) {
-                    getQuerySize();
+//                boolean t = tinydb.getBoolean(Constants.LAST_ON_CONNECTION);
+//                if (!t) {
+//                    getQuerySize();
+//
+//                }else{
+//                    seenItems = tinydb.getListString(Constants.SEEN_LIST);
+//                    Collections.sort(seenItems,new SortComparator());
+//
+//                    updateDeleted();
+////                    PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+////                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+//                }
 
-                }else{
-                    PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
-                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
-                }
 
 
+                updateDeletedImgs();
             }
 
             @Override
@@ -79,6 +95,39 @@ public class SplashScreenFragment extends Fragment {
 
 
         return root;
+    }
+
+
+ public void updateDeletedImgs(){
+     if(seenItems.size()!=0){
+
+         ParseQuery query = new ParseQuery("deletedIt");
+         query.setLimit(1);
+         query.findInBackground(new FindCallback() {
+             @Override
+             public void done(List objects, ParseException e) {
+             }
+
+             @Override
+             public void done(Object o, Throwable throwable) {
+                 if (o instanceof List) {
+                     categories = (List<ParseObject>) o;
+                     ArrayList<String> ingrArray = (ArrayList<String>)categories.get(0).get("deletedItems");
+                     seenItems.removeAll(ingrArray);
+                     likeList.removeAll(ingrArray);
+                     PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+                     Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+
+
+                 }
+             }
+         });
+     }
+             else{
+                 PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+                 Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+             }
+
     }
 
 
@@ -118,4 +167,7 @@ public class SplashScreenFragment extends Fragment {
             }
         });
     }
+
+
+
 }

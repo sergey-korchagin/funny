@@ -56,10 +56,10 @@
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <permission
-        android:name="com.parse.app.permission.C2D_MESSAGE"
+        android:name="com.nafunny.app.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.nafunny.app.permission.C2D_MESSAGE" />
 
     <application
         android:name="com.nafunny.app.StarterApplication"
@@ -113,7 +113,7 @@
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
 <!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
-                <category android:name="com.parse.starter" />
+                <category android:name="com.nafunny.app" />
             </intent-filter>
         </receiver>
 
