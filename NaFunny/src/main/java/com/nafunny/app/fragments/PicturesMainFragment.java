@@ -590,7 +590,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
                                                     public void done(byte[] data, ParseException e) {
                                                         if (e == null) {
                                                             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                                            Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                                                            Intent share = new Intent(Intent.ACTION_SEND);
                                                             share.setType("image/jpeg");
                                                             share.putExtra(Intent.EXTRA_TEXT,getResources().getString(R.string.share_image_text));
 

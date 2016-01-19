@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="picasso-2.5.2.4b">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/NaFunny/build/intermediates/exploded-aar/it.sephiroth.android.library.picasso/picasso/2.5.2.4b/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/NaFunny/build/intermediates/exploded-aar/it.sephiroth.android.library.picasso/picasso/2.5.2.4b/res" />
+      <root url="jar://$PROJECT_DIR$/NaFunny/build/intermediates/exploded-aar/it.sephiroth.android.library.picasso/picasso/2.5.2.4b/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
