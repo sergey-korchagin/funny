@@ -80,10 +80,10 @@ public class SplashScreenFragment extends Fragment {
 ////                    PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
 ////                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
 //                }
-
-
-
                 updateDeletedImgs();
+
+
+
             }
 
             @Override
