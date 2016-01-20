@@ -214,8 +214,8 @@
     <string name="app_name">NaFunny</string>
     <string name="auth_google_play_services_client_facebook_display_name">Facebook</string>
     <string name="auth_google_play_services_client_google_display_name">Google</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="com.crashlytics.android.build_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">4ec73d74-bc6e-4bfa-8b18-4dee25dc09d2</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4305158415143864/6205492230</string>
+    <string name="com.crashlytics.android.build_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">4e071159-9137-4d10-b95d-3d81aa5f5707</string>
     <string name="common_android_wear_notification_needs_update_text"><ns1:g id="app_name">%1$s</ns1:g> requires an update to the Android Wear app.</string>
     <string name="common_android_wear_update_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t run unless you update the Android Wear app.</string>
     <string msgid="6006316683626838685" name="common_android_wear_update_title">Update Android Wear</string>
@@ -250,7 +250,7 @@
     <string name="create_calendar_title">Create calendar event</string>
     <string name="decline">Decline</string>
     <string name="gcm_defaultSenderId" translatable="false">352593756036</string>
-    <string name="interestial">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="interestial">ca-app-pub-4305158415143864/7682225439</string>
     <string name="parse_app_id">YOUR_APPLICATION_ID</string>
     <string name="parse_client_key">YOUR_CLIENT_KEY</string>
     <string name="share_image_text">Еще много на нафанни. \nhttps://play.google.com/store/apps/details?id=com.nafunny.app \n" +
