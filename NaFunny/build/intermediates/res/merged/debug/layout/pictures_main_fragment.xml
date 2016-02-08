@@ -54,7 +54,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="right"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Spinner
+                    android:layout_width="153dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.66" />
 
                 <ImageView
                     android:id="@+id/btnShare"

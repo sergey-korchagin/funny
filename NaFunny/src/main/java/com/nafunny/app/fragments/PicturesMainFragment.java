@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,11 +30,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +77,7 @@ import java.util.Locale;
 /**
  * Created by User on 30/11/2015.
  */
-public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener, BannerViewListener {
+public class PicturesMainFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, CustomTouchListener, BannerViewListener, AdapterView.OnItemSelectedListener {
     //Animation animFadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
     // Animation animFadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
 
@@ -121,6 +124,9 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     BannerViewListener bannerViewListener;
     BroadcastReceiver receiver;
     boolean isRegistered;
+    Spinner spinner;
+    boolean isSpinnerTouched = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -203,6 +209,18 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
         mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
 
+        spinner = (Spinner) root.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.ImageType, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter1);
+
+        spinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                isSpinnerTouched = true;
+                return false;
+            }
+        });
 
         initInterestitial();
         initSmallImage();
@@ -408,6 +426,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
 
     @Override
     public void onResume() {
+        spinner.setOnItemSelectedListener(this);
 
         btnSendUsImage.setOnClickListener(this);
         btnInviteFriend.setOnClickListener(this);
@@ -987,5 +1006,68 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
     @Override
     public void onImageShown() {
        ;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.white));
+        ((TextView) parent.getChildAt(0)).setText(getResources().getStringArray(R.array.ImageType)[position]);
+        ((TextView) parent.getChildAt(0)).setTextSize(20);
+        SelectedCategoryFragment selectedCategoryFragment = new SelectedCategoryFragment();
+        if (isSpinnerTouched){
+            switch (position) {
+
+            case 0:
+//                Constants.SELECTED_SCREEN = "All";
+//                Constants.SELECTED_SCREEN_NUMBER = 0;
+//                PicturesMainFragment picturesMainFragment = new PicturesMainFragment();
+//                Utils.replaceFragment(getFragmentManager(), android.R.id.content, picturesMainFragment, false);
+//                isSpinnerTouched = false;
+
+           //     break;
+                case 1:
+                    Constants.SELECTED_SCREEN = "Pets";
+                    Constants.SELECTED_SCREEN_NUMBER = 1;
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
+                    isSpinnerTouched = false;
+                    break;
+                case 2:
+                    Constants.SELECTED_SCREEN = "People";
+                    Constants.SELECTED_SCREEN_NUMBER = 2;
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
+                    isSpinnerTouched = false;
+                    break;
+                case 3:
+                    Constants.SELECTED_SCREEN = "Jokes";
+                    Constants.SELECTED_SCREEN_NUMBER = 3;
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
+                    isSpinnerTouched = false;
+                    break;
+                case 4:
+                    Constants.SELECTED_SCREEN = "Funny images";
+                    Constants.SELECTED_SCREEN_NUMBER = 4;
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
+                    isSpinnerTouched = false;
+                    break;
+                case 5:
+                    Constants.SELECTED_SCREEN = "Slang";
+                    Constants.SELECTED_SCREEN_NUMBER = 5;
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
+                    isSpinnerTouched = false;
+                    break;
+                case 6:
+                    Constants.SELECTED_SCREEN = "Interesting facts";
+                    Constants.SELECTED_SCREEN_NUMBER = 6;
+                    Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
+                    isSpinnerTouched = false;
+                    ((TextView) parent.getChildAt(0)).setText(getResources().getStringArray(R.array.ImageType)[position]);
+                    break;
+            }
+    }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

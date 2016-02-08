@@ -13,4 +13,6 @@ public class Constants {
     public static int PUSH_STATE = 0;  // 0 - on 1 off
     public static int TOP_SIZE =100;
     public static String LAST_ON_CONNECTION = "last_on_connection";
+    public static String SELECTED_SCREEN = "All";
+    public static int SELECTED_SCREEN_NUMBER = 0;
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="ImageType">
+        <item>Категории:</item>
+        <item>Животные</item>
+        <item>Люди</item>
+        <item>Шутки</item>
+        <item>Смешные картинки</item>
+        <item>Ненорматив</item>
+        <item>Факты</item>
+    </string-array>
+</resources>

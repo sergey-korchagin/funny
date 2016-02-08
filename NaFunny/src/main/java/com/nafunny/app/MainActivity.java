@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
       else{
           AnalyticsManager.getInstance().setUserName("no name user");
       }
-      AdBuddiz.setPublisherKey("fcce50c3-58fe-4ce7-8c77-a983b1966389");
+     // AdBuddiz.setPublisherKey("fcce50c3-58fe-4ce7-8c77-a983b1966389");
+      AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
       AdBuddiz.cacheAds(this); // this = current Activity
 
 
