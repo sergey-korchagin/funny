@@ -4,12 +4,12 @@
         "source": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\abc_activity_chooser_view_list_item.xml"
     },
     {
-        "merged": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\res\\merged\\release\\layout\\abc_activity_chooser_view.xml",
-        "source": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\abc_activity_chooser_view.xml"
-    },
-    {
         "merged": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\res\\merged\\release\\layout\\pictures_main_fragment.xml",
         "source": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\src\\main\\res\\layout\\pictures_main_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\res\\merged\\release\\layout\\abc_activity_chooser_view.xml",
+        "source": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\abc_activity_chooser_view.xml"
     },
     {
         "merged": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\res\\merged\\release\\layout\\abc_expanded_menu_layout.xml",

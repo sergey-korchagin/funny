@@ -58,6 +58,7 @@ import com.nafunny.app.managers.AnalyticsManager;
 import com.nafunny.app.managers.TinyDB;
 import com.nafunny.app.utils.Constants;
 import com.nafunny.app.utils.Utils;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -351,8 +352,15 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
             }
-        }
 
+           // AdBuddiz.showAd(getActivity()); // this = current Activity
+
+        }
+        if(position == 15 || position == 58)
+        {
+            AdBuddiz.showAd(getActivity()); // this = current Activity
+
+        }
 
         initLikeButton();
 

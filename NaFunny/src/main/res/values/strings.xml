@@ -20,7 +20,6 @@
     <color name="orange">#ff6600</color>
 
 
-    <string name="share_image_text">Еще много на нафанни. \nhttps://play.google.com/store/apps/details?id=com.nafunny.app \n" +
-                                                                    "\n</string>
+    <string name="share_image_text">Еще много на нафанни. \nhttps://play.google.com/store/apps/details?id=com.nafunny.app \n</string>
     <string name="support_mail">Nafannij@gmail.com</string>
 </resources>

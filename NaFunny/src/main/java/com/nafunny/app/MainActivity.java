@@ -22,6 +22,7 @@ import com.parse.ParseInstallation;
 import com.nafunny.app.managers.AnalyticsManager;
 import com.nafunny.app.utils.Constants;
 import com.nafunny.app.utils.Utils;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.util.Arrays;
 
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
       else{
           AnalyticsManager.getInstance().setUserName("no name user");
       }
+      AdBuddiz.setPublisherKey("fcce50c3-58fe-4ce7-8c77-a983b1966389");
+      AdBuddiz.cacheAds(this); // this = current Activity
 
 
       SplashScreenFragment splashScreenFragment = new SplashScreenFragment();

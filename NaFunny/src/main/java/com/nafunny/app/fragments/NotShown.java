@@ -51,6 +51,7 @@ import com.nafunny.app.managers.TinyDB;
 import com.nafunny.app.utils.Constants;
 import com.nafunny.app.utils.ShortcutBadger;
 import com.nafunny.app.utils.Utils;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -632,6 +633,11 @@ public class NotShown extends Fragment implements View.OnClickListener, ViewPage
         if (!seenItemsLIst.contains(t)) {
             seenItemsLIst.add(t);
             notSeenCounter--;
+        }
+        if(position == 19 || position == 65)
+        {
+            AdBuddiz.showAd(getActivity()); // this = current Activity
+
         }
         int pos = position + 1;
         picNumber.setText(String.valueOf(pos));

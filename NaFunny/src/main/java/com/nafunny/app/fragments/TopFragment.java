@@ -53,6 +53,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.nafunny.app.R;
 import com.nafunny.app.utils.Constants;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -694,6 +695,11 @@ public class TopFragment extends Fragment implements View.OnClickListener, ViewP
         if (!seenItemsLIst.contains(t)) {
             seenItemsLIst.add(t);
             notSeenItemsCounter--;
+        }
+        if(position == 35 || position == 75 || position == 162)
+        {
+            AdBuddiz.showAd(getActivity()); // this = current Activity
+
         }
         int pos = position + 1;
         picNumber.setText(String.valueOf(pos));
