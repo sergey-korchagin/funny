@@ -23,8 +23,8 @@
     style="?android:attr/spinnerItemStyle"
     android:singleLine="true"
     android:background="@drawable/bars01_f_btm"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center"
+    android:layout_gravity="left"
+    android:gravity="left|center_vertical"
     android:layout_width="wrap_content"
     android:layout_height="35dp"
     android:ellipsize="marquee"/>

@@ -768,6 +768,10 @@
         "source": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\abc_list_menu_item_icon.xml"
     },
     {
+        "merged": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\build\\intermediates\\res\\merged\\debug\\layout\\custom_spinner.xml",
+        "source": "C:\\Users\\User\\Desktop\\funny\\NaFunny\\src\\main\\res\\layout\\custom_spinner.xml"
+    },
+    {
         "merged": "C:\\Users\\User\\Desktop\\funny\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_multichoice_material.xml",
         "source": "C:\\Users\\User\\Desktop\\funny\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\select_dialog_multichoice_material.xml"
     },

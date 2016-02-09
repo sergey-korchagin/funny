@@ -152,7 +152,7 @@ public class SelectedCategoryFragment extends Fragment implements ViewPager.OnPa
         btnSendUsImage.setOnClickListener(this);
 
 
-
+        allPicNumber = (TextView)root.findViewById(R.id.allPics);
 
         btnInviteFriend = (TextView) root.findViewById(R.id.inviteFriend);
         btnInviteFriend.setOnClickListener(this);
@@ -213,7 +213,7 @@ public class SelectedCategoryFragment extends Fragment implements ViewPager.OnPa
         mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
 
         spinner = (Spinner) root.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.ImageType, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.ImageType, R.layout.custom_spinner);
         adapter1.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter1);
         spinner.setOnItemSelectedListener(this);
@@ -353,7 +353,7 @@ public class SelectedCategoryFragment extends Fragment implements ViewPager.OnPa
             public void done(Object o, Throwable throwable) {
                 if (o instanceof List) {
                     categories = (List<ParseObject>) o;
-
+                    allPicNumber.setText("/" + Integer.toString( categories.size()));
 
                     mAdapter = new PhotoPagerAdapter(categories, getActivity(), customTouchListener, bannerViewListener);
                     mPager.setAdapter(mAdapter);

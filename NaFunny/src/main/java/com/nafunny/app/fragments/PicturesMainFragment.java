@@ -210,7 +210,7 @@ public class PicturesMainFragment extends Fragment implements ViewPager.OnPageCh
         mSmallImage = (ImageView) root.findViewById(R.id.smallImage);
 
         spinner = (Spinner) root.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.ImageType, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getActivity(), R.array.ImageType, R.layout.custom_spinner);
         adapter1.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter1);
 
