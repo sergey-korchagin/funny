@@ -103,8 +103,8 @@
       <file leaf-file-name="SelectedCategoryFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42273533">
-              <caret line="359" column="0" selection-start-line="359" selection-start-column="0" selection-end-line="359" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.1545293">
+              <caret line="969" column="0" selection-start-line="969" selection-start-column="0" selection-end-line="969" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1938,10 +1938,10 @@
         <option value="$PROJECT_DIR$/NaFunny/src/main/res/layout/spinner_item.xml" />
         <option value="$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/PicturesMainFragment.java" />
         <option value="$PROJECT_DIR$/NaFunny/src/main/res/layout/custom_spinner.xml" />
-        <option value="$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java" />
         <option value="$PROJECT_DIR$/NaFunny/src/main/res/values/arrays.xml" />
         <option value="$PROJECT_DIR$/NaFunny/src/main/res/layout/pictures_main_fragment.xml" />
         <option value="$PROJECT_DIR$/NaFunny/src/main/res/layout/selected_category_fragment.xml" />
+        <option value="$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java" />
       </list>
     </option>
   </component>
@@ -2343,33 +2343,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java</url>
-          <line>969</line>
-          <properties />
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java</url>
-          <line>981</line>
-          <properties />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java</url>
-          <line>974</line>
-          <properties />
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java</url>
-          <line>973</line>
-          <properties />
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="17" />
+      <option name="time" value="18" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2728,8 +2702,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42273533">
-          <caret line="359" column="0" selection-start-line="359" selection-start-column="0" selection-end-line="359" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.1545293">
+          <caret line="969" column="0" selection-start-line="969" selection-start-column="0" selection-end-line="969" selection-end-column="0" />
           <folding />
         </state>
       </provider>

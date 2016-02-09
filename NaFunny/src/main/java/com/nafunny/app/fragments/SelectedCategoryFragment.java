@@ -988,7 +988,6 @@ if(isSpinnerTouched) {
         case 1:
             Constants.SELECTED_SCREEN = "Pets";
             Constants.SELECTED_SCREEN_NUMBER = 1;
-
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
             isSpinnerTouched = false;
            // ((TextView) parent.getChildAt(0)).setText(getResources().getStringArray(R.array.ImageType)[position]);
@@ -997,7 +996,6 @@ if(isSpinnerTouched) {
         case 2:
             Constants.SELECTED_SCREEN = "People";
             Constants.SELECTED_SCREEN_NUMBER = 2;
-
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
             isSpinnerTouched = false;
            // ((TextView) parent.getChildAt(0)).setText(getResources().getStringArray(R.array.ImageType)[position]);
@@ -1005,7 +1003,6 @@ if(isSpinnerTouched) {
             break;
         case 3:
             Constants.SELECTED_SCREEN_NUMBER = 3;
-
             Constants.SELECTED_SCREEN = "Jokes";
             Utils.replaceFragment(getFragmentManager(), android.R.id.content, selectedCategoryFragment, false);
             isSpinnerTouched = false;
