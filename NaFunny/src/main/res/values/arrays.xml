@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="ImageType">
-        <item>Категории:</item>
+        <item>Категории</item>
         <item>Животные</item>
         <item>Люди</item>
         <item>Шутки</item>

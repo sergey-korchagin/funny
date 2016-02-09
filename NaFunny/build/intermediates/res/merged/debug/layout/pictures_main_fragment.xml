@@ -58,7 +58,7 @@
                 android:weightSum="1">
 
                 <Spinner
-                    android:layout_width="153dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/spinner"
                     android:dropDownWidth="210dp"
