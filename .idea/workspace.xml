@@ -36,11 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PicturesMainFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PicturesMainFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/PicturesMainFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.448276">
-              <caret line="212" column="135" selection-start-line="212" selection-start-column="135" selection-end-line="212" selection-end-column="135" />
+            <state vertical-scroll-proportion="0.33271375">
+              <caret line="548" column="0" selection-start-line="548" selection-start-column="0" selection-end-line="548" selection-end-column="0" />
               <folding>
                 <element signature="e#9263#9409#0" expanded="true" />
                 <element signature="e#9408#9409#0" expanded="true" />
@@ -100,10 +100,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SelectedCategoryFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SelectedCategoryFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60390764">
+            <state vertical-scroll-proportion="0.0">
               <caret line="215" column="135" selection-start-line="215" selection-start-column="135" selection-end-line="215" selection-end-column="135" />
               <folding />
             </state>
@@ -2310,7 +2310,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="2" width="1932" height="1045" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995495" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2320,7 +2320,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" x="93" y="102" width="1732" height="845" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33445945" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33445945" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2334,7 +2334,7 @@
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995495" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32995495" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2367,8 +2367,20 @@
           <properties />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/PicturesMainFragment.java</url>
+          <line>560</line>
+          <properties />
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/PicturesMainFragment.java</url>
+          <line>548</line>
+          <properties />
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="15" />
+      <option name="time" value="17" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2670,25 +2682,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/PicturesMainFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.448276">
-          <caret line="212" column="135" selection-start-line="212" selection-start-column="135" selection-end-line="212" selection-end-column="135" />
-          <folding>
-            <element signature="e#9263#9409#0" expanded="true" />
-            <element signature="e#9408#9409#0" expanded="true" />
-            <element signature="e#9999#10554#0" expanded="true" />
-            <element signature="e#10553#10554#0" expanded="true" />
-            <element signature="e#23560#26070#0" expanded="true" />
-            <element signature="e#26069#26070#0" expanded="true" />
-            <element signature="e#27580#28413#0" expanded="true" />
-            <element signature="e#28412#28413#0" expanded="true" />
-            <element signature="e#28857#32515#0" expanded="true" />
-            <element signature="e#32514#32515#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/NaFunny/src/main/res/drawable-mdpi/iaicons_all_f_sttc.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -2727,9 +2720,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/SelectedCategoryFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60390764">
+        <state vertical-scroll-proportion="0.0">
           <caret line="215" column="135" selection-start-line="215" selection-start-column="135" selection-end-line="215" selection-end-column="135" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NaFunny/src/main/java/com/nafunny/app/fragments/PicturesMainFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33271375">
+          <caret line="548" column="0" selection-start-line="548" selection-start-column="0" selection-end-line="548" selection-end-column="0" />
+          <folding>
+            <element signature="e#9263#9409#0" expanded="true" />
+            <element signature="e#9408#9409#0" expanded="true" />
+            <element signature="e#9999#10554#0" expanded="true" />
+            <element signature="e#10553#10554#0" expanded="true" />
+            <element signature="e#23560#26070#0" expanded="true" />
+            <element signature="e#26069#26070#0" expanded="true" />
+            <element signature="e#27580#28413#0" expanded="true" />
+            <element signature="e#28412#28413#0" expanded="true" />
+            <element signature="e#28857#32515#0" expanded="true" />
+            <element signature="e#32514#32515#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
